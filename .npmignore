@@ -1,0 +1,28 @@
+
+# Ignore dev files
+.github
+.editorconfig
+.eslintrc.js
+.prettierrc.js
+*.config.js
+*.config.*.js
+*.setup.js
+.flowconfig
+tsconfig.json
+tsconfig.build.json
+
+# Ignore source files
+src
+
+# Ignore examples
+examples
+docs
+
+# Ignore tests
+**/__tests__
+tests
+coverage
+
+# Other stuff
+.atlassian
+.DS_Store
