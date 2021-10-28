@@ -131,7 +131,7 @@
     },
     {
       "path": "./dist/umd/react-sweet-wizard.min.js.gz",
-      "maxSize": "1.55KB"
+      "maxSize": "1.58KB"
     },
     {
       "path": "./dist/cjs/index.js",

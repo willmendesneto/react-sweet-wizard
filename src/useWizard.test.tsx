@@ -1,11 +1,10 @@
 import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
-
-import { useWizardContext, WizardProvider, Steps, Step } from '../useWizard';
+import { useWizardContext, WizardProvider, Steps, Step } from './useWizard';
 
 // Common render use wizard hook
-const renderUseWizardHook = (initialStartIndex = 0) => {
-  return renderHook(() => useWizardContext(), {
+const renderUseWizardHook = (initialStartIndex = 0) =>
+  renderHook(() => useWizardContext(), {
     initialProps: {
       startIndex: initialStartIndex,
     },
@@ -28,7 +27,6 @@ const renderUseWizardHook = (initialStartIndex = 0) => {
       </WizardProvider>
     ),
   });
-};
 
 describe('useWizard hook', () => {
   it('should throw an error if hooks is NOT using wizard provider as wrapper', () => {
@@ -63,8 +61,9 @@ describe('useWizard hook', () => {
 
   it('should throw an error if Steps component does not receive any children', () => {
     const { result } = renderHook(() => useWizardContext(), {
-      wrapper: props => (
+      wrapper: () => (
         <WizardProvider>
+          {/* eslint-disable-next-line react/no-children-prop */}
           <Steps children={undefined as any} />
         </WizardProvider>
       ),
@@ -91,7 +90,7 @@ describe('useWizard hook', () => {
     });
   });
 
-  it('should be available when wrapped in wizard', () => {
+  it('should not break if user goes above or below available steps', () => {
     const { result } = renderUseWizardHook();
     expect(result.current).toBeDefined();
     expect(result.current.activeStepIndex).toEqual(0);
@@ -135,16 +134,18 @@ describe('useWizard hook', () => {
     expect(result.current.getActiveStep()).toEqual({ id: '0' });
   });
 
-  it('should return the active step mapped object if calling `getActiveStep` method', () => {
+  it('should update steps with mapped object if `setSteps` is called', () => {
     const { result } = renderUseWizardHook();
+    const mockedSteps = [
+      { id: '0', test: true },
+      { id: '1', test: false },
+    ];
     act(() => {
-      result.current.setSteps([
-        { id: '0', test: true },
-        { id: '1', test: false },
-      ]);
+      result.current.setSteps(mockedSteps);
     });
 
     expect(result.current.activeStepIndex).toEqual(0);
-    expect(result.current.getActiveStep()).toEqual({ id: '0', test: true });
+    expect(result.current.getActiveStep()).toEqual(mockedSteps[0]);
+    expect(result.current.steps).toEqual(mockedSteps);
   });
 });

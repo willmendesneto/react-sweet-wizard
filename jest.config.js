@@ -31,7 +31,7 @@ module.exports = {
   // The paths to modules that runs some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: ['<rootDir>jest.setup.js'],
   // The glob patterns Jest uses to detect test files
-  testMatch: ['<rootDir>/**/__tests__/**/*.(js|tsx|ts)'],
+  testMatch: ['<rootDir>/**/*.test.(js|jsx|tsx|ts)'],
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   testPathIgnorePatterns: ['/node_modules/', '/scripts/', '/dist/'],
 };
