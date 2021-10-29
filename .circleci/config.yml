@@ -56,9 +56,9 @@ jobs:
     steps:
       - *attach_workspace
       - run:
-          name: Running unit tests
+          name: Running unit tests and Collecting Code Coverage
           command: |
-            sudo npm test
+            sudo npm run test:ci
   bundle_size:
     <<: *docker_defaults
     steps:
