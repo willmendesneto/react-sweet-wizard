@@ -3,10 +3,11 @@ build
 dist
 coverage
 yarn.lock
-
 # misc
 local-scripts/
 .idea
 .vscode
 .jest
 src/webpack/__tests__/__fixtures__/webpack/output
+
+.DS_Store
