@@ -36,7 +36,8 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
-    'prettier/react',
+    'prettier',
+    'plugin:jest/recommended',
     'plugin:sonarjs/recommended',
     'plugin:prettier/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -313,7 +314,7 @@ module.exports = {
         'jest/no-hooks': 'off',
         'jest/prefer-strict-equal': 'off',
         'jest-dom/prefer-to-have-value': 'off',
-        'jest/lowercase-name': [
+        'jest/prefer-lowercase-title': [
           'error',
           {
             ignore: ['describe'],

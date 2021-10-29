@@ -3,6 +3,7 @@
 
 // eslint-disable-next-line no-undef
 module.exports = {
+  testEnvironment: 'jsdom',
   // The directory where Jest should store its cached dependency information
   cacheDirectory: '<rootDir>/.jest',
   // Automatically clear mock calls and instances between every test

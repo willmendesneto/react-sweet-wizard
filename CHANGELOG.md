@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Updated
 
 - Updating `README.md` docs
+- Updating project dependencies
 
 ### Fixed
 

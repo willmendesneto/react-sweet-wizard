@@ -93,44 +93,44 @@ describe('useWizard hook', () => {
   it('should not break if user goes above or below available steps', () => {
     const { result } = renderUseWizardHook();
     expect(result.current).toBeDefined();
-    expect(result.current.activeStepIndex).toEqual(0);
+    expect(result.current.activeStepIndex).toBe(0);
 
     act(() => {
       result.current.onNext();
       result.current.onNext();
     });
 
-    expect(result.current.activeStepIndex).toEqual(1);
+    expect(result.current.activeStepIndex).toBe(1);
 
     act(() => {
       result.current.onPrevious();
       result.current.onPrevious();
     });
-    expect(result.current.activeStepIndex).toEqual(0);
+    expect(result.current.activeStepIndex).toBe(0);
   });
 
   it('should move between steps if `goTo` method is called', () => {
     const { result } = renderUseWizardHook();
     expect(result.current).toBeDefined();
-    expect(result.current.activeStepIndex).toEqual(0);
+    expect(result.current.activeStepIndex).toBe(0);
 
     act(() => {
       result.current.goTo(1);
     });
 
-    expect(result.current.activeStepIndex).toEqual(1);
+    expect(result.current.activeStepIndex).toBe(1);
 
     act(() => {
       result.current.goTo(0);
     });
 
-    expect(result.current.activeStepIndex).toEqual(0);
+    expect(result.current.activeStepIndex).toBe(0);
   });
 
   it('should return the active step mapped object if calling `getActiveStep` method', () => {
     const { result } = renderUseWizardHook();
     expect(result.current).toBeDefined();
-    expect(result.current.activeStepIndex).toEqual(0);
+    expect(result.current.activeStepIndex).toBe(0);
     expect(result.current.getActiveStep()).toEqual({ id: '0' });
   });
 
@@ -144,7 +144,7 @@ describe('useWizard hook', () => {
       result.current.setSteps(mockedSteps);
     });
 
-    expect(result.current.activeStepIndex).toEqual(0);
+    expect(result.current.activeStepIndex).toBe(0);
     expect(result.current.getActiveStep()).toEqual(mockedSteps[0]);
     expect(result.current.steps).toEqual(mockedSteps);
   });
