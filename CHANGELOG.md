@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+### Fixed
+
+- Fixing types for `onNext` to cover the callback scenario
+
 ## [1.0.1][] - 2021-10-29
 
 ### Updated
@@ -43,7 +47,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 [unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.0
-
-
-[Unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.1...HEAD
+[unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.1...HEAD
 [1.0.1]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.1

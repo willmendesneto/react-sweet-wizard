@@ -29,6 +29,8 @@ const renderUseWizardHook = (initialStartIndex = 0) =>
   });
 
 describe('useWizard hook', () => {
+  afterEach(jest.resetAllMocks);
+
   it('should throw an error if hooks is NOT using wizard provider as wrapper', () => {
     const { result } = renderHook(() => useWizardContext(), {
       wrapper: props => <div {...props} />,
@@ -87,6 +89,20 @@ describe('useWizard hook', () => {
       onPrevious: expect.any(Function),
       setSteps: expect.any(Function),
       getActiveStep: expect.any(Function),
+    });
+  });
+
+  it('call should be called if passed on `onNext`', async () => {
+    const { result, waitFor } = renderUseWizardHook();
+    expect(result.current).toBeDefined();
+
+    const handleNext = jest.fn();
+    act(() => {
+      result.current.onNext(handleNext);
+    });
+
+    await waitFor(() => {
+      expect(result.current.activeStepIndex).toBe(1);
     });
   });
 

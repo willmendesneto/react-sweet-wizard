@@ -33,7 +33,7 @@ interface WizardStepperContextProps<T = DefaultWizardStepProps> {
   readonly isFirstStep: boolean;
   readonly isLastStep: boolean;
   goTo: (id: number | string) => void;
-  onNext: () => void;
+  onNext: (cb?: () => void) => void;
   getActiveStep: () => T;
   onPrevious: () => void;
   setSteps: (steps: T[] | T) => void;
