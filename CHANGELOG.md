@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Adding `ES2020` bundle to be published
+- Adding pre-commit hook
 
 ### Fixed
 

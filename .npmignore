@@ -2,6 +2,8 @@
 # Ignore dev files
 .github
 .editorconfig
+.husky
+.lintstagedrc
 .eslintrc.js
 .prettierrc.js
 *.config.js
