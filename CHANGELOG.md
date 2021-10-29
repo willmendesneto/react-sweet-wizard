@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 
 - Fixed link on `README.md` docs
+- Fixed Types export in `package.json`
 
 ## [1.0.0][] - 2021-10-28
 
