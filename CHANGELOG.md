@@ -10,3 +10,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Created `react-sweet-wizard` component
+- Adding CircleCI pipeline for pull requests
+- Adding stricter Eslint rules
+- Adding stricter Typescript rules
+
+### Updated
+
+- Updating `README.md` docs
+
+### Fixed
+
+- Fixing unit tests
