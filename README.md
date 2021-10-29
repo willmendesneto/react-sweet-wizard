@@ -5,7 +5,7 @@
 
 [![npm version](https://badge.fury.io/js/react-sweet-wizard.svg)](http://badge.fury.io/js/react-sweet-wizard) [![npm downloads](https://img.shields.io/npm/dm/react-sweet-wizard.svg)](https://npmjs.org/react-sweet-wizard)
 
-[![Build Status](https://circleci.com/gh/willmendesneto/react-sweet-wizard.svg?style=shield)](https://circleci.com/gh/willmendesneto/react-sweet-wizard)
+[![Coverage Status](https://coveralls.io/repos/github/willmendesneto/react-sweet-wizard/badge.svg?branch=main)](https://coveralls.io/github/willmendesneto/react-sweet-wizard?branch=main) [![Build Status](https://circleci.com/gh/willmendesneto/react-sweet-wizard.svg?style=shield)](https://circleci.com/gh/willmendesneto/react-sweet-wizard)
 
 Your module to handle with Form Wizards in ReactJS applications easier.
 
