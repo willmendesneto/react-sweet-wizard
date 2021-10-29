@@ -23,9 +23,9 @@ Well, there are several selling points, actually!
 
 - [Install](#install)
 - [Setup](#setup)
-- [Usage](#usage)
-- [Releases](#releases)
 - [Demo](#demo)
+- [useWizardContext](#usewizardcontext)
+- [Publish][#publish]
 
 ## Install
 

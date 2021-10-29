@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+### Fixed
+
+- Fixed link on `README.md` docs
+
 ## [1.0.0][] - 2021-10-28
 
 ### Added
@@ -25,6 +29,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - Fixing unit tests
 
-
-[Unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.0...HEAD
+[unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.0
