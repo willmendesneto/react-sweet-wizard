@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+### Updated
+
+- Improving build time by using `npm-run-all` package
+
+### Added
+
+- Adding `ES2020` bundle to be published
+
 ### Fixed
 
 - Fixed link on `README.md` docs
