@@ -2,5 +2,13 @@
   "extends": "./tsconfig.json",
   "include": ["src"],
   "noUnusedLocals": false,
-  "exclude": ["examples/**/*", "**/__tests__/**/*", "**/*.test.ts"]
+  "compilerOptions": {
+    "declaration": false
+  },
+  "exclude": [
+    "examples/**/*",
+    "**/__tests__/**/*",
+    "**/*.test.tsx",
+    "**/*.test.ts"
+  ]
 }

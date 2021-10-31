@@ -132,7 +132,7 @@ export const WizardProvider = ({ children }: { children: ReactNode }) => {
   const context = useMemo(
     () => ({
       activeStepIndex,
-      steps: steps,
+      steps,
       goTo,
       onNext,
       onPrevious,

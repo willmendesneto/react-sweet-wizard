@@ -1,6 +1,6 @@
 import React from 'react';
 import { act, renderHook } from '@testing-library/react-hooks';
-import { useWizardContext, WizardProvider, Steps, Step } from './useWizard';
+import { useWizardContext, WizardProvider, Steps, Step } from '.';
 
 // Common render use wizard hook
 const renderUseWizardHook = (initialStartIndex = 0) =>

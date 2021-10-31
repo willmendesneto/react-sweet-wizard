@@ -10,6 +10,19 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Updated
 
 - Improving code linting by adding `eslint-plugin-unicorn` package
+- 🎉 Decreasing final bundle in 20% 🎉
+- Updating code coverage for module
+
+### Fixed
+
+- Distributing a single `.d.ts` type definition file. This will decrease the package install time.
+
+### Removed
+
+- Removed `es2020` and `es2015` bundles. This package is now distributing these bundle types
+  - ESM: Using `esnext` modules
+  - CJS: Using `CommonJS` modules
+  - UMD: Using UMD
 
 ## [1.0.2][] - 2021-10-29
 
