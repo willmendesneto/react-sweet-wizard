@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+### Updated
+
+- Improving code linting by adding `eslint-plugin-unicorn` package
+
 ## [1.0.2][] - 2021-10-29
 
 ### Fixed
@@ -51,7 +55,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [1.0.0]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.0
 [unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.1...HEAD
 [1.0.1]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.1
-
-
-[Unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.2...HEAD
+[unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.2...HEAD
 [1.0.2]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.2

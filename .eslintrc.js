@@ -306,8 +306,25 @@ module.exports = {
         'plugin:testing-library/react',
         'plugin:jest-dom/recommended',
         'plugin:jest/all',
+        'plugin:unicorn/all',
       ],
       rules: {
+        'unicorn/new-for-builtins': 'off',
+        'unicorn/filename-case': [
+          'error',
+          {
+            case: 'camelCase',
+          },
+        ],
+        'unicorn/prevent-abbreviations': [
+          'error',
+          {
+            allowList: {
+              props: true,
+              getInitialProps: true,
+            },
+          },
+        ],
         'testing-library/no-node-access': 'off',
         'testing-library/prefer-find-by': 'off',
         'jest/prefer-expect-assertions': 'off',
