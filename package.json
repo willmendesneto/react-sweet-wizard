@@ -1,6 +1,6 @@
 {
   "name": "react-sweet-wizard",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Your module to handle wizard steps in ReactJS applications easier",
   "author": "Will Mendes <willmendesneto@gmail.com> (http://github.com/willmendesneto)",
   "keywords": [
