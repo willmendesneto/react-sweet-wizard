@@ -43,7 +43,10 @@ workflows:
       - bundle_size:
           requires:
             - build
-      - lint_and_types:
+      - lint:
+          requires:
+            - build
+      - type_definition_lint:
           requires:
             - build
 
@@ -68,7 +71,7 @@ jobs:
           command: |
             sudo npm run build
             sudo npm run bundlesize
-  lint_and_types:
+  lint:
     <<: *docker_defaults
     steps:
       - *attach_workspace
@@ -76,6 +79,10 @@ jobs:
           name: ESLint Check
           command: |
             sudo npm run lint
+  type_definition_lint:
+    <<: *docker_defaults
+    steps:
+      - *attach_workspace
       - run:
           name: Type Definition Check
           command: |

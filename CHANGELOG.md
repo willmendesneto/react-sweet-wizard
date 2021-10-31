@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Improving code linting by adding `eslint-plugin-unicorn` package
 - 🎉 Decreasing final bundle in 20% 🎉
 - Updating code coverage for module
+- Split `npm run lint` and `npm run lint:types` tasks to decrease pipeline time
 
 ### Fixed
 
