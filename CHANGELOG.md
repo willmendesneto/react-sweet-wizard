@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+### Updated
+
+- Adding `Readonly` advanced type on context values and methods
+
 ## [1.0.3][] - 2021-10-31
 
 ### Updated
@@ -73,7 +77,5 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [1.0.1]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.1
 [unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.2...HEAD
 [1.0.2]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.2
-
-
-[Unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.3...HEAD
+[unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.3...HEAD
 [1.0.3]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.3

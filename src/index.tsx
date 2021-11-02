@@ -28,10 +28,10 @@ export interface DefaultWizardStepProps {
 }
 
 interface WizardStepperContextProps<T = DefaultWizardStepProps> {
-  readonly activeStepIndex: number;
-  readonly steps: T[];
-  readonly isFirstStep: boolean;
-  readonly isLastStep: boolean;
+  activeStepIndex: number;
+  steps: T[];
+  isFirstStep: boolean;
+  isLastStep: boolean;
   goTo: (id: number | string) => void;
   onNext: (cb?: () => void) => void;
   getActiveStep: () => T;
@@ -55,7 +55,7 @@ export const useWizardContext = <T, _P = never>() => {
       `Please make sure you're wrapping all the steps in a 'WizardProvider' component`
     );
   }
-  return context as WizardStepperContextProps<T>;
+  return context as Readonly<WizardStepperContextProps<T>>;
 };
 
 const reducer = (
