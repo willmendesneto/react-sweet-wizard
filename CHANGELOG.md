@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+## [1.1.0][] - 2023-02-13
+
 ### Updated
 
 - Enabling react and react-dom dependencies greater than v17
@@ -80,3 +82,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 [1.0.2]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.2
 [unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.0.3...HEAD
 [1.0.3]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.3
+
+
+[Unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.1.0
