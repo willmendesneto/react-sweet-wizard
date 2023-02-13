@@ -1,8 +1,8 @@
-version: 2
+version: 2.1
 
 docker_defaults: &docker_defaults
   docker:
-    - image: circleci/node:14.18.1-browsers
+    - image: cimg/node:14.20.0-browsers
   working_directory: ~/project/repo
 
 attach_workspace: &attach_workspace
@@ -61,7 +61,7 @@ jobs:
       - run:
           name: Running unit tests and Collecting Code Coverage
           command: |
-            sudo npm run test:ci
+            npm run test:ci
   bundle_size:
     <<: *docker_defaults
     steps:
@@ -69,8 +69,8 @@ jobs:
       - run:
           name: Checking bundle size
           command: |
-            sudo npm run build
-            sudo npm run bundlesize
+            npm run build
+            npm run bundlesize
   lint:
     <<: *docker_defaults
     steps:
@@ -78,7 +78,7 @@ jobs:
       - run:
           name: ESLint Check
           command: |
-            sudo npm run lint
+            npm run lint
   type_definition_lint:
     <<: *docker_defaults
     steps:
@@ -86,4 +86,4 @@ jobs:
       - run:
           name: Type Definition Check
           command: |
-            sudo npm run lint:types
+            npm run lint:types
