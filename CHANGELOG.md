@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Updated
 
+- Enabling react and react-dom dependencies greater than v17
 - Adding `Readonly` advanced type on context values and methods
 
 ## [1.0.3][] - 2021-10-31
