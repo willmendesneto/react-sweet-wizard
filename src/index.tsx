@@ -151,11 +151,11 @@ export const WizardProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-interface StepsProps {
+export const Steps = ({
+  children,
+}: {
   children: JSX.Element | JSX.Element[];
-}
-
-export const Steps = ({ children }: StepsProps) => {
+}) => {
   const reactChildren = Children.toArray(children);
   if (reactChildren.length === 0) {
     throw new Error('Steps should have at least a single child component');
@@ -187,11 +187,10 @@ export const Steps = ({ children }: StepsProps) => {
   return reactChildren[activeStepIndex] as JSX.Element;
 };
 
-interface StepProps {
+export const Step = ({
+  id,
+  children,
+}: {
   id: string;
   children: ReactNode | JSX.Element | JSX.Element[];
-}
-
-export const Step = ({ id, children }: StepProps) => (
-  <div id={id}>{children}</div>
-);
+}) => <div id={id}>{children}</div>;
