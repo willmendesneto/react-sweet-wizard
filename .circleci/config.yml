@@ -2,7 +2,7 @@ version: 2.1
 
 docker_defaults: &docker_defaults
   docker:
-    - image: cimg/node:14.20.0-browsers
+    - image: cimg/node:18.16.0-browsers
   working_directory: ~/project/repo
 
 attach_workspace: &attach_workspace
