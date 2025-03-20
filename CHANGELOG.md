@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+## [2.0.0][] - 2025-03-19
+
 ### Updated
 
 - Improving `WizardStepperReducerState`, `Action`, `reducer` `initialState` and default values od `WizardStepperContext` types. All these types are now accepting generic values and the exposed methods can have their generic values applied.
@@ -113,5 +115,6 @@ const WizardSteps = () => (
 [1.0.3]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.3
 
 
-[Unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.1.0
