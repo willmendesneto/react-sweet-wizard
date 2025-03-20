@@ -23,6 +23,12 @@ const renderUseWizardHook = (initialStartIndex = 0) =>
               {children}
             </div>
           </Step>
+          <Step key="2" id="step3">
+            <div>
+              <p>step 3</p>
+              {children}
+            </div>
+          </Step>
         </Steps>
       </WizardProvider>
     ),
@@ -114,18 +120,20 @@ describe('useWizard hook', () => {
     act(() => {
       result.current.onNext();
       result.current.onNext();
+      result.current.onNext();
     });
 
-    expect(result.current.activeStepIndex).toBe(1);
+    expect(result.current.activeStepIndex).toBe(2);
 
     act(() => {
+      result.current.onPrevious();
       result.current.onPrevious();
       result.current.onPrevious();
     });
     expect(result.current.activeStepIndex).toBe(0);
   });
 
-  it('should move between steps if `goTo` method is called', () => {
+  it('should move between steps if `goTo` method is called with number', () => {
     const { result } = renderUseWizardHook();
     expect(result.current).toBeDefined();
     expect(result.current.activeStepIndex).toBe(0);
@@ -135,6 +143,24 @@ describe('useWizard hook', () => {
     });
 
     expect(result.current.activeStepIndex).toBe(1);
+
+    act(() => {
+      result.current.goTo(0);
+    });
+
+    expect(result.current.activeStepIndex).toBe(0);
+  });
+
+  it('should move between steps if `goTo` method is called with string', () => {
+    const { result } = renderUseWizardHook();
+    expect(result.current).toBeDefined();
+    expect(result.current.activeStepIndex).toBe(0);
+
+    act(() => {
+      result.current.goTo('step3');
+    });
+
+    expect(result.current.activeStepIndex).toBe(2);
 
     act(() => {
       result.current.goTo(0);
@@ -155,6 +181,7 @@ describe('useWizard hook', () => {
     const mockedSteps = [
       { id: '0', test: true },
       { id: '1', test: false },
+      { id: 'step3', test: true },
     ];
     act(() => {
       result.current.setSteps(mockedSteps);

@@ -9,18 +9,18 @@ import React, {
   useEffect,
 } from 'react';
 
-interface WizardStepperReducerState {
+interface WizardStepperReducerState<T> {
   activeStepIndex: number;
-  steps: DefaultWizardStepProps[];
+  steps: T[];
 }
 
-type Action =
+type Action<T> =
   | { type: 'NEXT_PAGE' }
   | { type: 'PREV_PAGE' }
-  | { type: 'GOTO_PAGE'; payload: { stepId: number } }
+  | { type: 'GOTO_PAGE'; payload: { stepId: number | string } }
   | {
       type: 'SET_STEP_COUNT';
-      payload: { steps: DefaultWizardStepProps[] };
+      payload: { steps: T[] };
     };
 
 export interface DefaultWizardStepProps {
@@ -39,18 +39,23 @@ interface WizardStepperContextProps<T = DefaultWizardStepProps> {
   setSteps: (steps: T[] | T) => void;
 }
 
-const initialState: WizardStepperReducerState = {
+const initialState = <
+  T extends DefaultWizardStepProps
+>(): WizardStepperReducerState<T> => ({
   activeStepIndex: 0,
   steps: [],
-};
+});
 
-const WizardStepperContext = createContext({});
+const WizardStepperContext =
+  createContext<WizardStepperContextProps<any> | null>(null);
 
 WizardStepperContext.displayName = 'WizardStepperContext';
 
-export const useWizardContext = <T, _P = never>() => {
+export const useWizardContext = <T extends DefaultWizardStepProps>(): Readonly<
+  WizardStepperContextProps<T>
+> => {
   const context = useContext(WizardStepperContext);
-  if (Object.keys(context).length === 0) {
+  if (!context) {
     throw new Error(
       `Please make sure you're wrapping all the steps in a 'WizardProvider' component`
     );
@@ -58,10 +63,10 @@ export const useWizardContext = <T, _P = never>() => {
   return context as Readonly<WizardStepperContextProps<T>>;
 };
 
-const reducer = (
-  state: WizardStepperReducerState,
-  action: Action
-): WizardStepperReducerState => {
+const reducer = <T extends DefaultWizardStepProps>(
+  state: WizardStepperReducerState<T>,
+  action: Action<T>
+): WizardStepperReducerState<T> => {
   const { steps, activeStepIndex } = state;
 
   switch (action.type) {
@@ -79,10 +84,20 @@ const reducer = (
 
     case 'GOTO_PAGE':
       const { stepId } = action.payload;
-      if (activeStepIndex !== stepId && stepId < steps.length && stepId >= 0) {
-        return { ...state, activeStepIndex: stepId };
+      const stepIndex =
+        typeof stepId === 'number'
+          ? stepId
+          : steps.findIndex(step => step.id === stepId);
+
+      if (
+        stepIndex > -1 &&
+        steps.length > stepIndex &&
+        stepIndex !== activeStepIndex
+      ) {
+        return { ...state, activeStepIndex: stepIndex };
       }
       return state;
+
     case 'SET_STEP_COUNT':
       const { steps: newSteps } = action.payload;
       return { ...state, steps: newSteps };
@@ -91,8 +106,12 @@ const reducer = (
   }
 };
 
-export const WizardProvider = ({ children }: { children: ReactNode }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+export const WizardProvider = <T extends DefaultWizardStepProps>({
+  children,
+}: {
+  children: ReactNode;
+}) => {
+  const [state, dispatch] = useReducer(reducer, initialState<T>());
 
   const { activeStepIndex, steps } = state;
 
@@ -111,14 +130,14 @@ export const WizardProvider = ({ children }: { children: ReactNode }) => {
   }, [dispatch]);
 
   const setSteps = useCallback(
-    (steps: DefaultWizardStepProps[]) => {
+    (steps: T[]) => {
       dispatch({ type: 'SET_STEP_COUNT', payload: { steps } });
     },
     [dispatch]
   );
 
   const goTo = useCallback(
-    stepId => {
+    (stepId: number | string) => {
       dispatch({ type: 'GOTO_PAGE', payload: { stepId } });
     },
     [dispatch]

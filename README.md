@@ -79,6 +79,12 @@ const WizardSteps = () => (
         <p>step 2</p>
       </div>
     </Step>
+    {/* 🎉 For better DX, `<Step />` component can also have `id` as strings 🎉 */}
+    <Step key="step3" id="step3">
+      <div>
+        <p>step 3</p>
+      </div>
+    </Step>
   </Steps>
 );
 
@@ -133,13 +139,13 @@ The hook accepts a generic as data structure. If you don't pass anything, it wil
 > To define a new interface and pass as a generic you should extends from `DefaultWizardStepProps`
 
 ```tsx
-import { useWizardContext, DefaultWizardStepProps } from 'react-sweet-wizard'
+import { useWizardContext, DefaultWizardStepProps } from 'react-sweet-wizard';
 ...
 // Creating a data structure interface
 // To be used for steps
 interface MyWizardSteps extends DefaultWizardStepProps {
   name: string;
-}
+};
 ...
 // Yay! You can use generics to enforce the data structure
 // used for steps
@@ -161,13 +167,13 @@ It will use the defined Generic interface for it. Otherwise, it follows `Default
 
 ```tsx
 
-import { useWizardContext, DefaultWizardStepProps } from 'react-sweet-wizard'
+import { useWizardContext, DefaultWizardStepProps } from 'react-sweet-wizard';
 
 // Creating a data structure interface
 // To be used for steps
 interface MyWizardSteps extends DefaultWizardStepProps {
   name: string;
-}
+};
 ...
 // Yay! You can use generics to enforce the data structure
 // used for steps
@@ -176,7 +182,8 @@ const { setSteps } = useWizardContext<MyWizardSteps>();
 setSteps([
   { id: 0, name: 'first'},
   { id: 1, name: 'second'},
-])
+  { id: 'step3', name: 'third'},
+]);
 ...
 ```
 
@@ -187,24 +194,25 @@ Returns a data structure value for the current step to be used and accessed acro
 It will use the defined Generic interface for it. Otherwise, it follows `DefaultWizardStepProps` interface.
 
 ```tsx
-import { useWizardContext } from 'react-sweet-wizard'
+import { useWizardContext } from 'react-sweet-wizard';
 ...
 // Yay! You can use generics to enforce the data structure
 // used for steps
 const { getActiveStep, onNext } = useWizardContext();
-// Adding 2 steps
+// Adding 3 steps
 setSteps([
   { id: 0 },
   { id: 1 },
-])
+  { id: 'step3' },
+]);
 // Returns the first step since the wizard is following the common flow
 //   { id: 0 }
-getActiveStep()
+getActiveStep();
 // Moving wizard to the second step
-onNext()
+onNext();
 // Returns the second step
 //   { id: 1 }
-getActiveStep()
+getActiveStep();
 ...
 ```
 
@@ -213,24 +221,29 @@ getActiveStep()
 Moves the wizard to the next step. It also accepts a callback, in case you need to manage any specific handler. E.G.
 
 ```tsx
-import { useWizardContext } from 'react-sweet-wizard'
+import { useWizardContext } from 'react-sweet-wizard';
+// Creating a data structure interface
+// To be used for steps
+interface MyWizardSteps extends DefaultWizardStepProps {
+  name: string;
+};
 ...
 // Yay! You can use generics to enforce the data structure
 // used for steps
-const { setSteps, onNext } = useWizardContext();
+const { setSteps, onNext } = useWizardContext<MyWizardSteps>();
 ...
-// Adding 2 steps
+// Adding 3 steps
 setSteps([
-  { id: 0},
-  { id: 1},
-  { id: 2},
-])
+  { id: 0, name: 'first'},
+  { id: 1, name: 'second'},
+  { id: 'step3', name: 'third'},
+]);
 // Moving wizard to the second step
-onNext()
+onNext();
 onNext(() => {
   alert('And here we go! 🚀');
   // You can add a specific validation here!
-})
+});
 ```
 
 ### `onPrevious()`
@@ -238,7 +251,7 @@ onNext(() => {
 Moves the wizard to the previous step.
 
 ```tsx
-import { useWizardContext } from 'react-sweet-wizard'
+import { useWizardContext } from 'react-sweet-wizard';
 ...
 // Yay! You can use generics to enforce the data structure
 // used for steps
@@ -248,11 +261,11 @@ const { setSteps, onPrevious } = useWizardContext();
 setSteps([
   { id: 0},
   { id: 1},
-])
+]);
 // Moving wizard to the second step
-onNext()
+onNext();
 // Moving wizard back to the first step
-onPrevious()
+onPrevious();
 ```
 
 ### `goTo(id: number | string)`
@@ -260,13 +273,13 @@ onPrevious()
 Moves the wizard to a specific step. Interesting if you have some advanced scenario
 
 ```tsx
-import { useWizardContext, DefaultWizardStepProps } from 'react-sweet-wizard'
+import { useWizardContext, DefaultWizardStepProps } from 'react-sweet-wizard';
 
 // Creating a data structure interface
 // To be used for steps
 interface MyWizardSteps extends DefaultWizardStepProps {
   name: string;
-}
+};
 ...
 // Yay! You can use generics to enforce the data structure
 // used for steps
@@ -276,15 +289,19 @@ const { setSteps, goTo, getActiveStep } = useWizardContext<MyWizardSteps>();
 setSteps([
   { id: 0, name: 'first'},
   { id: 1, name: 'second'},
-])
+  { id: 'step3', name: 'third'},
+]);
 // Moving wizard to second step
-goTo(1)
-//
-const step = getActiveStep()
+goTo(1);
 // Output
 //   { id: 1, name: 'second'}
 // It's using `MyWizardSteps` interface, so don't worry
-console.log(step)
+console.log(getActiveStep());
+// Moving wizard to third step
+goTo('step3');
+// Output
+//   { id: 'step3', name: 'third'}
+console.log(getActiveStep());
 ```
 
 ## Publish
@@ -297,5 +314,4 @@ this project is using `np` package to publish, which makes things straightforwar
 
 **Wilson Mendes (willmendesneto)**
 
-- <https://twitter.com/willmendesneto>
 - <http://github.com/willmendesneto>

@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+### Updated
+
+- Improving `WizardStepperReducerState`, `Action`, `reducer` `initialState` and default values od `WizardStepperContext` types. All these types are now accepting generic values and the exposed methods can have their generic values applied.
+- Better type safe: enforcing `useWizardContext` return to be `Readonly`
+- Updating `setSteps` callback type to use the received generic type, if available.
+
+### Added
+
+- `<Step />` component can also have `id` as strings and numbers.
+
+```tsx
+...
+const WizardSteps = () => (
+  <Steps>
+    <Step key="0" id="0">
+      <div>
+        <p>step 1</p>
+      </div>
+    </Step>
+    {/* 🎉 For better DX, `<Step />` component can also have `id` as strings 🎉 */}
+    <Step key="step2" id="step2">
+      <div>
+        <p>step 2</p>
+      </div>
+    </Step>
+  </Steps>
+);
+```
+
 ## [1.1.0][] - 2023-02-13
 
 ### Updated
