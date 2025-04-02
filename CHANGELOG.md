@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+### Updated
+
+- Improving internal types to remove `as` typescript usage
+
 ## [2.0.0][] - 2025-03-19
 
 ### Updated

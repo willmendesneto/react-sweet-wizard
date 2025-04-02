@@ -54,13 +54,14 @@ WizardStepperContext.displayName = 'WizardStepperContext';
 export const useWizardContext = <T extends DefaultWizardStepProps>(): Readonly<
   WizardStepperContextProps<T>
 > => {
-  const context = useContext(WizardStepperContext);
+  const context: Readonly<WizardStepperContextProps<T>> | null =
+    useContext(WizardStepperContext);
   if (!context) {
     throw new Error(
       `Please make sure you're wrapping all the steps in a 'WizardProvider' component`
     );
   }
-  return context as Readonly<WizardStepperContextProps<T>>;
+  return context;
 };
 
 const reducer = <T extends DefaultWizardStepProps>(
@@ -175,14 +176,15 @@ export const Steps = ({
 }: {
   children: JSX.Element | JSX.Element[];
 }) => {
-  const reactChildren = Children.toArray(children);
+  const reactChildren = Children.toArray(children).filter(
+    (child): child is React.ReactElement => React.isValidElement(child)
+  );
+
   if (reactChildren.length === 0) {
     throw new Error('Steps should have at least a single child component');
   }
 
-  const index = reactChildren.findIndex(
-    child => (child as JSX.Element).type !== Step
-  );
+  const index = reactChildren.findIndex(child => child.type !== Step);
 
   if (index !== -1) {
     throw new Error(
@@ -195,11 +197,7 @@ export const Steps = ({
 
   useEffect(() => {
     if (steps.length !== reactChildren.length) {
-      setSteps(
-        reactChildren.map(child => ({
-          id: (child as JSX.Element).props.id,
-        }))
-      );
+      setSteps(reactChildren.map(child => ({ id: child.props.id })));
     }
   }, [setSteps, steps, reactChildren]);
 
