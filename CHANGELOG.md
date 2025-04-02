@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+## [2.0.1][] - 2025-04-02
+
 ### Updated
 
 - Improving internal types to remove `as` typescript usage
@@ -119,6 +121,7 @@ const WizardSteps = () => (
 [1.0.3]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.3
 
 
-[Unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v2.0.0...HEAD
+[Unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v2.0.1...HEAD
+[2.0.1]: https://github.com/willmendesneto/react-sweet-wizard/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.1.0
