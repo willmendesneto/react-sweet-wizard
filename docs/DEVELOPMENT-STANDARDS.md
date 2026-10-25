@@ -10,15 +10,15 @@ code already follows; keep new code consistent with them.
 | Concern | Tool | Command |
 |---|---|---|
 | Language | TypeScript 5.9, `strict: true`, React JSX (`jsx: react`) | |
-| Formatting | Prettier 2 (`.prettierrc.js`; also enforced through `eslint-plugin-prettier` and `lint-staged` on commit) | `npx prettier --write src/` |
-| Linting | ESLint 8 (`.eslintrc.js`: react, react-hooks, jsx-a11y, import, sonarjs, jest, testing-library, unicorn) | `npm run lint` |
+| Formatting | Prettier 3 (`.prettierrc`; also enforced through `eslint-plugin-prettier` and `lint-staged` on commit) | `npx prettier --write src/` |
+| Linting | ESLint 9 flat config (`eslint.config.js`: typescript-eslint, react, react-hooks, jsx-a11y, jest, testing-library, prettier) | `npm run lint` |
 | Types | tsc (`tsconfig.json`) | `npm run lint:types` |
 | Package manager | npm | `npm install` |
 | Node | 22.22.3 | from .nvmrc |
 
 ## File and naming conventions
 
-- Single entry point `src/index.tsx`; every public symbol is a named export from it. The whole library is one file today; split into one component per file only when it grows, and keep exports flowing through `src/index.tsx`. No default exports (`import/no-default-export` is enforced; the Rollup config carries the one disable comment).
+- Single entry point `src/index.tsx`; every public symbol is a named export from it. The whole library is one file today; split into one component per file only when it grows, and keep exports flowing through `src/index.tsx`. No default exports from the library entry point.
 - Components and hooks follow React naming: `PascalCase` for `WizardProvider`, `Steps`, `Step`; `useXxx` for hooks; `camelCase` callbacks prefixed `on` for navigation (`onNext`, `onPrevious`).
 - Public types are `PascalCase` interfaces (`DefaultWizardStepProps`). Internal types and the reducer stay unexported.
 - Tests sit next to the code as `*.test.tsx` and are matched by `jest.config.js` `testMatch`.

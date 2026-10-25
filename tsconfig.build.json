@@ -6,7 +6,8 @@
   "noUnusedLocals": false,
   "compilerOptions": {
     "declaration": false,
-    "esModuleInterop": false
+    "esModuleInterop": false,
+    "removeComments": true
   },
   "exclude": [
     "examples/**/*",

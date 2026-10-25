@@ -1,11 +1,11 @@
 import * as React from 'react';
+import type { ReactNode } from 'react';
 import {
   Children,
   createContext,
   useContext,
   useReducer,
   useCallback,
-  ReactNode,
   useMemo,
   useEffect,
 } from 'react';
@@ -41,13 +41,14 @@ interface WizardStepperContextProps<T = DefaultWizardStepProps> {
 }
 
 const initialState = <
-  T extends DefaultWizardStepProps
+  T extends DefaultWizardStepProps,
 >(): WizardStepperReducerState<T> => ({
   activeStepIndex: 0,
   steps: [],
 });
 
 const WizardStepperContext =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic per consumer, narrowed by useWizardContext<T>
   createContext<WizardStepperContextProps<any> | null>(null);
 
 WizardStepperContext.displayName = 'WizardStepperContext';
@@ -72,19 +73,20 @@ const reducer = <T extends DefaultWizardStepProps>(
   const { steps, activeStepIndex } = state;
 
   switch (action.type) {
-    case 'NEXT_PAGE':
+    case 'NEXT_PAGE': {
       const newIndex = activeStepIndex + 1;
       if (newIndex < steps.length) {
         return { ...state, activeStepIndex: newIndex };
       }
       return state;
+    }
     case 'PREV_PAGE':
       if (activeStepIndex > 0) {
         return { ...state, activeStepIndex: activeStepIndex - 1 };
       }
       return state;
 
-    case 'GOTO_PAGE':
+    case 'GOTO_PAGE': {
       const { stepId } = action.payload;
       const stepIndex =
         typeof stepId === 'number'
@@ -99,10 +101,11 @@ const reducer = <T extends DefaultWizardStepProps>(
         return { ...state, activeStepIndex: stepIndex };
       }
       return state;
-
-    case 'SET_STEP_COUNT':
+    }
+    case 'SET_STEP_COUNT': {
       const { steps: newSteps } = action.payload;
       return { ...state, steps: newSteps };
+    }
     default:
       return state;
   }
