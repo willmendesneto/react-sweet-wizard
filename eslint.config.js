@@ -31,7 +31,7 @@ module.exports = tseslint.config(
     },
   },
   {
-    files: ['*.{js,mjs,ts}', 'scripts/**/*.mjs'],
+    files: ['*.{js,mjs,ts,mts}', 'scripts/**/*.mjs'],
     languageOptions: { globals: { ...globals.node } },
   },
   {
