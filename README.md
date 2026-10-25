@@ -307,7 +307,7 @@ console.log(getActiveStep());
 
 ## Release
 
-Releases are cut with `npm version <patch|minor|major>` (it runs lint, types and tests, then moves the `## [Unreleased]` changelog entries under the new version), followed by pushing the commit and its tag (`git push --follow-tags`), which triggers the GitHub Release workflow, and a manual `npm publish`. The full flow lives in [docs/playbooks/RELEASE-WORKFLOW.md](docs/playbooks/RELEASE-WORKFLOW.md).
+Releases are cut with `npm version <patch|minor|major>` (it runs lint, types and tests, then moves the `## [Unreleased]` changelog entries under the new version), followed by pushing the commit and its tag (`git push --follow-tags`), which triggers the GitHub Release workflow, and a manual `npm publish` (its `prepack` script runs the checks again and builds `dist/`).
 
 ## Author
 

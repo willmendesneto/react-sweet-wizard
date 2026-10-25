@@ -13,7 +13,7 @@ const prettier = require('eslint-plugin-prettier/recommended');
 const testFiles = ['src/**/*.test.{ts,tsx}'];
 
 module.exports = tseslint.config(
-  { ignores: ['dist/**', 'coverage/**', 'node_modules/**'] },
+  { ignores: ['dist/**', 'coverage/**', 'node_modules/**', '.claude/**'] },
   { settings: { react: { version: 'detect' } } },
   js.configs.recommended,
   ...tseslint.configs.recommended,
