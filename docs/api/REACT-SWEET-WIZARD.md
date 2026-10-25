@@ -2,11 +2,11 @@
 
 # react-sweet-wizard public API
 
-> **Current state:** Published as `react-sweet-wizard` 2.0.1 (2025-04-02). The entire library is `src/index.tsx`, about 200 lines, with no runtime dependencies and `react`/`react-dom` `>=18.0.0` as peers. State is in-memory React reducer state only. 2.0.0 added generics and string ids; 2.0.1 removed TypeScript `as` casts. Stable, small, fully covered by `src/index.test.tsx`.
+> **Current state:** Published as `react-sweet-wizard` 2.0.1 (2025-04-02). The library is eight small modules under `src/` behind the `src/index.ts` entry point, with no runtime dependencies and `react`/`react-dom` `>=18.0.0` as peers. State is in-memory React reducer state only. 2.0.0 added generics and string ids; 2.0.1 removed TypeScript `as` casts. Stable, small, fully covered by `src/index.test.tsx`.
 
 ## When to read this doc
 
-- You change anything exported from `src/index.tsx`: `WizardProvider`, `Steps`, `Step`, `useWizardContext` or `DefaultWizardStepProps`.
+- You change anything exported from `src/index.ts`: `WizardProvider`, `Steps`, `Step`, `useWizardContext`, `DefaultWizardStepProps` or `WizardContextValue`.
 - You change the reducer, its actions or the meaning of `goTo`, `onNext`, `onPrevious` or `setSteps`.
 - You change the error messages thrown for misuse; consumers and tests assert on them.
 - You touch build outputs, `peerDependencies` or the size budgets.
@@ -19,7 +19,8 @@
 | `WizardProvider` | component | `WizardProvider<T extends DefaultWizardStepProps>({ children }: { children: ReactNode }): JSX.Element` | Owns the state `{ activeStepIndex: 0, steps: [] }` and provides a memoised context. Required above `Steps` and every `useWizardContext` call. |
 | `Steps` | component | `Steps({ children }: { children: JSX.Element \| JSX.Element[] }): JSX.Element` | Accepts only `Step` elements as direct children and at least one. Registers `{ id }` per child through `setSteps` when the count changes, then renders the active child only. |
 | `Step` | component | `Step({ id, children }: { id: string; children: ReactNode }): JSX.Element` | Renders `<div id={id}>{children}</div>`. The prop is typed `string`; the runtime, README and changelog also accept numbers. See Behaviour. |
-| `useWizardContext` | hook | `useWizardContext<T extends DefaultWizardStepProps = DefaultWizardStepProps>(): Readonly<WizardStepperContextProps<T>>` | Throws outside a `WizardProvider`. Returns `activeStepIndex`, `steps`, `isFirstStep`, `isLastStep`, `goTo`, `onNext`, `onPrevious`, `getActiveStep`, `setSteps`. `WizardStepperContextProps` itself is not exported. |
+| `useWizardContext` | hook | `useWizardContext<T extends DefaultWizardStepProps = DefaultWizardStepProps>(): Readonly<WizardStepperContextProps<T>>` | Throws outside a `WizardProvider`. Returns `activeStepIndex`, `steps`, `isFirstStep`, `isLastStep`, `goTo`, `onNext`, `onPrevious`, `getActiveStep`, `setSteps`. The return type is exported as `WizardContextValue<T>`. |
+| `WizardContextValue` | type | `interface WizardContextValue<T = DefaultWizardStepProps> { activeStepIndex; steps; isFirstStep; isLastStep; goTo; onNext; getActiveStep; onPrevious; setSteps }` | The object `useWizardContext<T>()` returns; use it to type props or helpers that receive the wizard context. |
 
 ## Options and defaults
 
@@ -64,13 +65,17 @@ The library does not read `window`, `document` or any browser API, so `renderToS
 
 | Area | Where |
 |---|---|
-| unit (provider, hook, Steps/Step, reducer paths) | `src/index.test.tsx` |
+| integration through the entry point (provider, hook, Steps/Step) | `src/index.test.tsx` |
+| reducer transitions (pure) | `src/reducer.test.ts` |
 | coverage thresholds | `vitest.config.ts` |
 
 ## Key source files
 
-- `src/index.tsx`
-- `src/index.test.tsx`
+- `src/index.ts` (entry point)
+- `src/types.ts`
+- `src/reducer.ts` and `src/reducer.test.ts`
+- `src/WizardProvider.tsx`, `src/Steps.tsx`, `src/Step.tsx`, `src/useWizardContext.ts`, `src/context.ts`
+- `src/index.test.tsx` (integration suite through the entry point)
 - `package.json`
 - `rollup.config.js`
 - `tsconfig.build.json`

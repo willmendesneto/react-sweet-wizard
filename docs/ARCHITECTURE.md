@@ -15,11 +15,18 @@ Kind: lib. Stack: TypeScript 5.9 (strict) and React, built with Rollup 4 (ESM an
 
 | Module | Responsibility | Entry points | Doc |
 |---|---|---|---|
-| `src/index.tsx` | Whole library: provider, reducer, `Steps`/`Step` components and the `useWizardContext` hook | `src/index.tsx` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/index.ts` | Public entry point; re-exports the four runtime symbols and the two public types | `src/index.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/types.ts` | `DefaultWizardStepProps`, `WizardContextValue<T>`, internal `WizardState`, `Action`, `StepProps` | `src/types.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/reducer.ts` | Pure state machine: `initialState`, `reducer` (NEXT_PAGE, PREV_PAGE, GOTO_PAGE, SET_STEP_COUNT) | `src/reducer.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/context.ts` | The React context object (internal) | `src/context.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/useWizardContext.ts` | Consumer hook; throws outside a provider | `src/useWizardContext.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/WizardProvider.tsx` | Owns the reducer state and memoises the context value | `src/WizardProvider.tsx` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/Steps.tsx` | Validates children, registers steps, renders the active one | `src/Steps.tsx` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/Step.tsx` | Wrapper `div` with the step id | `src/Step.tsx` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
 
 ## Boundaries
 
-The whole library lives in one file, `src/index.tsx`, and everything a consumer can use is exported from it. Internal pieces stay unexported on purpose: the reducer, its `Action` union, `WizardStepperReducerState`, the `WizardStepperContext` object and the `WizardStepperContextProps` interface. Consumers type the context through `useWizardContext<T>()` inference only. The library never fetches, never touches `window`, `document`, storage or the URL, and holds no global state; all state is in-memory React state owned by the nearest `WizardProvider`. Keep it that way: new behaviour belongs inside the provider or hook and is exposed through the hook's small, documented API.
+The library is eight small modules under `src/` and everything a consumer can use is re-exported from `src/index.ts`: `WizardProvider`, `Steps`, `Step`, `useWizardContext` and the types `DefaultWizardStepProps` and `WizardContextValue<T>`. The other modules are internal: `reducer.ts` (pure, tested on its own), `context.ts`, and the `WizardState`, `Action` and `StepProps` types. The `exports` map in `package.json` exposes only the package root, so consumers cannot reach them. The library never fetches, never touches `window`, `document`, storage or the URL, and holds no global state; all state is in-memory React state owned by the nearest `WizardProvider`. Keep it that way: new behaviour belongs inside the provider or hook and is exposed through the hook's small, documented API.
 
 ## Data flow
 

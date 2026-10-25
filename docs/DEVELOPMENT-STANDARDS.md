@@ -18,7 +18,7 @@ code already follows; keep new code consistent with them.
 
 ## File and naming conventions
 
-- Single entry point `src/index.tsx`; every public symbol is a named export from it. The whole library is one file today; split into one component per file only when it grows, and keep exports flowing through `src/index.tsx`. No default exports from the library entry point.
+- Single entry point `src/index.ts`; every public symbol is a named export from it. One component or concern per file (`WizardProvider.tsx`, `Steps.tsx`, `Step.tsx`, `useWizardContext.ts`, `reducer.ts`, `context.ts`, `types.ts`); consumers never import internal modules. No default exports from the library entry point.
 - Components and hooks follow React naming: `PascalCase` for `WizardProvider`, `Steps`, `Step`; `useXxx` for hooks; `camelCase` callbacks prefixed `on` for navigation (`onNext`, `onPrevious`).
 - Public types are `PascalCase` interfaces (`DefaultWizardStepProps`). Internal types and the reducer stay unexported.
 - Tests sit next to the code as `*.test.ts(x)` and are matched by the `include` pattern in `vitest.config.ts`.

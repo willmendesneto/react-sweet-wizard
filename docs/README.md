@@ -14,7 +14,7 @@ Agents and `docs` tooling parse this table, so keep its three columns and the gl
 | [TESTING-GUIDE.md](TESTING-GUIDE.md) | Runners, fixtures, what to test | `src/**/*.test.ts?(x)`, `vitest.config.ts`, `vitest.setup.ts` |
 | [CODE-REVIEW-STANDARDS.md](CODE-REVIEW-STANDARDS.md) | Review lenses and severity | `**` |
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Environment, build and CI problems | `package.json`, `.nvmrc`, `**/*.config.*`, `.github/workflows/**` |
-| [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) | Public API: `WizardProvider`, `Steps`, `Step`, `useWizardContext`, `DefaultWizardStepProps` | `src/index.tsx`, `src/index.test.tsx` |
+| [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) | Public API: `WizardProvider`, `Steps`, `Step`, `useWizardContext`, `DefaultWizardStepProps`, `WizardContextValue` | `src/**` |
 | [playbooks/RELEASE-WORKFLOW.md](playbooks/RELEASE-WORKFLOW.md) | Versioning and publishing | `package.json`, `CHANGELOG.md` |
 | [decisions/](decisions/README.md) | Architecture decision records | `**` |
 | [specs/](specs/README.md) | Feature specs in progress | `**` |
