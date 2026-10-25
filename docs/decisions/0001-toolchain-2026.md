@@ -19,9 +19,8 @@ never produced. A major release was the only honest way to move all of it at onc
 Ship 3.0.0 on a current toolchain and fix the known API inconsistencies, accepting a set of breaking
 changes documented in `CHANGELOG.md`:
 
-- **Tests:** Vitest 4 with `@vitest/coverage-v8`, Testing Library 16 and jsdom 29 (Jest, Babel and
-  `@testing-library/react-hooks` removed). Vitest 4 rather than 5, and jsdom 29 rather than 30, because
-  their next majors require Node 22.12+ and the CI matrix keeps Node 20.
+- **Tests:** Vitest 5 with `@vitest/coverage-v8`, Testing Library 16 and jsdom 30 (Jest, Babel and
+  `@testing-library/react-hooks` removed).
 - **Build:** one Rollup 4 configuration with `@rollup/plugin-typescript` emitting ESM, CommonJS
   (ES2019) and declarations, automatic JSX runtime, `exports` map with `types` first. The UMD build is
   removed.
@@ -30,10 +29,10 @@ changes documented in `CHANGELOG.md`:
 - **Size:** `size-limit` with gzip budgets of 1400 B for each artefact, raised deliberately from the
   2.0.1 limits to pay for id-based step registration (3.0 measures about 1250 B ESM and 1270 B CJS;
   2.0.1 shipped 1199 B ESM and 2653 B ES5 CJS).
-- **CI:** GitHub Actions on a Node 20/22/24 by React 18/19 matrix, Coveralls through the official
+- **CI:** GitHub Actions on a Node 22/24 by React 18/19 matrix, Coveralls through the official
   action, Dependabot, and a tag-triggered workflow that creates the GitHub Release from the changelog.
   Publishing to npm stays a maintainer step. CircleCI is removed.
-- **Runtimes:** React peers `>=18.0.0`; `engines.node >=20`; development pinned to Node 24.22.0.
+- **Runtimes:** React peers `>=18.0.0`; `engines.node >=22` (Node 20 reached end of life on 2026-04-30 and several dev tools already require 22); development pinned to Node 24.22.0.
 - **API:** `goTo` keeps its 2.x semantics (number = index, string = id); `Step` accepts numeric ids;
   registration follows ids; `onNext` returns its promise; `isLastStep` is `false` with no steps;
   `WizardContextValue<T>` is exported.
@@ -48,16 +47,16 @@ changes documented in `CHANGELOG.md`:
 | Keep React 17 in the peer range | Testing Library 16 and the automatic JSX runtime target React 18+; a React 17 CI leg would need Testing Library 12 or a render-only smoke test. |
 | Change `goTo(number)` to match ids (with a new `goToIndex`) | Rejected by the maintainer: the index semantics are simple and sufficient; the rule is now stated explicitly in the docs instead. |
 | Keep the 2.0.1 size budgets | Id-based registration costs about 55 B gzipped; the maintainer chose correctness over the last bytes and raised the budgets once, deliberately. |
-| Vitest 5 and jsdom 30 | Require Node 22.12+ and 22.22+ and would drop the Node 20 matrix leg while `engines` still allows Node 20. |
+| Keep Node 20 (engines >=20) | End of life since 2026-04-30; Vitest 5, jsdom 30, jest-dom 7, lint-staged 17 and size-limit 14 already need Node 22, so supporting it meant pinning older majors. Raising the floor is free in a major release. |
 
 ## Consequences
 
 - Positive: one build, one test runner, one lint config; 100% coverage on 35 tests; `npm ci` resolves
   without `--legacy-peer-deps`; every CI job is reproducible with one documented command; the
   published tarball is verified by `scripts/check-package.mjs` on every build.
-- Negative: four breaking changes for consumers (React 18, Node 20, no UMD, `exports` map) and two
+- Negative: four breaking changes for consumers (React 18, Node 22, no UMD, `exports` map) and two
   behavioural ones (`onNext` promise, `isLastStep` with no steps), all with migration notes. The
   lockfile was regenerated because npm 10 and 11 crashed in arborist when adding the new set to the
   old tree.
 - Neutral: `goTo` keeps its ambiguity for numeric ids (documented); the budgets must be revisited if the
-  library grows; Vitest and jsdom majors are pinned until Node 20 leaves the matrix.
+  library grows.

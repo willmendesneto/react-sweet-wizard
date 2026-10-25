@@ -8,7 +8,7 @@
 
 ### Node version
 
-Required: Node 24.22.0, the current LTS (pinned in `.nvmrc`; `engines` allows any Node 20 or later). With nvm: `nvm use`. A different major usually shows up as native module build errors or syntax errors in dependencies.
+Required: Node 24.22.0, the current LTS (pinned in `.nvmrc`; `engines` allows any Node 22 or later). With nvm: `nvm use`. A different major usually shows up as native module build errors or syntax errors in dependencies.
 
 ### Install
 
@@ -27,7 +27,7 @@ Required: Node 24.22.0, the current LTS (pinned in `.nvmrc`; `engines` allows an
 - Coverage thresholds apply only to `npm run test:coverage`; `npm run test` and `npm run test:watch` skip coverage. A threshold failure prints the per-file table at the end of the run.
 - Testing Library warnings about `act(...)` usually mean a test called `onNext` with a callback and did not wrap it in `await act(async () => ...)`.
 - `ReferenceError: describe is not defined`: `globals` is off in `vitest.config.ts`; import the API from `vitest`.
-- `Vitest 5` or `jsdom 30` fail to install or run on Node 20: both require Node 22.12 or later. The repo pins Vitest 4 and jsdom 29 while Node 20 is in the CI matrix.
+- `Vitest 5`, `jsdom 30`, `lint-staged 17` and `size-limit 14` need a recent Node 22 (22.12 to 22.22, depending on the package) or Node 24; an older 22.x shows engine warnings or syntax errors. Use the version in `.nvmrc`.
 
 ## Size budget
 
@@ -37,7 +37,7 @@ History, fixed in 3.0. Up to 2.0.1 the size gate ran `bundlesize`, which require
 
 ## Gates in CI but not locally
 
-GitHub Actions (`.github/workflows/ci.yml`) runs the same five gates with three differences. The `test` job adds `--coverage --coverageReporters=lcov` and the Node 24 leg uploads `coverage/lcov.info` to Coveralls with the repository `GITHUB_TOKEN`; a failure there means the repository is not linked on coveralls.io, not a test failure. The `test` and `build` jobs run on Node 20, 22 and 24, so a dependency that drops an older major shows up only in CI; reproduce with `nvm use 20 && npm ci && npm test`. The `size` job runs `npm run build` before `npm run size`, so always build before checking sizes locally. Every job starts with `npm ci`, which fails on peer conflicts that `npm install --legacy-peer-deps` hides; run `npm ci` locally after changing dependencies.
+GitHub Actions (`.github/workflows/ci.yml`) runs the same five gates with three differences. The `test` job runs `npm run test:coverage` on Node 22 and 24 by React 18 and 19 (the React version is installed with `npm install --no-save` after `npm ci`), and the Node 24 / React 19 leg uploads `coverage/lcov.info` to Coveralls with the repository `GITHUB_TOKEN`; a failure there means the repository is not linked on coveralls.io, not a test failure. The `test` and `build` jobs run on Node 22 and 24, so a dependency that drops Node 22 shows up only in CI; reproduce with `nvm use 22 && npm ci && npm test`. The `build` job also runs `node scripts/check-package.mjs` and `npm run lint:package` (publint and attw). The `size` job runs `npm run build` before `npm run size`, so always build before checking sizes locally. Every job starts with `npm ci`, which fails on peer conflicts that `npm install --legacy-peer-deps` hides; run `npm ci` locally after changing dependencies.
 
 ## Add an entry
 
