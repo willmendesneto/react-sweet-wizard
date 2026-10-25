@@ -4,8 +4,8 @@ import { dts } from 'rollup-plugin-dts';
 const input = 'src/index.ts';
 const external = ['react', 'react/jsx-runtime'];
 
-// Code: ESM as .mjs and CommonJS as .cjs, so Node picks the format from the extension
-// without a "type" field. Declarations: one bundled file per format (.d.mts / .d.cts) so
+// Code: ESM as .mjs and CommonJS as .cjs, so the extension decides the format whatever
+// package.json "type" says (it is "commonjs"). Declarations: one bundled file per format (.d.mts / .d.cts) so
 // TypeScript resolves the right module kind for import and require consumers.
 // `npm run build` cleans `dist/` first.
 export default [

@@ -155,7 +155,7 @@ const ctx = useWizardContext<MyWizardSteps>();
 
 ### `setSteps(steps: T[])`
 
-Sets a new value for steps to be used and accessed across components. It covers scenarios such as steps with complex data structures.
+Sets a new value for steps to be used and accessed across components. It covers scenarios such as steps with complex data structures. Steps registered automatically by `<Steps>` carry only `id`, so declare your extra fields optional or call `setSteps` before reading them; the data you set is kept as long as the step ids match the `<Step>` children.
 It will use the defined Generic interface for it. Otherwise, it follows `DefaultWizardStepProps` interface.
 
 ```tsx

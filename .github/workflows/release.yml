@@ -31,7 +31,7 @@ jobs:
       - run: npm run size
       - run: node scripts/check-package.mjs
       - run: npm run lint:package
-      - run: npm pack --dry-run
+      - run: npm pack --dry-run --ignore-scripts
 
   release:
     name: Create the GitHub Release

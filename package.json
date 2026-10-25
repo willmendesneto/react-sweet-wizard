@@ -59,7 +59,7 @@
     "version": "version-changelog CHANGELOG.md && changelog-verify CHANGELOG.md && git add CHANGELOG.md",
     "size": "size-limit",
     "test:coverage": "vitest run --coverage",
-    "lint:package": "publint && attw --pack . --profile node16"
+    "lint:package": "node scripts/lint-package.mjs"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",

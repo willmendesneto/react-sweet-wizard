@@ -24,7 +24,7 @@ changes documented in `CHANGELOG.md`:
 - **Build:** one Rollup 4 configuration with `@rollup/plugin-typescript` emitting ESM, CommonJS
   (ES2019) as `.mjs` and `.cjs`, `rollup-plugin-dts` bundling `.d.mts` and `.d.cts`, automatic JSX runtime, `exports` map with import and require branches, each types-first; publint and attw check it. The UMD build is
   removed.
-- **Lint and format:** ESLint 9 flat config (39 lines) with typescript-eslint, react, react-hooks,
+- **Lint and format:** ESLint 9 flat config (55 lines, linting the whole repo) with typescript-eslint, react, react-hooks,
   jsx-a11y, testing-library, vitest and prettier; Prettier 3; Husky 9 with lint-staged.
 - **Size:** `size-limit` with gzip budgets of 1500 B for each artefact, raised deliberately (twice, with
   the maintainer) to pay for id-based, reducer-side step registration and index clamping (3.0 measures
@@ -46,16 +46,17 @@ changes documented in `CHANGELOG.md`:
 | Keep the UMD bundle | It existed for script-tag consumers through unpkg; nobody maintains that path and it doubled the build and the budgets. Those consumers stay on 2.x. |
 | Keep React 17 in the peer range | Testing Library 16 and the automatic JSX runtime target React 18+; a React 17 CI leg would need Testing Library 12 or a render-only smoke test. |
 | Change `goTo(number)` to match ids (with a new `goToIndex`) | Rejected by the maintainer: the index semantics are simple and sufficient; the rule is now stated explicitly in the docs instead. |
-| Keep the 2.0.1 size budgets | Id-based registration costs about 55 B gzipped; the maintainer chose correctness over the last bytes and raised the budgets once, deliberately. |
+| Keep the 2.0.1 size budgets | Id-based registration costs about 55 B gzipped; the maintainer chose correctness over the last bytes and raised the budgets deliberately, twice (1400 B, then 1500 B after the review fixes). |
 | Keep Node 20 (engines >=20) | End of life since 2026-04-30; Vitest 5, jsdom 30, jest-dom 7, lint-staged 17 and size-limit 14 already need Node 22, so supporting it meant pinning older majors. Raising the floor is free in a major release. |
 
 ## Consequences
 
-- Positive: one build, one test runner, one lint config; 100% coverage on 35 tests; `npm ci` resolves
+- Positive: one build, one test runner, one lint config; 100% coverage on 47 tests; `npm ci` resolves
   without `--legacy-peer-deps`; every CI job is reproducible with one documented command; the
   published tarball is verified by `scripts/check-package.mjs` on every build.
-- Negative: four breaking changes for consumers (React 18, Node 22, no UMD, `exports` map) and two
-  behavioural ones (`onNext` promise, `isLastStep` with no steps), all with migration notes. The
+- Negative: seven breaking changes for consumers, four platform ones (React 18, Node 22, no UMD,
+  `exports` map) and three API ones (`onNext` promise, `isLastStep` with no steps, stricter
+  `setSteps`/`getActiveStep`/`Steps` types), all with migration notes. The
   lockfile was regenerated because npm 10 and 11 crashed in arborist when adding the new set to the
   old tree.
 - Accepted risk: `version-changelog` and `changelog-verify` (latest releases, 2022) pull dev-only
