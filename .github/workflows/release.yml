@@ -27,6 +27,7 @@ jobs:
       - run: npm run build
       - run: npm run size
       - run: node scripts/check-package.mjs
+      - run: npm run lint:package
       - run: npm pack --dry-run
       - name: Extract the changelog section for ${{ github.ref_name }}
         run: node scripts/changelog-section.mjs "${GITHUB_REF_NAME#v}" > release-notes.md

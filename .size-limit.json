@@ -1,7 +1,7 @@
 [
   {
     "name": "ESM",
-    "path": "dist/esm/index.js",
+    "path": "dist/esm/index.mjs",
     "limit": "1500 B",
     "gzip": true
   },
