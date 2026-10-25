@@ -49,8 +49,8 @@
   "scripts": {
     "prepare": "husky",
     "build": "rimraf dist && rollup -c",
-    "lint": "eslint src/",
-    "lint:fix": "eslint src/ --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "lint:types": "tsc --noEmit",
     "prepack": "npm run preversion -s && npm run build -s",
     "test": "vitest run",
@@ -100,19 +100,9 @@
     "vitest": "^5.0.5"
   },
   "peerDependencies": {
-    "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react": ">=18.0.0"
   },
   "engines": {
     "node": ">=22"
-  },
-  "browserslist": [
-    "last 1 chrome versions",
-    "last 1 edge versions",
-    "last 1 firefox versions",
-    "last 1 safari versions",
-    "last 1 and_chr versions",
-    "last 1 ios_saf versions",
-    "ie 11"
-  ]
+  }
 }

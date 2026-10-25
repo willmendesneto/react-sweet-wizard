@@ -3,14 +3,11 @@
   "include": [
     "src"
   ],
-  "noUnusedLocals": false,
   "compilerOptions": {
     "removeComments": true,
     "target": "ES2019"
   },
   "exclude": [
-    "examples/**/*",
-    "**/__tests__/**/*",
     "**/*.test.tsx",
     "**/*.test.ts"
   ]

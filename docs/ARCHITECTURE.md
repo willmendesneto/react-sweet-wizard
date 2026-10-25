@@ -37,7 +37,7 @@ The library is eight small modules under `src/` and everything a consumer can us
 
 ## External dependencies and integrations
 
-- Peer dependencies: `react` and `react-dom` at `>=18.0.0` (CI runs the tests on React 18 and 19). No runtime dependencies (`dependencies` is empty and `sideEffects` is `false`).
+- Peer dependency: `react >=18.0.0` (CI runs the tests on React 18 and 19). `react-dom` is only a dev dependency for the tests; the library never imports it. No runtime dependencies (`dependencies` is empty and `sideEffects` is `false`).
 - Build: one Rollup 4 run (`rollup.config.mjs`, `@rollup/plugin-typescript`) emits `dist/esm/index.js`, `dist/cjs/index.cjs` (ES2019) and `dist/types/index.d.ts`, all with source maps. `react` and `react/jsx-runtime` are externals. There is no UMD build since 3.0. `scripts/check-package.mjs` verifies the tarball against `package.json` after each build.
 - CI: GitHub Actions (`.github/workflows/ci.yml`) runs five jobs on every push and pull request to `main`: `lint`, `types`, `test` (coverage on Node 22/24 by React 18/19, Coveralls upload from the Node 24 / React 19 leg), `build` with `scripts/check-package.mjs`, `npm run lint:package` and `npm audit --omit=dev` (Node 22/24) and `size`. `.github/workflows/release.yml` runs on `v*` tags and creates the GitHub Release. Dependabot (`.github/dependabot.yml`) opens weekly grouped PRs for dev dependencies and actions.
 - Local hooks: Husky `pre-commit` runs `lint-staged`, which runs Prettier on staged `js/ts/jsx/tsx` files.

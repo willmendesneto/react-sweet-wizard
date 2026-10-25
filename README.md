@@ -28,7 +28,7 @@ Well, there are several selling points, actually!
 
 ## Install
 
-Requires React 18 or later (`react` and `react-dom` as peer dependencies) and Node 22 or later. React 17 users should stay on 2.x.
+Requires React 18 or later (`react` as a peer dependency) and Node 22 or later. React 17 users should stay on 2.x.
 
 You can get it on NPM installing `react-sweet-wizard` module as a project dependency.
 

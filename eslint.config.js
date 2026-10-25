@@ -1,4 +1,5 @@
-// ESLint flat config. `npm run lint` lints `src/`; test files get the Vitest and Testing Library rules.
+// ESLint flat config. `npm run lint` lints the whole repo: src/ with the React rules, test files with
+// the Vitest and Testing Library rules, configs and scripts with Node globals.
 const js = require('@eslint/js');
 const globals = require('globals');
 const tseslint = require('typescript-eslint');
@@ -12,7 +13,8 @@ const prettier = require('eslint-plugin-prettier/recommended');
 const testFiles = ['src/**/*.test.{ts,tsx}'];
 
 module.exports = tseslint.config(
-  { ignores: ['dist/**', 'coverage/**', 'node_modules/**', '.jest/**'] },
+  { ignores: ['dist/**', 'coverage/**', 'node_modules/**'] },
+  { settings: { react: { version: 'detect' } } },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   react.configs.flat.recommended,
@@ -22,12 +24,20 @@ module.exports = tseslint.config(
   {
     files: ['src/**/*.{ts,tsx}'],
     languageOptions: { globals: { ...globals.browser } },
-    settings: { react: { version: 'detect' } },
     rules: {
       'no-console': 'error',
       'react/prop-types': 'off',
       '@typescript-eslint/consistent-type-imports': 'error',
     },
+  },
+  {
+    files: ['*.{js,mjs,ts}', 'scripts/**/*.mjs'],
+    languageOptions: { globals: { ...globals.node } },
+  },
+  {
+    files: ['eslint.config.js'],
+    languageOptions: { sourceType: 'commonjs' },
+    rules: { '@typescript-eslint/no-require-imports': 'off' },
   },
   { files: testFiles, ...vitest.configs.recommended },
   { files: testFiles, ...testingLibrary.configs['flat/react'] },
