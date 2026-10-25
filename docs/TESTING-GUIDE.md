@@ -39,7 +39,7 @@ There are no fixture files. `src/index.test.tsx` builds small inline wizards wit
 
 ## Coverage and CI
 
-Coverage comes from `@vitest/coverage-v8` over `src/**` (test files excluded) with global thresholds branches 91, functions 100, lines 96, statements 96 (`vitest.config.ts`). `npm run test:coverage` fails below any threshold; plain `npm run test` does not collect coverage. Reports land in `coverage/` as lcov, html and text-summary. In CI (`.github/workflows/ci.yml`), the `test` job runs `npm run test:coverage` on a matrix of Node 20, 22 and 24 by React 18 and 19 (the React version is installed with `npm install --no-save` after `npm ci`), and the Node 22 / React 19 leg uploads `coverage/lcov.info` to Coveralls; the badge in the README reads from it.
+Coverage comes from `@vitest/coverage-v8` over `src/**` (test files excluded) with global thresholds branches 91, functions 100, lines 96, statements 96 (`vitest.config.ts`). `npm run test:coverage` fails below any threshold; plain `npm run test` does not collect coverage. Reports land in `coverage/` as lcov, html and text-summary. In CI (`.github/workflows/ci.yml`), the `test` job runs `npm run test:coverage` on a matrix of Node 20, 22 and 24 by React 18 and 19 (the React version is installed with `npm install --no-save` after `npm ci`), and the Node 24 / React 19 leg uploads `coverage/lcov.info` to Coveralls; the badge in the README reads from it.
 
 ## Flaky or slow tests
 

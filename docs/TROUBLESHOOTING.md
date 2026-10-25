@@ -8,7 +8,7 @@
 
 ### Node version
 
-Required: 22.22.3 (.nvmrc; `engines` allows any Node 20 or later). With nvm: `nvm use`. A different major usually shows up as native module build errors or syntax errors in dependencies.
+Required: Node 24, the current LTS (`.nvmrc` names the major only, so `nvm use` picks the newest installed 24.x; `engines` allows any Node 20 or later). With nvm: `nvm use`. A different major usually shows up as native module build errors or syntax errors in dependencies.
 
 ### Install
 
@@ -37,7 +37,7 @@ History, fixed in 3.0. Up to 2.0.1 the size gate ran `bundlesize`, which require
 
 ## Gates in CI but not locally
 
-GitHub Actions (`.github/workflows/ci.yml`) runs the same five gates with three differences. The `test` job adds `--coverage --coverageReporters=lcov` and the Node 22 leg uploads `coverage/lcov.info` to Coveralls with the repository `GITHUB_TOKEN`; a failure there means the repository is not linked on coveralls.io, not a test failure. The `test` and `build` jobs run on Node 20, 22 and 24, so a dependency that drops an older major shows up only in CI; reproduce with `nvm use 20 && npm ci && npm test`. The `size` job runs `npm run build` before `npm run size`, so always build before checking sizes locally. Every job starts with `npm ci`, which fails on peer conflicts that `npm install --legacy-peer-deps` hides; run `npm ci` locally after changing dependencies.
+GitHub Actions (`.github/workflows/ci.yml`) runs the same five gates with three differences. The `test` job adds `--coverage --coverageReporters=lcov` and the Node 24 leg uploads `coverage/lcov.info` to Coveralls with the repository `GITHUB_TOKEN`; a failure there means the repository is not linked on coveralls.io, not a test failure. The `test` and `build` jobs run on Node 20, 22 and 24, so a dependency that drops an older major shows up only in CI; reproduce with `nvm use 20 && npm ci && npm test`. The `size` job runs `npm run build` before `npm run size`, so always build before checking sizes locally. Every job starts with `npm ci`, which fails on peer conflicts that `npm install --legacy-peer-deps` hides; run `npm ci` locally after changing dependencies.
 
 ## Add an entry
 

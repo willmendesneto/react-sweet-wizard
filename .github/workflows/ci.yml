@@ -57,7 +57,7 @@ jobs:
         run: npm install --no-save react@${{ matrix.react }} react-dom@${{ matrix.react }} @types/react@${{ matrix.react }} @types/react-dom@${{ matrix.react }}
       - run: npm run test:coverage
       - name: Upload coverage to Coveralls
-        if: matrix.node == 22 && matrix.react == 19
+        if: matrix.node == 24 && matrix.react == 19
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

@@ -16,7 +16,7 @@ the source of truth for architecture and conventions; this file tells you when t
 | Size budget | `npm run size` |
 | Install | `npm install` |
 
-Node 22.22.3 from .nvmrc (engines: >=20). Package manager: npm.
+Node 24 (current LTS; `.nvmrc` names the major only) from .nvmrc (engines: >=20). Package manager: npm.
 
 ## Mandatory for every change to application code
 
