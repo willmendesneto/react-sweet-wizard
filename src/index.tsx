@@ -173,13 +173,19 @@ export const WizardProvider = <T extends DefaultWizardStepProps>({
   );
 };
 
+interface StepProps {
+  id: string;
+  children: ReactNode;
+}
+
 export const Steps = ({
   children,
 }: {
-  children: JSX.Element | JSX.Element[];
+  children: ReactElement | ReactElement[];
 }) => {
   const reactChildren = Children.toArray(children).filter(
-    (child): child is ReactElement => isValidElement(child)
+    (child): child is ReactElement<StepProps> =>
+      isValidElement<StepProps>(child)
   );
 
   if (reactChildren.length === 0) {
@@ -203,13 +209,9 @@ export const Steps = ({
     }
   }, [setSteps, steps, reactChildren]);
 
-  return reactChildren[activeStepIndex] as JSX.Element;
+  return reactChildren[activeStepIndex];
 };
 
-export const Step = ({
-  id,
-  children,
-}: {
-  id: string;
-  children: ReactNode | JSX.Element | JSX.Element[];
-}) => <div id={id}>{children}</div>;
+export const Step = ({ id, children }: StepProps) => (
+  <div id={id}>{children}</div>
+);

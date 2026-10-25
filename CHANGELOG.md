@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+- **Breaking:** React 18 or later is required (`peerDependencies` are `react >=18.0.0` and `react-dom >=18.0.0`). Migration: upgrade React, or stay on 2.x for React 17.
+- Tests run on Vitest 4 with Testing Library 16 and jsdom; Jest and Babel are gone from the toolchain.
 - **Breaking:** Node 20 or later is required (`engines.node` is `>=20`; `.nvmrc` pins 22.22.3). Migration: upgrade Node before installing 3.0.
 - Build and type-check with TypeScript 5.9 (was 4.4).
 - **Breaking:** the UMD build (`dist/umd/react-sweet-wizard.js`, global `ReactSweetWizard`) is removed; the package ships ESM and CommonJS only. Migration: install from npm and import; script-tag consumers stay on 2.x.

@@ -1,4 +1,4 @@
-// ESLint flat config. `npm run lint` lints `src/`; test files get the Jest and Testing Library rules.
+// ESLint flat config. `npm run lint` lints `src/`; test files get the Vitest and Testing Library rules.
 const js = require('@eslint/js');
 const globals = require('globals');
 const tseslint = require('typescript-eslint');
@@ -6,7 +6,7 @@ const react = require('eslint-plugin-react');
 const reactHooks = require('eslint-plugin-react-hooks');
 const jsxA11y = require('eslint-plugin-jsx-a11y');
 const testingLibrary = require('eslint-plugin-testing-library');
-const jest = require('eslint-plugin-jest');
+const vitest = require('@vitest/eslint-plugin');
 const prettier = require('eslint-plugin-prettier/recommended');
 
 const testFiles = ['src/**/*.test.{ts,tsx}'];
@@ -29,12 +29,17 @@ module.exports = tseslint.config(
       '@typescript-eslint/consistent-type-imports': 'error',
     },
   },
-  { files: testFiles, ...jest.configs['flat/recommended'] },
+  { files: testFiles, ...vitest.configs.recommended },
   { files: testFiles, ...testingLibrary.configs['flat/react'] },
   {
     files: testFiles,
-    languageOptions: { globals: { ...globals.jest } },
-    rules: { '@typescript-eslint/no-explicit-any': 'off' },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'off',
+      'vitest/expect-expect': [
+        'error',
+        { assertFunctionNames: ['expect', 'expectRenderToThrow'] },
+      ],
+    },
   },
   prettier
 );

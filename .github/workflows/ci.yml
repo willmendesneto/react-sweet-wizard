@@ -52,7 +52,7 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: npm
       - run: npm ci
-      - run: npx jest --coverage --coverageReporters=lcov --coverageReporters=text-summary
+      - run: npm run test:coverage
       - name: Upload coverage to Coveralls
         if: matrix.node == 22
         uses: coverallsapp/github-action@v2
