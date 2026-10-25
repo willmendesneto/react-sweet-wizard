@@ -16,7 +16,7 @@ Well, there are several selling points, actually!
 - 🏆 Better Developer Experience (DX): It enforces some conventions in order to make sure we got you covered! Issues with things such as specific components that needs to be used, which component is incorrect and context that needs to be used as wrapper will be raised straightaway on development environment.
 - 🎯 Covers different usage and scenarios: It covers simple usage, but also covers scenarios when you have steps being added dinamically, specific validation steps that needs to be added, data structures that should be passed on, etc. The sky is the limit here!
 - 🤩 No external dependencies: And that's exactly what you read. This is a zero-dependencies package, so you can integrate with Material-UI, Chakra-UI or any other Design System you might be using - including your own. Feel free to integrate with your workflow as you wish
-- 🗜 Small bundle: about 1.25 KB gzipped for the ESM build (checked on every CI run with `size-limit`)
+- 🗜 Small bundle: about 1.45 KB gzipped (ESM and CJS), with a 1.5 KB budget checked on every CI run by `size-limit`
 
 ---
 
@@ -269,9 +269,9 @@ onNext();
 onPrevious();
 ```
 
-### `goTo(id: number | string)`
+### `goTo(indexOrId: number | string)`
 
-Moves the wizard to a specific step. Interesting if you have some advanced scenario
+Moves the wizard to a specific step. A **number is the step index** (`goTo(1)` is always the second step); a **string is matched against the step id** (`goTo('step3')`, and `goTo('10')` finds `<Step id={10}>`). A numeric argument is never matched against ids, so pass a numeric id as a string. Out-of-range calls are ignored.
 
 ```tsx
 import { useWizardContext, DefaultWizardStepProps } from 'react-sweet-wizard';

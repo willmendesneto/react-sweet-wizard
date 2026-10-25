@@ -43,7 +43,7 @@ Coverage comes from `@vitest/coverage-v8` over `src/**` (test files excluded) wi
 
 ## Flaky or slow tests
 
-None known. The suite is a single file with ten tests and runs in about a second. `onNext` awaits its callback, so tests that pass a callback wrap the call in `await act(async () => ...)` and assert with `waitFor` before reading `activeStepIndex`.
+None known. The suite is five files with 45 tests and runs in about a second. `onNext` returns its promise, so tests await it inside `await act(async () => { await result.current.onNext(cb); })` and then read `activeStepIndex` directly. Effect-order behaviour (consumers rendered before, after or inside `Steps`) is covered with `describe.each` in `src/Steps.test.tsx`.
 
 ## Related documentation
 

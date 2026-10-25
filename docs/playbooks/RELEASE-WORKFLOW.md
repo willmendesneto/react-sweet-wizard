@@ -24,6 +24,7 @@ the gates again and builds `dist/`. CI never publishes to npm.
 - `npm run build`
 - `npm run size`
 - `node scripts/check-package.mjs`
+- `npm run lint:package`
 - `CHANGELOG.md` has every change for this release under `## [Unreleased]`; `npx changelog-verify CHANGELOG.md` passes.
 - `node scripts/changelog-section.mjs Unreleased` prints the notes the GitHub Release will carry.
 

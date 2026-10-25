@@ -11,9 +11,10 @@ the source of truth for architecture and conventions; this file tells you when t
 |---|---|
 | Lint | `npm run lint` |
 | Type check | `npm run lint:types` |
-| Unit tests | `npm run test` |
+| Unit tests | `npm run test` (`npm run test:coverage` enforces the thresholds, as CI does) |
 | Build | `npm run build` |
 | Size budget | `npm run size` |
+| Package check | `node scripts/check-package.mjs && npm run lint:package` |
 | Install | `npm install` |
 
 Node 24.22.0 (current LTS, pinned in .nvmrc) from .nvmrc (engines: >=22). Package manager: npm.

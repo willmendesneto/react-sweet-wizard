@@ -22,17 +22,17 @@ changes documented in `CHANGELOG.md`:
 - **Tests:** Vitest 5 with `@vitest/coverage-v8`, Testing Library 16 and jsdom 30 (Jest, Babel and
   `@testing-library/react-hooks` removed).
 - **Build:** one Rollup 4 configuration with `@rollup/plugin-typescript` emitting ESM, CommonJS
-  (ES2019) and declarations, automatic JSX runtime, `exports` map with `types` first. The UMD build is
+  (ES2019) as `.mjs` and `.cjs`, `rollup-plugin-dts` bundling `.d.mts` and `.d.cts`, automatic JSX runtime, `exports` map with import and require branches, each types-first; publint and attw check it. The UMD build is
   removed.
 - **Lint and format:** ESLint 9 flat config (39 lines) with typescript-eslint, react, react-hooks,
   jsx-a11y, testing-library, vitest and prettier; Prettier 3; Husky 9 with lint-staged.
-- **Size:** `size-limit` with gzip budgets of 1400 B for each artefact, raised deliberately from the
-  2.0.1 limits to pay for id-based step registration (3.0 measures about 1250 B ESM and 1270 B CJS;
-  2.0.1 shipped 1199 B ESM and 2653 B ES5 CJS).
+- **Size:** `size-limit` with gzip budgets of 1500 B for each artefact, raised deliberately (twice, with
+  the maintainer) to pay for id-based, reducer-side step registration and index clamping (3.0 measures
+  about 1.45 KB for each; 2.0.1 shipped 1199 B ESM and 2653 B ES5 CJS).
 - **CI:** GitHub Actions on a Node 22/24 by React 18/19 matrix, Coveralls through the official
   action, Dependabot, and a tag-triggered workflow that creates the GitHub Release from the changelog.
   Publishing to npm stays a maintainer step. CircleCI is removed.
-- **Runtimes:** React peers `>=18.0.0`; `engines.node >=22` (Node 20 reached end of life on 2026-04-30 and several dev tools already require 22); development pinned to Node 24.22.0.
+- **Runtimes:** React peer `>=18.0.0` (`react-dom` dropped: never imported); `engines.node >=22` (Node 20 reached end of life on 2026-04-30 and several dev tools already require 22); development pinned to Node 24.22.0.
 - **API:** `goTo` keeps its 2.x semantics (number = index, string = id); `Step` accepts numeric ids;
   registration follows ids; `onNext` returns its promise; `isLastStep` is `false` with no steps;
   `WizardContextValue<T>` is exported.
@@ -58,5 +58,8 @@ changes documented in `CHANGELOG.md`:
   behavioural ones (`onNext` promise, `isLastStep` with no steps), all with migration notes. The
   lockfile was regenerated because npm 10 and 11 crashed in arborist when adding the new set to the
   old tree.
+- Accepted risk: `version-changelog` and `changelog-verify` (latest releases, 2022) pull dev-only
+  advisories (meow, trim-newlines, yargs-parser, cross-spawn). They run only on the maintainer machine
+  during `npm version`, on the repo's own CHANGELOG; nothing ships to consumers.
 - Neutral: `goTo` keeps its ambiguity for numeric ids (documented); the budgets must be revisited if the
   library grows.

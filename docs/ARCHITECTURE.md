@@ -16,40 +16,40 @@ Kind: lib. Stack: TypeScript 6.0 (strict) and React, built with Rollup 4 (ESM an
 | Module | Responsibility | Entry points | Doc |
 |---|---|---|---|
 | `src/index.ts` | Public entry point; re-exports the four runtime symbols and the two public types | `src/index.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
-| `src/types.ts` | `DefaultWizardStepProps`, `WizardContextValue<T>`, internal `WizardState`, `Action`, `StepProps` | `src/types.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
-| `src/reducer.ts` | Pure state machine: `initialState`, `reducer` (NEXT_PAGE, PREV_PAGE, GOTO_PAGE, SET_STEP_COUNT) | `src/reducer.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
-| `src/context.ts` | The React context object (internal) | `src/context.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/types.ts` | `DefaultWizardStepProps`, `WizardContextValue<T>`, internal `WizardState` and `Action` | `src/types.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/reducer.ts` | Pure state machine: `initialState`, `reducer` (NEXT_PAGE, PREV_PAGE, GOTO_PAGE, SET_STEP_COUNT, REGISTER_STEP_IDS), index clamping, string id comparison | `src/reducer.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/context.ts` | The public context object and the internal step-registration context (both unexported) | `src/context.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
 | `src/useWizardContext.ts` | Consumer hook; throws outside a provider | `src/useWizardContext.ts` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
 | `src/WizardProvider.tsx` | Owns the reducer state and memoises the context value | `src/WizardProvider.tsx` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
 | `src/Steps.tsx` | Validates children, registers steps, renders the active one | `src/Steps.tsx` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
-| `src/Step.tsx` | Wrapper `div` with the step id | `src/Step.tsx` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
+| `src/Step.tsx` | Wrapper `div` with the step id; internal `StepProps` | `src/Step.tsx` | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) |
 
 ## Boundaries
 
-The library is eight small modules under `src/` and everything a consumer can use is re-exported from `src/index.ts`: `WizardProvider`, `Steps`, `Step`, `useWizardContext` and the types `DefaultWizardStepProps` and `WizardContextValue<T>`. The other modules are internal: `reducer.ts` (pure, tested on its own), `context.ts`, and the `WizardState`, `Action` and `StepProps` types. The `exports` map in `package.json` exposes only the package root, so consumers cannot reach them. The library never fetches, never touches `window`, `document`, storage or the URL, and holds no global state; all state is in-memory React state owned by the nearest `WizardProvider`. Keep it that way: new behaviour belongs inside the provider or hook and is exposed through the hook's small, documented API.
+The library is eight small modules under `src/` and everything a consumer can use is re-exported from `src/index.ts`: `WizardProvider`, `Steps`, `Step`, `useWizardContext` and the types `DefaultWizardStepProps` and `WizardContextValue<T>`. The other modules are internal: `reducer.ts` (pure, tested on its own), `context.ts` (including the private registration context `Steps` uses), and the `WizardState`, `Action` and `StepProps` types. The `exports` map in `package.json` exposes only the package root, so consumers cannot reach them. The library never fetches, never touches `window`, `document`, storage or the URL, and holds no global state; all state is in-memory React state owned by the nearest `WizardProvider`. Keep it that way: new behaviour belongs inside the provider or hook and is exposed through the hook's small, documented API.
 
 ## Data flow
 
 1. `WizardProvider` creates reducer state `{ activeStepIndex: 0, steps: [] }` and memoises a context value with the navigation callbacks and derived flags.
-2. `Steps` reads the context, and in a `useEffect` calls `setSteps` with `{ id }` objects taken from each child's `id` prop whenever the registered ids differ from the children's ids (compared as strings). It then validates its children (at least one, all of type `Step`) and renders `children[activeStepIndex]`.
-3. Consumers call `onNext(cb?)`, `onPrevious()`, `goTo(idOrIndex)` or `setSteps(steps)` from `useWizardContext()`. Each dispatches one action: `NEXT_PAGE` and `PREV_PAGE` are clamped to the step bounds; `GOTO_PAGE` treats a number as an **index** and a string as a step `id`, and is ignored when out of range or already active; `SET_STEP_COUNT` replaces the `steps` array.
+2. `Steps` reads the context and, in a `useEffect`, dispatches the internal `REGISTER_STEP_IDS` action with its children's ids. The reducer compares them with the latest steps (as strings) and keeps the state when they match, so consumer data from `setSteps` survives regardless of effect order; otherwise it registers fresh `{ id }` objects. `Steps` then validates its children (at least one, all of type `Step`) and renders `children[activeStepIndex]`.
+3. Consumers call `onNext(cb?)`, `onPrevious()`, `goTo(idOrIndex)` or `setSteps(steps)` from `useWizardContext()`. Each dispatches one action: `NEXT_PAGE` and `PREV_PAGE` are clamped to the step bounds; `GOTO_PAGE` treats a number as an **index** and a string as a step `id` (compared as strings), and is ignored when out of range or already active; `SET_STEP_COUNT` replaces the `steps` array. Both step-replacing actions clamp `activeStepIndex` to the new last step.
 4. `onNext` awaits its optional callback before dispatching and returns that promise, so a rejected callback leaves the wizard on the current step and surfaces the error to the caller.
 
 ## External dependencies and integrations
 
 - Peer dependency: `react >=18.0.0` (CI runs the tests on React 18 and 19). `react-dom` is only a dev dependency for the tests; the library never imports it. No runtime dependencies (`dependencies` is empty and `sideEffects` is `false`).
-- Build: one Rollup 4 run (`rollup.config.mjs`, `@rollup/plugin-typescript`) emits `dist/esm/index.js`, `dist/cjs/index.cjs` (ES2019) and `dist/types/index.d.ts`, all with source maps. `react` and `react/jsx-runtime` are externals. There is no UMD build since 3.0. `scripts/check-package.mjs` verifies the tarball against `package.json` after each build.
+- Build: `rollup.config.mjs` runs `@rollup/plugin-typescript` for `dist/esm/index.mjs` and `dist/cjs/index.cjs` (ES2019, source maps) and `rollup-plugin-dts` for the bundled declarations `dist/esm/index.d.mts` and `dist/cjs/index.d.cts`. `react` and `react/jsx-runtime` are externals. There is no UMD build since 3.0. `scripts/check-package.mjs` verifies the tarball against `package.json` and loads the package through its own name with `import()` and `require()`; `npm run lint:package` runs publint and attw.
 - CI: GitHub Actions (`.github/workflows/ci.yml`) runs five jobs on every push and pull request to `main`: `lint`, `types`, `test` (coverage on Node 22/24 by React 18/19, Coveralls upload from the Node 24 / React 19 leg), `build` with `scripts/check-package.mjs`, `npm run lint:package` and `npm audit --omit=dev` (Node 22/24) and `size`. `.github/workflows/release.yml` runs on `v*` tags and creates the GitHub Release. Dependabot (`.github/dependabot.yml`) opens weekly grouped PRs for dev dependencies and actions.
 - Local hooks: Husky `pre-commit` runs `lint-staged`, which runs Prettier on staged `js/ts/jsx/tsx` files.
 
 ## Build and runtime
 
 - Build: `npm run build`
-- Output: `dist/esm/index.js` (`exports.import`, `module`), `dist/cjs/index.cjs` (`exports.require`, `main`), `dist/types/index.d.ts` (`exports.types`, `types`). `npm run build` removes `dist/` first.
+- Output: `dist/esm/index.mjs` + `index.d.mts` (`exports["."].import`, `module`), `dist/cjs/index.cjs` + `index.d.cts` (`exports["."].require`, `main`, `types`). `"type": "commonjs"`. `npm run build` removes `dist/` first.
 
 ## Known constraints and debt
 
-- Size budgets are enforced in CI (`.size-limit.json`, gzip): 1400 B for the ESM and for the CJS artefact (raised deliberately in 3.0 for id-based step registration; 2.0.1 shipped 1199 B ESM and 2653 B CJS). Almost any new import or branch needs a budget review.
+- Size budgets are enforced in CI (`.size-limit.json`, gzip): 1500 B for the ESM and for the CJS artefact (raised deliberately in 3.0 for id-based, reducer-side step registration and index clamping; the builds measure about 1.45 KB; 2.0.1 shipped 1199 B ESM and 2653 B ES5 CJS). Almost any new import or branch needs a budget review.
 - Vitest coverage thresholds (branches 91, functions 100, lines 96, statements 96) fail `npm run test:coverage` when coverage drops; CI runs that script.
 - `goTo(number)` means index, `goTo(string)` means id. Changing this would be breaking.
 - SSR safety is plausible (no DOM access) but untested; there is no `test:ssr` script.

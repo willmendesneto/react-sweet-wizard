@@ -16,10 +16,11 @@ Required: Node 24.22.0, the current LTS (pinned in `.nvmrc`; `engines` allows an
 
 ## Build
 
-- `npm run build` is `rimraf dist && rollup -c`: one Rollup 4 run (`rollup.config.mjs`, `@rollup/plugin-typescript` reading `tsconfig.build.json`) emits `dist/esm/index.js`, `dist/cjs/index.cjs`, their source maps and the declarations under `dist/types/`. There is no UMD build since 3.0.
-- `Path of Typescript compiler option 'outDir' must be located inside Rollup 'dir' option`: both outputs use `dir: 'dist'` with `entryFileNames` for the subfolder and the plugin sets `outDir: 'dist'`; keep it that way when adding an output.
-- Missing `dist/types/index.d.ts`: the plugin needs `declaration: true`, `declarationDir: 'dist/types'` and `rootDir: 'src'` in `rollup.config.mjs`; `tsconfig.build.json` must not set `declaration: false`.
-- `lint:types` runs `tsc --noEmit` against `tsconfig.json`, which includes the test file; a type error in `src/index.test.tsx` fails the gate even though the test file is excluded from the build.
+- `npm run build` is `rimraf dist && rollup -c`. `rollup.config.mjs` has two passes: `@rollup/plugin-typescript` (reading `tsconfig.build.json`) emits `dist/esm/index.mjs` and `dist/cjs/index.cjs` with source maps, and `rollup-plugin-dts` bundles `dist/esm/index.d.mts` and `dist/cjs/index.d.cts`. There is no UMD build since 3.0.
+- `Path of Typescript compiler option 'outDir' must be located inside the same directory as the Rollup 'file' option`: the code outputs use `dir: 'dist'` with `entryFileNames` for the subfolder and the plugin sets `outDir: 'dist'` and `rootDir: 'src'`; keep it that way when adding an output.
+- `SyntaxError: Cannot use import statement outside a module` when importing the package on an older Node: the ESM entry must keep the `.mjs` extension (there is no `"type": "module"`). `node scripts/check-package.mjs` imports and requires the package by name to catch this.
+- `npm run lint:package` fails: publint reports package.json problems, attw reports type resolution problems per `moduleResolution` (node16 from CJS and ESM, bundler). Rebuild first; both read the packed tarball.
+- `lint:types` runs `tsc --noEmit` against `tsconfig.json`, which includes the test files; a type error in a test fails the gate even though tests are excluded from the build.
 
 ## Tests
 

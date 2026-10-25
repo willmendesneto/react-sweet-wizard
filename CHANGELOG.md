@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+### Breaking
+
+- `onNext` returns `Promise<void>` (the callback may be sync or async) and rejects when the callback throws or rejects; the wizard stays on the current step in that case. Migration: `await` or `.catch()` calls that pass a callback that can fail.
+- `WizardContextValue` types `setSteps` as `(steps: T[]) => void` (2.x accepted a single object that crashed at runtime) and `getActiveStep` as `() => T | undefined`.
+- `isLastStep` is `false` while no steps are registered (it was `true` on the first render before `Steps` registered its children).
+- React 18 or later is required (`peerDependencies` is `react >=18.0.0`). Migration: upgrade React, or stay on 2.x for React 17.
+- Node 22 or later is required (`engines.node` is `>=22`; Node 20 reached end of life on 2026-04-30; `.nvmrc` pins Node 24.22.0, the current LTS). Migration: upgrade Node before installing 3.0.
+- The UMD build (`dist/umd/react-sweet-wizard.js`, global `ReactSweetWizard`) is removed; the package ships ESM and CommonJS only. Migration: install from npm and import; script-tag consumers stay on 2.x.
+- `package.json` has an `exports` map (import and require branches, each types-first, plus `./package.json`); deep imports of `dist/*` paths are no longer supported. Migration: import from `react-sweet-wizard` only.
+
 ### Added
 
 - `WizardContextValue<T>` is exported: the type of the object `useWizardContext<T>()` returns (it was the unexported `WizardStepperContextProps`).
@@ -22,18 +32,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
-- **Breaking:** `onNext` returns `Promise<void>` (the callback may be sync or async) and rejects when the callback throws or rejects; the wizard stays on the current step in that case. Migration: `await` or `.catch()` calls that pass a callback that can fail.
-- **Breaking:** `WizardContextValue` types `setSteps` as `(steps: T[]) => void` (2.x accepted a single object that crashed at runtime) and `getActiveStep` as `() => T | undefined`.
-- **Breaking:** `isLastStep` is `false` while no steps are registered (it was `true` on the first render before `Steps` registered its children).
-- **Breaking:** React 18 or later is required (`peerDependencies` is `react >=18.0.0`). Migration: upgrade React, or stay on 2.x for React 17.
 - `react-dom` is no longer a peer dependency: the library never imports it, so non-DOM renderers install without peer warnings.
-- **Breaking:** Node 22 or later is required (`engines.node` is `>=22`; Node 20 reached end of life on 2026-04-30; `.nvmrc` pins Node 24.22.0, the current LTS). Migration: upgrade Node before installing 3.0.
-- **Breaking:** the UMD build (`dist/umd/react-sweet-wizard.js`, global `ReactSweetWizard`) is removed; the package ships ESM and CommonJS only. Migration: install from npm and import; script-tag consumers stay on 2.x.
-- **Breaking:** `package.json` has an `exports` map (`types`, `import`, `require`); deep imports of `dist/*` paths are no longer supported. Migration: import from `react-sweet-wizard` only.
 - Tests run on Vitest 5 with Testing Library 16 and jsdom 30; Jest and Babel are gone from the toolchain.
 - Build and type-check with TypeScript 6.0 (was 4.4); `moduleResolution` is `bundler`.
-- Size budgets (`.size-limit.json`, gzip) are 1400 B for the ESM and the CJS artefact; the 3.0 builds measure about 1260 B and 1275 B, against 1199 B (ESM) and 2653 B (CJS, ES5) in 2.0.1.
-- Build with Rollup 4: `dist/esm/index.js`, `dist/cjs/index.cjs` (ES2019) and `dist/types/index.d.ts`, each with source maps. `main` and `types` point at the new files; the unused `browser`, `jsnext:main`, `es2015`, `es2020` and `cjs` fields are gone.
+- Size budgets (`.size-limit.json`, gzip) are 1500 B for the ESM and the CJS artefact; the 3.0 builds measure about 1.45 KB each, against 1199 B (ESM) and 2653 B (CJS, ES5) in 2.0.1.
+- Build with Rollup 4: `dist/esm/index.mjs` with `index.d.mts`, and `dist/cjs/index.cjs` (ES2019) with `index.d.cts`, each with source maps; `"type": "commonjs"`; `main`, `module` and `types` point at the new files; the unused `browser`, `jsnext:main`, `es2015`, `es2020` and `cjs` fields are gone. `npm run lint:package` (publint, attw) checks the package.
 
 ## [2.0.1][] - 2025-04-02
 

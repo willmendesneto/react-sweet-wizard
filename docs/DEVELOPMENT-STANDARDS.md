@@ -9,8 +9,8 @@ code already follows; keep new code consistent with them.
 
 | Concern | Tool | Command |
 |---|---|---|
-| Language | TypeScript 6.0, `strict: true`, React JSX (`jsx: react`) | |
-| Formatting | Prettier 3 (`.prettierrc`; also enforced through `eslint-plugin-prettier` and `lint-staged` on commit) | `npx prettier --write src/` |
+| Language | TypeScript 6.0, `strict: true`, automatic JSX runtime (`jsx: react-jsx`), `moduleResolution: bundler` | |
+| Formatting | Prettier 3 (`.prettierrc`; also enforced through `eslint-plugin-prettier` and `lint-staged` on commit) | `npx prettier --write .` |
 | Linting | ESLint 9 flat config (`eslint.config.js`: typescript-eslint, react, react-hooks, jsx-a11y, vitest, testing-library, prettier) | `npm run lint` |
 | Types | tsc (`tsconfig.json`) | `npm run lint:types` |
 | Package manager | npm | `npm install` |
