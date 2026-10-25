@@ -84,14 +84,15 @@ describe('useWizard hook', () => {
     );
   });
 
-  it('should be available when wrapped in wizard', () => {
+  it('should be available when wrapped in wizard', async () => {
     const { result } = renderUseWizardHook();
+    await waitFor(() => expect(result.current.steps).toHaveLength(3));
 
     expect(result.current).toEqual({
-      activeStepIndex: result.current.activeStepIndex,
-      steps: result.current.steps,
-      isFirstStep: result.current.isFirstStep,
-      isLastStep: result.current.isLastStep,
+      activeStepIndex: 0,
+      steps: [{ id: '0' }, { id: '1' }, { id: 'step3' }],
+      isFirstStep: true,
+      isLastStep: false,
       goTo: expect.any(Function),
       onNext: expect.any(Function),
       onPrevious: expect.any(Function),
@@ -105,12 +106,10 @@ describe('useWizard hook', () => {
     const handleNext = vi.fn();
 
     await act(async () => {
-      result.current.onNext(handleNext);
+      await result.current.onNext(handleNext);
     });
 
-    await waitFor(() => {
-      expect(result.current.activeStepIndex).toBe(1);
-    });
+    expect(result.current.activeStepIndex).toBe(1);
     expect(handleNext).toHaveBeenCalledTimes(1);
   });
 

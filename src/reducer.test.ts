@@ -73,6 +73,58 @@ describe('reducer', () => {
     ).toEqual({ activeStepIndex: 1, steps: next });
   });
 
+  it('GOTO_PAGE with a string also matches a numeric id', () => {
+    const numeric = { activeStepIndex: 0, steps: [{ id: 10 }, { id: 20 }] };
+
+    expect(
+      reducer(numeric, { type: 'GOTO_PAGE', payload: { stepId: '20' } })
+    ).toEqual({ ...numeric, activeStepIndex: 1 });
+  });
+
+  it('SET_STEP_COUNT clamps the index when steps are removed', () => {
+    expect(
+      reducer(at(2), {
+        type: 'SET_STEP_COUNT',
+        payload: { steps: [{ id: 0 }] },
+      })
+    ).toEqual({ activeStepIndex: 0, steps: [{ id: 0 }] });
+  });
+
+  it('REGISTER_STEP_IDS keeps the current steps when the ids match as strings', () => {
+    const named = { activeStepIndex: 0, steps: [{ id: '0', name: 'a' }] };
+
+    expect(
+      reducer(named, { type: 'REGISTER_STEP_IDS', payload: { ids: [0] } })
+    ).toBe(named);
+  });
+
+  it('REGISTER_STEP_IDS replaces the steps when an id differs', () => {
+    expect(
+      reducer(at(0), {
+        type: 'REGISTER_STEP_IDS',
+        payload: { ids: [0, 'x', 'step3'] },
+      })
+    ).toEqual({
+      activeStepIndex: 0,
+      steps: [{ id: 0 }, { id: 'x' }, { id: 'step3' }],
+    });
+  });
+
+  it('REGISTER_STEP_IDS registers a single empty-string id', () => {
+    expect(
+      reducer(initialState(), {
+        type: 'REGISTER_STEP_IDS',
+        payload: { ids: [''] },
+      })
+    ).toEqual({ activeStepIndex: 0, steps: [{ id: '' }] });
+  });
+
+  it('REGISTER_STEP_IDS clamps the index when steps are removed', () => {
+    expect(
+      reducer(at(2), { type: 'REGISTER_STEP_IDS', payload: { ids: [0, 1] } })
+    ).toEqual({ activeStepIndex: 1, steps: [{ id: 0 }, { id: 1 }] });
+  });
+
   it('ignores an unknown action', () => {
     const state = at(0);
     const unknown = {

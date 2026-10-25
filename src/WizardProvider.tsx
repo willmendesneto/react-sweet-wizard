@@ -1,6 +1,6 @@
 import type { ReactElement, ReactNode } from 'react';
 import { useCallback, useMemo, useReducer } from 'react';
-import { WizardStepperContext } from './context';
+import { RegisterStepIdsContext, WizardStepperContext } from './context';
 import { initialState, reducer } from './reducer';
 import type { DefaultWizardStepProps } from './types';
 
@@ -34,6 +34,13 @@ export const WizardProvider = <T extends DefaultWizardStepProps>({
     [dispatch]
   );
 
+  const registerStepIds = useCallback(
+    (ids: (number | string)[]) => {
+      dispatch({ type: 'REGISTER_STEP_IDS', payload: { ids } });
+    },
+    [dispatch]
+  );
+
   const goTo = useCallback(
     (stepId: number | string) => {
       dispatch({ type: 'GOTO_PAGE', payload: { stepId } });
@@ -63,7 +70,9 @@ export const WizardProvider = <T extends DefaultWizardStepProps>({
 
   return (
     <WizardStepperContext.Provider value={context}>
-      {children}
+      <RegisterStepIdsContext.Provider value={registerStepIds}>
+        {children}
+      </RegisterStepIdsContext.Provider>
     </WizardStepperContext.Provider>
   );
 };

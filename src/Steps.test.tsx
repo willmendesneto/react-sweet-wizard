@@ -92,42 +92,89 @@ describe('Steps', () => {
     expect(onSteps).toHaveBeenCalledTimes(3);
   });
 
-  it('keeps data attached through setSteps when the ids still match, comparing ids as strings', async () => {
-    const onSteps = vi.fn<OnSteps>();
-    const Consumer = (): null => {
-      const { setSteps } = useWizardContext<
-        DefaultWizardStepProps & { name?: string }
-      >();
-      useEffect(() => {
-        setSteps([
+  describe.each(['before Steps', 'after Steps', 'inside a Step'] as const)(
+    'when a consumer attaches data with setSteps %s',
+    placement => {
+      it('keeps the data while the ids still match, comparing ids as strings', async () => {
+        const onSteps = vi.fn<OnSteps>();
+        const named = [
           { id: '0', name: 'first' },
           { id: '1', name: 'second' },
-        ]);
-      }, [setSteps]);
+        ];
+        const Consumer = (): null => {
+          const { setSteps } = useWizardContext<
+            DefaultWizardStepProps & { name?: string }
+          >();
+          useEffect(() => {
+            setSteps(named);
+          }, [setSteps]);
+          return null;
+        };
+        render(
+          <WizardProvider>
+            <StepsObserver onSteps={onSteps} />
+            {placement === 'before Steps' && <Consumer />}
+            <Steps>
+              <Step id={0}>
+                zero{placement === 'inside a Step' && <Consumer />}
+              </Step>
+              <Step id={1}>one</Step>
+            </Steps>
+            {placement === 'after Steps' && <Consumer />}
+          </WizardProvider>
+        );
+
+        await act(async () => undefined);
+
+        expect(onSteps).toHaveBeenLastCalledWith(named);
+      });
+    }
+  );
+
+  it('moves to the new last step when the active last step is removed', async () => {
+    const onSteps = vi.fn<OnSteps>();
+    const Probe = (): null => {
+      const { goTo } = useWizardContext();
+      useEffect(() => {
+        goTo(2);
+      }, [goTo]);
       return null;
     };
-    render(
+    const { rerender } = render(
       <WizardProvider>
         <StepsObserver onSteps={onSteps} />
         <Steps>
-          <Step id={0}>zero</Step>
-          <Step id={1}>one</Step>
+          <Step id="a">step a</Step>
+          <Step id="b">step b</Step>
+          <Step id="c">step c</Step>
         </Steps>
-        <Consumer />
+        <Probe />
+      </WizardProvider>
+    );
+    expect(await screen.findByText('step c')).toBeInTheDocument();
+
+    rerender(
+      <WizardProvider>
+        <StepsObserver onSteps={onSteps} />
+        <Steps>
+          <Step id="a">step a</Step>
+          <Step id="b">step b</Step>
+        </Steps>
+        <Probe />
       </WizardProvider>
     );
 
+    expect(await screen.findByText('step b')).toBeInTheDocument();
+  });
+
+  it('registers a single step whose id is an empty string', async () => {
+    const onSteps = vi.fn<OnSteps>();
+
+    render(<Wizard ids={['']} onSteps={onSteps} />);
+
     await waitFor(() => {
-      expect(onSteps).toHaveBeenLastCalledWith([
-        { id: '0', name: 'first' },
-        { id: '1', name: 'second' },
-      ]);
+      expect(onSteps).toHaveBeenLastCalledWith([{ id: '' }]);
     });
-    await act(async () => undefined);
-    expect(onSteps).toHaveBeenLastCalledWith([
-      { id: '0', name: 'first' },
-      { id: '1', name: 'second' },
-    ]);
   });
 
   it('throws the 2.0.1 message when a child is not a Step', () => {

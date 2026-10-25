@@ -2,13 +2,13 @@
   {
     "name": "ESM",
     "path": "dist/esm/index.js",
-    "limit": "1400 B",
+    "limit": "1500 B",
     "gzip": true
   },
   {
     "name": "CJS",
     "path": "dist/cjs/index.cjs",
-    "limit": "1400 B",
+    "limit": "1500 B",
     "gzip": true
   }
 ]

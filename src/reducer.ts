@@ -7,6 +7,18 @@ export const initialState = <
   steps: [],
 });
 
+// Ids are compared as strings: <Step id={0}> and { id: '0' } describe the same step.
+const sameId = (a: number | string, b: number | string): boolean =>
+  String(a) === String(b);
+
+const withSteps = <T>(state: WizardState<T>, steps: T[]): WizardState<T> => ({
+  steps,
+  activeStepIndex: Math.min(
+    state.activeStepIndex,
+    Math.max(steps.length - 1, 0)
+  ),
+});
+
 export const reducer = <T extends DefaultWizardStepProps>(
   state: WizardState<T>,
   action: Action<T>
@@ -32,7 +44,7 @@ export const reducer = <T extends DefaultWizardStepProps>(
       const stepIndex =
         typeof stepId === 'number'
           ? stepId
-          : steps.findIndex(step => step.id === stepId);
+          : steps.findIndex(step => sameId(step.id, stepId));
 
       if (
         stepIndex > -1 &&
@@ -43,9 +55,18 @@ export const reducer = <T extends DefaultWizardStepProps>(
       }
       return state;
     }
-    case 'SET_STEP_COUNT': {
-      const { steps: newSteps } = action.payload;
-      return { ...state, steps: newSteps };
+    case 'SET_STEP_COUNT':
+      return withSteps(state, action.payload.steps);
+
+    case 'REGISTER_STEP_IDS': {
+      const { ids } = action.payload;
+      const unchanged =
+        ids.length === steps.length &&
+        ids.every((id, index) => sameId(id, steps[index].id));
+      // A cast is unavoidable here: Steps only knows ids, T may carry more fields.
+      return unchanged
+        ? state
+        : withSteps(state, ids.map(id => ({ id })) as T[]);
     }
     default:
       return state;

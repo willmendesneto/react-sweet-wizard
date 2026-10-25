@@ -13,13 +13,17 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
-- `Steps` re-registers its steps when a child's `id` changes, not only when the number of children changes; ids are compared as strings so `<Step id={0}>` and `setSteps([{ id: '0', ... }])` describe the same step and consumer data attached through `setSteps` survives re-renders.
+- `Steps` re-registers its steps when a child's `id` changes, not only when the number of children changes. The comparison runs in the reducer against the latest state and treats ids as strings, so `<Step id={0}>` and `setSteps([{ id: '0', ... }])` describe the same step and data attached through `setSteps` survives whether the consumer renders before, after or inside `Steps`.
+- Removing steps clamps `activeStepIndex` to the new last step instead of leaving the wizard blank.
+- `goTo` with a string also matches a numeric id (`goTo('1')` finds `<Step id={1}>`); a number is still an index.
+- A single step whose id is an empty string registers.
 - `Steps` calls its hooks before validating its children, so an invalid tree no longer calls hooks conditionally.
 - `Step` accepts `id` as `number | string`, matching `DefaultWizardStepProps`, `goTo` and the README; 2.x typed the prop as `string` only.
 
 ### Changed
 
 - **Breaking:** `onNext` returns `Promise<void>` (the callback may be sync or async) and rejects when the callback throws or rejects; the wizard stays on the current step in that case. Migration: `await` or `.catch()` calls that pass a callback that can fail.
+- **Breaking:** `WizardContextValue` types `setSteps` as `(steps: T[]) => void` (2.x accepted a single object that crashed at runtime) and `getActiveStep` as `() => T | undefined`.
 - **Breaking:** `isLastStep` is `false` while no steps are registered (it was `true` on the first render before `Steps` registered its children).
 - **Breaking:** React 18 or later is required (`peerDependencies` are `react >=18.0.0` and `react-dom >=18.0.0`). Migration: upgrade React, or stay on 2.x for React 17.
 - **Breaking:** Node 20 or later is required (`engines.node` is `>=20`; `.nvmrc` pins Node 24.22.0, the current LTS). Migration: upgrade Node before installing 3.0.
