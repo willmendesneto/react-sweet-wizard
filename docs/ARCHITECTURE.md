@@ -9,7 +9,7 @@ flows in and out of the system.
 
 `react-sweet-wizard` is a zero-dependency React library for building multi-step (wizard) flows. A `WizardProvider` holds the wizard state in a `useReducer`-backed context, `Steps` and `Step` render only the active step, and the `useWizardContext` hook exposes navigation (`onNext`, `onPrevious`, `goTo`), step data (`steps`, `setSteps`, `getActiveStep`) and position flags (`isFirstStep`, `isLastStep`). The hook is generic over a consumer-defined step shape that extends `DefaultWizardStepProps`. It is headless: it ships no styles and no UI beyond a wrapping `div` per step, so it composes with any design system.
 
-Kind: lib. Stack: TypeScript 5.9 (strict) and React, built with Rollup 4 (ESM and CommonJS with declarations); tested with Jest 27, Testing Library and jsdom; linted with ESLint and Prettier; size-checked with `size-limit`; CI on GitHub Actions.
+Kind: lib. Stack: TypeScript 5.9 (strict) and React, built with Rollup 4 (ESM and CommonJS with declarations); tested with Vitest 4, Testing Library 16 and jsdom; linted with ESLint and Prettier; size-checked with `size-limit`; CI on GitHub Actions.
 
 ## Modules
 
@@ -30,7 +30,7 @@ The whole library lives in one file, `src/index.tsx`, and everything a consumer 
 
 ## External dependencies and integrations
 
-- Peer dependencies: `react` and `react-dom` at `>=17.0.2`. No runtime dependencies (`dependencies` is empty and `sideEffects` is `false`).
+- Peer dependencies: `react` and `react-dom` at `>=18.0.0` (CI runs the tests on React 18 and 19). No runtime dependencies (`dependencies` is empty and `sideEffects` is `false`).
 - Build: one Rollup 4 run (`rollup.config.mjs`, `@rollup/plugin-typescript`) emits `dist/esm/index.js`, `dist/cjs/index.cjs` (ES2019) and `dist/types/index.d.ts`, all with source maps. `react` and `react/jsx-runtime` are externals. There is no UMD build since 3.0. `scripts/check-package.mjs` verifies the tarball against `package.json` after each build.
 - CI: GitHub Actions (`.github/workflows/ci.yml`) runs five jobs on every push and pull request to `main`: `lint`, `types`, `test` (coverage, Node 20/22/24, Coveralls upload from the Node 22 leg), `build` with `scripts/check-package.mjs` (Node 20/22/24) and `size`. Dependabot (`.github/dependabot.yml`) opens weekly grouped PRs for dev dependencies and actions.
 - Local hooks: Husky `pre-commit` runs `lint-staged`, which runs Prettier on staged `js/ts/jsx/tsx` files.
@@ -43,12 +43,11 @@ The whole library lives in one file, `src/index.tsx`, and everything a consumer 
 ## Known constraints and debt
 
 - Size budgets are tight and enforced in CI (`.size-limit.json`, gzip): ESM 1228 B, CJS 1331 B. Almost any new import or branch needs a budget review.
-- Jest coverage thresholds (branches 91, functions 100, lines 96, statements 96) fail the test run when coverage drops; `collectCoverage` is always on.
+- Vitest coverage thresholds (branches 91, functions 100, lines 96, statements 96) fail `npm run test:coverage` when coverage drops; CI runs that script.
 - `Step`'s `id` prop is typed `string` although the reducer, README and 2.0.0 changelog accept numbers too. Widening the type is a non-breaking fix still to do.
 - `goTo(number)` means index, `goTo(string)` means id. Changing this would be breaking.
 - Step registration is count-based: changing a child's `id` without changing the number of children does not update the registered steps.
 - On the first render `steps` is `[]`, so `isLastStep` is `true` until the registration effect runs.
-- Dev dependency `react` is `^16.10.2` while peers require `>=17.0.2`; tests run against whatever the lockfile resolves.
 - SSR safety is plausible (no DOM access) but untested; there is no `test:ssr` script.
 
 ## Related documentation

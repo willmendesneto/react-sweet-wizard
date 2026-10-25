@@ -11,7 +11,7 @@ code already follows; keep new code consistent with them.
 |---|---|---|
 | Language | TypeScript 5.9, `strict: true`, React JSX (`jsx: react`) | |
 | Formatting | Prettier 3 (`.prettierrc`; also enforced through `eslint-plugin-prettier` and `lint-staged` on commit) | `npx prettier --write src/` |
-| Linting | ESLint 9 flat config (`eslint.config.js`: typescript-eslint, react, react-hooks, jsx-a11y, jest, testing-library, prettier) | `npm run lint` |
+| Linting | ESLint 9 flat config (`eslint.config.js`: typescript-eslint, react, react-hooks, jsx-a11y, vitest, testing-library, prettier) | `npm run lint` |
 | Types | tsc (`tsconfig.json`) | `npm run lint:types` |
 | Package manager | npm | `npm install` |
 | Node | 22.22.3 | from .nvmrc |
@@ -21,7 +21,7 @@ code already follows; keep new code consistent with them.
 - Single entry point `src/index.tsx`; every public symbol is a named export from it. The whole library is one file today; split into one component per file only when it grows, and keep exports flowing through `src/index.tsx`. No default exports from the library entry point.
 - Components and hooks follow React naming: `PascalCase` for `WizardProvider`, `Steps`, `Step`; `useXxx` for hooks; `camelCase` callbacks prefixed `on` for navigation (`onNext`, `onPrevious`).
 - Public types are `PascalCase` interfaces (`DefaultWizardStepProps`). Internal types and the reducer stay unexported.
-- Tests sit next to the code as `*.test.tsx` and are matched by `jest.config.js` `testMatch`.
+- Tests sit next to the code as `*.test.ts(x)` and are matched by the `include` pattern in `vitest.config.ts`.
 - Prettier settings: 2 spaces, single quotes, semicolons, 80 columns, `arrowParens: avoid`, `trailingComma: es5`.
 
 <!-- pack:base-js -->
@@ -51,7 +51,7 @@ Run these before handing off, in this order. All must pass.
 - Public components are exported from the package entry point only; internal helpers stay unexported. One component per file, named export, `PascalCase.tsx`.
 - Props interface exported next to the component; defaults in the signature.
 - The library never fetches or reads global state on its own; consumers pass data and callbacks through props or a provider.
-- Tests sit next to the component or under `test/` mirroring the path, with `jest` and Testing Library.
+- Tests sit next to the component or under `test/` mirroring the path, with `vitest` and Testing Library.
 
 ### State and data
 

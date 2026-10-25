@@ -23,10 +23,11 @@ Required: 22.22.3 (.nvmrc; `engines` allows any Node 20 or later). With nvm: `nv
 
 ## Tests
 
-- Jest uses Babel (`babel.config.js`, `env.test`) rather than `ts-jest`, so TypeScript type errors do not fail tests; they only fail `npm run lint:types`.
-- `collectCoverage` is always on, so the thresholds apply to `npm run test:watch` too. Use `--coverage=false` locally when iterating on a single test.
-- Testing Library warnings about `act(...)` usually mean a test called `onNext` with a callback and did not await it.
-- The Jest cache lives in `.jest/` (gitignored). `npm run build` deletes it; a stale cache after dependency changes is fixed by `npx jest --clearCache`.
+- Vitest transpiles TypeScript with esbuild and does not type-check, so type errors in tests only fail `npm run lint:types`.
+- Coverage thresholds apply only to `npm run test:coverage`; `npm run test` and `npm run test:watch` skip coverage. A threshold failure prints the per-file table at the end of the run.
+- Testing Library warnings about `act(...)` usually mean a test called `onNext` with a callback and did not wrap it in `await act(async () => ...)`.
+- `ReferenceError: describe is not defined`: `globals` is off in `vitest.config.ts`; import the API from `vitest`.
+- `Vitest 5` or `jsdom 30` fail to install or run on Node 20: both require Node 22.12 or later. The repo pins Vitest 4 and jsdom 26 while Node 20 is in the CI matrix.
 
 ## Size budget
 

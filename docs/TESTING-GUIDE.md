@@ -8,7 +8,7 @@
 
 | Level | Runner | Command | Where tests live |
 |---|---|---|---|
-| Unit | Jest 27 + Testing Library (jsdom) | `npm run test` | `src/**/*.test.tsx` |
+| Unit | Vitest 4 + Testing Library 16 (jsdom) | `npm run test` (`npm run test:coverage` with thresholds) | `src/**/*.test.ts?(x)` |
 
 ## What to test
 
@@ -18,13 +18,13 @@
 
 ## Fixtures and mocks
 
-There are no fixture files. `src/index.test.tsx` builds small inline wizards with `WizardProvider`, `Steps` and `Step`, renders them with `@testing-library/react` and drives the hook with `renderHook` from `@testing-library/react-hooks`, wrapping it in `WizardProvider`. Nothing is mocked: the library has no boundary to mock. `clearMocks` and `resetMocks` are on in `jest.config.js`, so any `jest.fn()` you add is reset between tests. `@testing-library/jest-dom` matchers are loaded from `jest.setup.js`.
+There are no fixture files. `src/index.test.tsx` builds small inline wizards with `WizardProvider`, `Steps` and `Step` and drives the hook with `renderHook`, `act` and `waitFor` from `@testing-library/react`, wrapping it in `WizardProvider`. Nothing is mocked: the library has no boundary to mock. Spies come from `vi.fn()` / `vi.spyOn()` and are restored in `afterEach` with `vi.restoreAllMocks()`. Tests that expect a render to throw go through the `expectRenderToThrow` helper, which silences `console.error` for that call only (React reports render errors there). The Testing Library DOM matchers are registered in `vitest.setup.ts`. Vitest is configured in `vitest.config.ts` with `globals: false`, so every test imports `describe`, `it`, `expect` and `vi` from `vitest`.
 
 <!-- pack:testing -->
 
 ### Test runner
 
-`jest` runs unit tests with `npm run test`. There are no end-to-end tests.
+`vitest` runs unit tests with `npm run test`. There are no end-to-end tests.
 
 ### Rules that apply to every test
 
@@ -39,11 +39,11 @@ There are no fixture files. `src/index.test.tsx` builds small inline wizards wit
 
 ## Coverage and CI
 
-Coverage is always collected (`collectCoverage: true`, `collectCoverageFrom: ['**/src/*.{ts,tsx}']`) and the global thresholds are branches 91, functions 100, lines 96, statements 96. A drop below any threshold fails `npm run test`. Reports land in `coverage/` as lcov, html and text-summary. In CI (`.github/workflows/ci.yml`), the `test` job runs on Node 20, 22 and 24 with `--coverageReporters=lcov`, and the Node 22 leg uploads `coverage/lcov.info` to Coveralls; the badge in the README reads from it.
+Coverage comes from `@vitest/coverage-v8` over `src/**` (test files excluded) with global thresholds branches 91, functions 100, lines 96, statements 96 (`vitest.config.ts`). `npm run test:coverage` fails below any threshold; plain `npm run test` does not collect coverage. Reports land in `coverage/` as lcov, html and text-summary. In CI (`.github/workflows/ci.yml`), the `test` job runs `npm run test:coverage` on a matrix of Node 20, 22 and 24 by React 18 and 19 (the React version is installed with `npm install --no-save` after `npm ci`), and the Node 22 / React 19 leg uploads `coverage/lcov.info` to Coveralls; the badge in the README reads from it.
 
 ## Flaky or slow tests
 
-None known. The suite is a single file with ten tests and runs in a few seconds. `onNext` awaits its callback, so tests that pass a callback must `await act(...)` before asserting on `activeStepIndex`.
+None known. The suite is a single file with ten tests and runs in about a second. `onNext` awaits its callback, so tests that pass a callback wrap the call in `await act(async () => ...)` and assert with `waitFor` before reading `activeStepIndex`.
 
 ## Related documentation
 

@@ -39,12 +39,13 @@ jobs:
       - run: npm run lint:types
 
   test:
-    name: Unit tests (Node ${{ matrix.node }})
+    name: Unit tests (Node ${{ matrix.node }}, React ${{ matrix.react }})
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         node: [20, 22, 24]
+        react: [18, 19]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -52,9 +53,11 @@ jobs:
           node-version: ${{ matrix.node }}
           cache: npm
       - run: npm ci
+      - name: Use React ${{ matrix.react }}
+        run: npm install --no-save react@${{ matrix.react }} react-dom@${{ matrix.react }} @types/react@${{ matrix.react }} @types/react-dom@${{ matrix.react }}
       - run: npm run test:coverage
       - name: Upload coverage to Coveralls
-        if: matrix.node == 22
+        if: matrix.node == 22 && matrix.react == 19
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}

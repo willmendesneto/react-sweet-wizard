@@ -2,7 +2,7 @@
 
 # react-sweet-wizard public API
 
-> **Current state:** Published as `react-sweet-wizard` 2.0.1 (2025-04-02). The entire library is `src/index.tsx`, about 200 lines, with no runtime dependencies and `react`/`react-dom` `>=17.0.2` as peers. State is in-memory React reducer state only. 2.0.0 added generics and string ids; 2.0.1 removed TypeScript `as` casts. Stable, small, fully covered by `src/index.test.tsx`.
+> **Current state:** Published as `react-sweet-wizard` 2.0.1 (2025-04-02). The entire library is `src/index.tsx`, about 200 lines, with no runtime dependencies and `react`/`react-dom` `>=18.0.0` as peers. State is in-memory React reducer state only. 2.0.0 added generics and string ids; 2.0.1 removed TypeScript `as` casts. Stable, small, fully covered by `src/index.test.tsx`.
 
 ## When to read this doc
 
@@ -57,7 +57,7 @@ The library does not read `window`, `document` or any browser API, so `renderToS
 ## Bundle and compatibility
 
 - Formats: ESM (`dist/esm/index.js`, `exports.import`), CommonJS (`dist/cjs/index.cjs`, ES2019, `exports.require`), declarations (`dist/types/index.d.ts`, `exports.types`). `sideEffects: false`. Only the package root is exported; deep imports of `dist/*` are not supported. No UMD build since 3.0.
-- Peer dependencies: `react >=17.0.2`, `react-dom >=17.0.2`; no runtime dependencies
+- Peer dependencies: `react >=18.0.0`, `react-dom >=18.0.0` (CI tests React 18 and 19); no runtime dependencies
 - Size budget: `size-limit` (`.size-limit.json`, gzip): ESM 1228 B, CJS 1331 B. Run `npm run build && npm run size`.
 
 ## Testing
@@ -65,7 +65,7 @@ The library does not read `window`, `document` or any browser API, so `renderToS
 | Area | Where |
 |---|---|
 | unit (provider, hook, Steps/Step, reducer paths) | `src/index.test.tsx` |
-| coverage thresholds | `jest.config.js` |
+| coverage thresholds | `vitest.config.ts` |
 
 ## Key source files
 
@@ -74,7 +74,7 @@ The library does not read `window`, `document` or any browser API, so `renderToS
 - `package.json`
 - `rollup.config.js`
 - `tsconfig.build.json`
-- `jest.config.js`
+- `vitest.config.ts`
 
 ## Related documentation
 

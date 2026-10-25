@@ -11,7 +11,7 @@ Agents and `docs` tooling parse this table, so keep its three columns and the gl
 |---|---|---|
 | [ARCHITECTURE.md](ARCHITECTURE.md) | Modules, boundaries, data flow | `src/**` |
 | [DEVELOPMENT-STANDARDS.md](DEVELOPMENT-STANDARDS.md) | Language, formatting, imports, errors | `src/**` |
-| [TESTING-GUIDE.md](TESTING-GUIDE.md) | Runners, fixtures, what to test | `src/**/*.test.tsx`, `jest.config.js`, `jest.setup.js` |
+| [TESTING-GUIDE.md](TESTING-GUIDE.md) | Runners, fixtures, what to test | `src/**/*.test.ts?(x)`, `vitest.config.ts`, `vitest.setup.ts` |
 | [CODE-REVIEW-STANDARDS.md](CODE-REVIEW-STANDARDS.md) | Review lenses and severity | `**` |
 | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Environment, build and CI problems | `package.json`, `.nvmrc`, `**/*.config.*`, `.github/workflows/**` |
 | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) | Public API: `WizardProvider`, `Steps`, `Step`, `useWizardContext`, `DefaultWizardStepProps` | `src/index.tsx`, `src/index.test.tsx` |
