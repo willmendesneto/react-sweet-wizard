@@ -31,7 +31,7 @@ The library is eight small modules under `src/` and everything a consumer can us
 ## Data flow
 
 1. `WizardProvider` creates reducer state `{ activeStepIndex: 0, steps: [] }` and memoises a context value with the navigation callbacks and derived flags.
-2. `Steps` validates its children (at least one, all of type `Step`), reads the context, and in a `useEffect` calls `setSteps` with `{ id }` objects taken from each child's `id` prop whenever the registered step count differs from the child count. It renders `children[activeStepIndex]`.
+2. `Steps` reads the context, and in a `useEffect` calls `setSteps` with `{ id }` objects taken from each child's `id` prop whenever the registered ids differ from the children's ids (compared as strings). It then validates its children (at least one, all of type `Step`) and renders `children[activeStepIndex]`.
 3. Consumers call `onNext(cb?)`, `onPrevious()`, `goTo(idOrIndex)` or `setSteps(steps)` from `useWizardContext()`. Each dispatches one action: `NEXT_PAGE` and `PREV_PAGE` are clamped to the step bounds; `GOTO_PAGE` treats a number as an **index** and a string as a step `id`, and is ignored when out of range or already active; `SET_STEP_COUNT` replaces the `steps` array.
 4. `onNext` awaits its optional callback before dispatching and returns that promise, so a rejected callback leaves the wizard on the current step and surfaces the error to the caller.
 
@@ -49,10 +49,9 @@ The library is eight small modules under `src/` and everything a consumer can us
 
 ## Known constraints and debt
 
-- Size budgets are tight and enforced in CI (`.size-limit.json`, gzip): ESM 1228 B, CJS 1331 B. Almost any new import or branch needs a budget review.
+- Size budgets are enforced in CI (`.size-limit.json`, gzip): 1400 B for the ESM and for the CJS artefact (raised deliberately in 3.0 for id-based step registration; 2.0.1 shipped 1199 B ESM and 2653 B CJS). Almost any new import or branch needs a budget review.
 - Vitest coverage thresholds (branches 91, functions 100, lines 96, statements 96) fail `npm run test:coverage` when coverage drops; CI runs that script.
 - `goTo(number)` means index, `goTo(string)` means id. Changing this would be breaking.
-- Step registration is count-based: changing a child's `id` without changing the number of children does not update the registered steps.
 - SSR safety is plausible (no DOM access) but untested; there is no `test:ssr` script.
 
 ## Related documentation

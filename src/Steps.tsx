@@ -14,6 +14,20 @@ export const Steps = ({
     (child): child is ReactElement<StepProps> =>
       isValidElement<StepProps>(child)
   );
+  const childIds = reactChildren.map(child => child.props.id);
+
+  const { activeStepIndex, setSteps, steps } =
+    useWizardContext<DefaultWizardStepProps>();
+
+  // Ids are compared as strings: <Step id={0}> and setSteps([{ id: '0' }]) describe the same step.
+  const registered = steps.map(step => step.id).join('\0');
+  const expected = childIds.join('\0');
+
+  useEffect(() => {
+    if (registered !== expected) {
+      setSteps(childIds.map(id => ({ id })));
+    }
+  }, [setSteps, registered, expected, childIds]);
 
   if (reactChildren.length === 0) {
     throw new Error('Steps should have at least a single child component');
@@ -26,15 +40,6 @@ export const Steps = ({
       `Error at position "${index}". You should compose Steps using "Step" component`
     );
   }
-
-  const { activeStepIndex, setSteps, steps } =
-    useWizardContext<DefaultWizardStepProps>();
-
-  useEffect(() => {
-    if (steps.length !== reactChildren.length) {
-      setSteps(reactChildren.map(child => ({ id: child.props.id })));
-    }
-  }, [setSteps, steps, reactChildren]);
 
   return reactChildren[activeStepIndex];
 };

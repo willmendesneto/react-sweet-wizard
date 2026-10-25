@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 
+- `Steps` re-registers its steps when a child's `id` changes, not only when the number of children changes; ids are compared as strings so `<Step id={0}>` and `setSteps([{ id: '0', ... }])` describe the same step and consumer data attached through `setSteps` survives re-renders.
+- `Steps` calls its hooks before validating its children, so an invalid tree no longer calls hooks conditionally.
 - `Step` accepts `id` as `number | string`, matching `DefaultWizardStepProps`, `goTo` and the README; 2.x typed the prop as `string` only.
 
 ### Changed
@@ -25,6 +27,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Build and type-check with TypeScript 5.9 (was 4.4).
 - **Breaking:** the UMD build (`dist/umd/react-sweet-wizard.js`, global `ReactSweetWizard`) is removed; the package ships ESM and CommonJS only. Migration: install from npm and import; script-tag consumers stay on 2.x.
 - **Breaking:** `package.json` has an `exports` map (`types`, `import`, `require`); deep imports of `dist/*` paths are no longer supported. Migration: import from `react-sweet-wizard` only.
+- Size budgets (`.size-limit.json`, gzip) are 1400 B for the ESM and the CJS artefact; the 3.0 builds measure about 1260 B and 1275 B, against 1199 B (ESM) and 2653 B (CJS, ES5) in 2.0.1.
 - Build with Rollup 4: `dist/esm/index.js`, `dist/cjs/index.cjs` (ES2019) and `dist/types/index.d.ts`, each with source maps. `main` and `types` point at the new files; the unused `browser`, `jsnext:main`, `es2015`, `es2020` and `cjs` fields are gone.
 
 ## [2.0.1][] - 2025-04-02
