@@ -27,6 +27,6 @@
   "include": [
     "src",
     "vitest.setup.ts",
-    "vitest.config.ts"
+    "vitest.config.mts"
   ]
 }
