@@ -10,8 +10,9 @@
 Releases are cut locally by the maintainer and verified twice by CI. `npm version <bump>` runs the
 quality gates (`preversion`), rewrites `CHANGELOG.md` (`version`) and creates the tag. There is no
 `postversion` script, so pushing the commit and the tag is a manual step. The pushed tag triggers
-`.github/workflows/release.yml`, which re-runs every gate, dry-runs the tarball and creates the GitHub
-Release with the changelog section of that version (a pre-release when the tag contains a hyphen,
+`.github/workflows/release.yml`: a `verify` job with a read-only token re-runs every gate, the package
+checks and a dry-run pack; only then a `release` job, which installs no dependencies and is the only
+one with `contents: write`, creates the GitHub Release with the changelog section of that version (a pre-release when the tag contains a hyphen,
 such as `v3.0.0-rc.0`). `npm publish` stays a maintainer command: it triggers `prepack`, which runs
 the gates again and builds `dist/`. CI never publishes to npm.
 
