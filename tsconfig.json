@@ -26,6 +26,8 @@
     "**/_*/**"
   ],
   "include": [
-    "src"
+    "src",
+    "vitest.setup.ts",
+    "vitest.config.ts"
   ]
 }

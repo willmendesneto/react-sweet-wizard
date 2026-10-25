@@ -1,5 +1,3 @@
-import type { ReactNode } from 'react';
-
 export interface DefaultWizardStepProps {
   id: number | string;
 }
@@ -25,9 +23,4 @@ export interface WizardContextValue<T = DefaultWizardStepProps> {
   getActiveStep: () => T;
   onPrevious: () => void;
   setSteps: (steps: T[] | T) => void;
-}
-
-export interface StepProps {
-  id: string;
-  children: ReactNode;
 }

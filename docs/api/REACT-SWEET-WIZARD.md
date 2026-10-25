@@ -18,13 +18,13 @@
 | `DefaultWizardStepProps` | type | `interface DefaultWizardStepProps { id: number \| string }` | Base shape of a step. Extend it for custom step data and pass the result as the generic to `useWizardContext<T>()`. |
 | `WizardProvider` | component | `WizardProvider<T extends DefaultWizardStepProps>({ children }: { children: ReactNode }): JSX.Element` | Owns the state `{ activeStepIndex: 0, steps: [] }` and provides a memoised context. Required above `Steps` and every `useWizardContext` call. |
 | `Steps` | component | `Steps({ children }: { children: JSX.Element \| JSX.Element[] }): JSX.Element` | Accepts only `Step` elements as direct children and at least one. Registers `{ id }` per child through `setSteps` when the count changes, then renders the active child only. |
-| `Step` | component | `Step({ id, children }: { id: string; children: ReactNode }): JSX.Element` | Renders `<div id={id}>{children}</div>`. The prop is typed `string`; the runtime, README and changelog also accept numbers. See Behaviour. |
+| `Step` | component | `Step({ id, children }: { id: number \| string; children: ReactNode }): ReactElement` | Renders `<div id={String(id)}>{children}</div>`. The id is registered with its original type (`0` stays a number, `'b'` a string). |
 | `useWizardContext` | hook | `useWizardContext<T extends DefaultWizardStepProps = DefaultWizardStepProps>(): Readonly<WizardStepperContextProps<T>>` | Throws outside a `WizardProvider`. Returns `activeStepIndex`, `steps`, `isFirstStep`, `isLastStep`, `goTo`, `onNext`, `onPrevious`, `getActiveStep`, `setSteps`. The return type is exported as `WizardContextValue<T>`. |
 | `WizardContextValue` | type | `interface WizardContextValue<T = DefaultWizardStepProps> { activeStepIndex; steps; isFirstStep; isLastStep; goTo; onNext; getActiveStep; onPrevious; setSteps }` | The object `useWizardContext<T>()` returns; use it to type props or helpers that receive the wizard context. |
 
 ## Options and defaults
 
-`WizardProvider` and `Steps` take no props besides `children`. `Step` takes `id` (typed `string`) and `children`. `useWizardContext<T>()` takes one generic, `T extends DefaultWizardStepProps`, defaulting to `DefaultWizardStepProps` (`{ id: number | string }`); `steps`, `setSteps` and `getActiveStep` are typed with `T`.
+`WizardProvider` and `Steps` take no props besides `children`. `Step` takes `id` (`number | string`) and `children`. `useWizardContext<T>()` takes one generic, `T extends DefaultWizardStepProps`, defaulting to `DefaultWizardStepProps` (`{ id: number | string }`); `steps`, `setSteps` and `getActiveStep` are typed with `T`.
 
 The hook returns:
 
@@ -48,7 +48,7 @@ The hook returns:
 - **`onNext` is async.** The optional callback is awaited before `NEXT_PAGE` is dispatched, so an async validator that rejects keeps the wizard on the current step. The declared return type is `void`, so consumers cannot await it; in tests wrap the call in `await act(async () => ...)`.
 - **Step registration is count-based.** `Steps` calls `setSteps` only when `steps.length !== children.length`. Changing a child's `id` without changing the count does not re-register; neither does `setSteps` with the same length followed by a child change. Data attached through `setSteps` is kept until the count changes.
 - **First render.** `steps` is `[]` until the registration effect runs, so `isLastStep` is `true` and `getActiveStep()` is `undefined` for that render.
-- **`Step` ids.** `DefaultWizardStepProps.id` and `goTo` accept `number | string`, and the README shows numeric ids in `setSteps`, but the `Step` prop is typed `string`. Passing a number to `<Step id={0}>` is a TypeScript error today even though it works at runtime. Widening the prop type is a safe, non-breaking change; keep the README and this doc in sync when you do it.
+- **`Step` ids.** `Step`, `DefaultWizardStepProps.id` and `goTo` all accept `number | string` (since 3.0; 2.x typed the `Step` prop as `string`). The DOM `id` attribute is the stringified value; the registered step keeps the original type, so `goTo(0)` is an index while `getActiveStep().id` may be the number `0`.
 - **Rendering.** `Steps` returns exactly one child (`children[activeStepIndex]`), and `Step` wraps content in a `div` whose DOM `id` is the step id. There are no styles, no transitions and no focus management.
 
 ## Server-side rendering

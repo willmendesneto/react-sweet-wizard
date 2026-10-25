@@ -61,7 +61,8 @@ const Progress = () => {
 
 const WizardSteps = () => (
   <Steps>
-    <Step key="0" id="0">
+    {/* `id` can be a number or a string */}
+    <Step key={0} id={0}>
       <div>
         <p>step 1</p>
       </div>
@@ -71,7 +72,6 @@ const WizardSteps = () => (
         <p>step 2</p>
       </div>
     </Step>
-    {/* 🎉 For better DX, `<Step />` component can also have `id` as strings 🎉 */}
     <Step key="step3" id="step3">
       <div>
         <p>step 3</p>

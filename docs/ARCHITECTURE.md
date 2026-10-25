@@ -51,7 +51,6 @@ The library is eight small modules under `src/` and everything a consumer can us
 
 - Size budgets are tight and enforced in CI (`.size-limit.json`, gzip): ESM 1228 B, CJS 1331 B. Almost any new import or branch needs a budget review.
 - Vitest coverage thresholds (branches 91, functions 100, lines 96, statements 96) fail `npm run test:coverage` when coverage drops; CI runs that script.
-- `Step`'s `id` prop is typed `string` although the reducer, README and 2.0.0 changelog accept numbers too. Widening the type is a non-breaking fix still to do.
 - `goTo(number)` means index, `goTo(string)` means id. Changing this would be breaking.
 - Step registration is count-based: changing a child's `id` without changing the number of children does not update the registered steps.
 - On the first render `steps` is `[]`, so `isLastStep` is `true` until the registration effect runs.

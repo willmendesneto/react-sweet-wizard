@@ -1,7 +1,8 @@
 import type { ReactElement } from 'react';
 import { Children, isValidElement, useEffect } from 'react';
+import type { StepProps } from './Step';
 import { Step } from './Step';
-import type { DefaultWizardStepProps, StepProps } from './types';
+import type { DefaultWizardStepProps } from './types';
 import { useWizardContext } from './useWizardContext';
 
 export const Steps = ({

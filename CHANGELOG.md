@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - `WizardContextValue<T>` is exported: the type of the object `useWizardContext<T>()` returns (it was the unexported `WizardStepperContextProps`).
 
+### Fixed
+
+- `Step` accepts `id` as `number | string`, matching `DefaultWizardStepProps`, `goTo` and the README; 2.x typed the prop as `string` only.
+
 ### Changed
 
 - **Breaking:** React 18 or later is required (`peerDependencies` are `react >=18.0.0` and `react-dom >=18.0.0`). Migration: upgrade React, or stay on 2.x for React 17.
