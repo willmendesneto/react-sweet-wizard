@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react';
-import { useEffect } from 'react';
+import { StrictMode, useEffect } from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { Step } from './Step';
@@ -130,6 +130,67 @@ describe('Steps', () => {
       });
     }
   );
+
+  it('keeps consumer data and settles under StrictMode', async () => {
+    const onSteps = vi.fn<OnSteps>();
+    const named = [{ id: 'a', name: 'first' }];
+    const Consumer = (): null => {
+      const { setSteps } = useWizardContext<
+        DefaultWizardStepProps & { name?: string }
+      >();
+      useEffect(() => {
+        setSteps(named);
+      }, [setSteps]);
+      return null;
+    };
+    render(
+      <StrictMode>
+        <WizardProvider>
+          <StepsObserver onSteps={onSteps} />
+          <Consumer />
+          <Steps>
+            <Step id="a">a</Step>
+          </Steps>
+        </WizardProvider>
+      </StrictMode>
+    );
+
+    await act(async () => undefined);
+    const calls = onSteps.mock.calls.length;
+    await act(async () => undefined);
+
+    expect(onSteps).toHaveBeenLastCalledWith(named);
+    expect(onSteps).toHaveBeenCalledTimes(calls);
+  });
+
+  it('settles with two Steps blocks under one provider', async () => {
+    const onCommit = vi.fn();
+    const CommitCounter = (): null => {
+      useWizardContext();
+      useEffect(() => {
+        onCommit();
+      });
+      return null;
+    };
+    render(
+      <WizardProvider>
+        <CommitCounter />
+        <Steps>
+          <Step id="title-1">title</Step>
+        </Steps>
+        <Steps>
+          <Step id="body-1">body</Step>
+        </Steps>
+      </WizardProvider>
+    );
+
+    await act(async () => undefined);
+    const commitsAfterMount = onCommit.mock.calls.length;
+    await act(async () => undefined);
+
+    expect(onCommit).toHaveBeenCalledTimes(commitsAfterMount);
+    expect(commitsAfterMount).toBeLessThan(10);
+  });
 
   it('moves to the new last step when the active last step is removed', async () => {
     const onSteps = vi.fn<OnSteps>();

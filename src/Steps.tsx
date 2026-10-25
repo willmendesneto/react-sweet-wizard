@@ -15,6 +15,9 @@ export const Steps = ({
       isValidElement<StepProps>(child)
   );
   const childIds = reactChildren.map(child => child.props.id);
+  // A stable key: register only when this block's own ids change, never on every render,
+  // so several Steps under one provider cannot keep replacing each other's registration.
+  const idsKey = JSON.stringify(childIds);
 
   const { activeStepIndex } = useWizardContext();
   const registerStepIds = useContext(RegisterStepIdsContext);
@@ -22,8 +25,8 @@ export const Steps = ({
   // The reducer compares against the latest state and keeps it when the ids match,
   // so data a consumer attached through setSteps survives whichever effect runs first.
   useEffect(() => {
-    registerStepIds?.(childIds);
-  }, [registerStepIds, childIds]);
+    registerStepIds?.(JSON.parse(idsKey));
+  }, [registerStepIds, idsKey]);
 
   if (reactChildren.length === 0) {
     throw new Error('Steps should have at least a single child component');
