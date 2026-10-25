@@ -9,7 +9,7 @@ flows in and out of the system.
 
 `react-sweet-wizard` is a zero-dependency React library for building multi-step (wizard) flows. A `WizardProvider` holds the wizard state in a `useReducer`-backed context, `Steps` and `Step` render only the active step, and the `useWizardContext` hook exposes navigation (`onNext`, `onPrevious`, `goTo`), step data (`steps`, `setSteps`, `getActiveStep`) and position flags (`isFirstStep`, `isLastStep`). The hook is generic over a consumer-defined step shape that extends `DefaultWizardStepProps`. It is headless: it ships no styles and no UI beyond a wrapping `div` per step, so it composes with any design system.
 
-Kind: lib. Stack: TypeScript 4.4 (strict) and React, built with `tsc` (CommonJS and ESM) plus Rollup (UMD); tested with Jest 27, Testing Library and jsdom; linted with ESLint and Prettier; size-checked with `size-limit`; CI on CircleCI.
+Kind: lib. Stack: TypeScript 5.9 (strict) and React, built with `tsc` (CommonJS and ESM) plus Rollup (UMD); tested with Jest 27, Testing Library and jsdom; linted with ESLint and Prettier; size-checked with `size-limit`; CI on CircleCI.
 
 ## Modules
 
@@ -32,7 +32,7 @@ The whole library lives in one file, `src/index.tsx`, and everything a consumer 
 
 - Peer dependencies: `react` and `react-dom` at `>=17.0.2`. No runtime dependencies (`dependencies` is empty and `sideEffects` is `false`).
 - Build: `tsc` for `dist/cjs` (ES5 with declarations) and `dist/esm` (ESNext); Rollup reads the `module` field and emits the UMD bundle `ReactSweetWizard` to the `browser` field, then `uglify-js` and `gzip` produce the `.min.js` and `.min.js.gz` variants.
-- CI: CircleCI (`.circleci/config.yml`) runs install, then `test:ci` (Jest coverage piped to Coveralls), `build` + `size`, `lint` and `lint:types` in parallel on `cimg/node:18.16.0-browsers`. There are no GitHub Actions workflows.
+- CI: CircleCI (`.circleci/config.yml`) runs install, then `test:ci` (Jest coverage piped to Coveralls), `build` + `size`, `lint` and `lint:types` in parallel on `cimg/node:22.22.3`. There are no GitHub Actions workflows.
 - Local hooks: Husky `pre-commit` runs `lint-staged`, which runs Prettier on staged `js/ts/jsx/tsx` files.
 
 ## Build and runtime

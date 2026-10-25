@@ -8,7 +8,7 @@
 
 ### Node version
 
-Required: 18.16.0 (.nvmrc). With nvm: `nvm use`. A different major usually shows up as native module build errors or syntax errors in dependencies.
+Required: 22.22.3 (.nvmrc; `engines` allows any Node 20 or later). With nvm: `nvm use`. A different major usually shows up as native module build errors or syntax errors in dependencies.
 
 ### Install
 
@@ -36,7 +36,7 @@ History, fixed in 3.0. Up to 2.0.1 the size gate ran `bundlesize`, which require
 
 ## Gates in CI but not locally
 
-CircleCI runs the same commands as the gates above, with two differences. Tests run as `npm run test:ci`, which adds `--coverage --coverageReporters=text-lcov | coveralls` and needs the `COVERALLS_REPO_TOKEN` from `.coveralls.yml` or the project settings; locally run plain `npm run test`. The `bundle_size` job runs `npm run build` before `npm run size`, so always build before checking sizes locally. CI pins `cimg/node:18.16.0-browsers`, matching `.nvmrc`; `engines` allows `>=14` but only Node 18 is exercised.
+CircleCI runs the same commands as the gates above, with two differences. Tests run as `npm run test:ci`, which adds `--coverage --coverageReporters=text-lcov | coveralls` and needs the `COVERALLS_REPO_TOKEN` from `.coveralls.yml` or the project settings; locally run plain `npm run test`. The `bundle_size` job runs `npm run build` before `npm run size`, so always build before checking sizes locally. CI pins `cimg/node:22.22.3`, matching `.nvmrc`; `engines` allows `>=20` but only Node 22 is exercised.
 
 ## Add an entry
 

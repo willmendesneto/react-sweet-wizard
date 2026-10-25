@@ -10,6 +10,7 @@ const config = {
     file: browser,
     format: 'umd',
     name: 'ReactSweetWizard',
+    interop: 'esModule',
   },
   plugins: [
     resolve(),

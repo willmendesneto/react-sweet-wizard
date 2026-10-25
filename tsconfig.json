@@ -2,7 +2,10 @@
   "compilerOptions": {
     "declaration": true,
     "module": "esnext",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -13,13 +16,16 @@
     "isolatedModules": true,
     "jsx": "react",
     "sourceMap": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
     "baseUrl": "src"
   },
-  "exclude": ["node_modules", "**/*.spec.ts", "**/_*/**"],
-  "include": ["src"]
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "**/_*/**"
+  ],
+  "include": [
+    "src"
+  ]
 }

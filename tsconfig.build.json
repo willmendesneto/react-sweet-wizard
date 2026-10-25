@@ -1,9 +1,12 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src"],
+  "include": [
+    "src"
+  ],
   "noUnusedLocals": false,
   "compilerOptions": {
-    "declaration": false
+    "declaration": false,
+    "esModuleInterop": false
   },
   "exclude": [
     "examples/**/*",

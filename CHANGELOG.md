@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+### Changed
+
+- **Breaking:** Node 20 or later is required (`engines.node` is `>=20`; `.nvmrc` pins 22.22.3). Migration: upgrade Node before installing 3.0.
+- Build and type-check with TypeScript 5.9 (was 4.4).
+
 ## [2.0.1][] - 2025-04-02
 
 ### Updated

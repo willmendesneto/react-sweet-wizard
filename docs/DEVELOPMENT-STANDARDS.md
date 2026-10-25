@@ -9,12 +9,12 @@ code already follows; keep new code consistent with them.
 
 | Concern | Tool | Command |
 |---|---|---|
-| Language | TypeScript 4.4, `strict: true`, React JSX (`jsx: react`) | |
+| Language | TypeScript 5.9, `strict: true`, React JSX (`jsx: react`) | |
 | Formatting | Prettier 2 (`.prettierrc.js`; also enforced through `eslint-plugin-prettier` and `lint-staged` on commit) | `npx prettier --write src/` |
 | Linting | ESLint 8 (`.eslintrc.js`: react, react-hooks, jsx-a11y, import, sonarjs, jest, testing-library, unicorn) | `npm run lint` |
 | Types | tsc (`tsconfig.json`) | `npm run lint:types` |
 | Package manager | npm | `npm install` |
-| Node | 18.16.0 | from .nvmrc |
+| Node | 22.22.3 | from .nvmrc |
 
 ## File and naming conventions
 
