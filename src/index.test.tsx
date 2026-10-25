@@ -1,95 +1,98 @@
-import React from 'react';
-import { act, renderHook } from '@testing-library/react-hooks';
+import type { PropsWithChildren, ReactElement } from 'react';
+import { act, renderHook, waitFor } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { useWizardContext, WizardProvider, Steps, Step } from '.';
 
-// Common render use wizard hook
-const renderUseWizardHook = (initialStartIndex = 0) =>
-  renderHook(() => useWizardContext(), {
-    initialProps: {
-      startIndex: initialStartIndex,
-    },
-    wrapper: ({ children }) => (
-      <WizardProvider>
-        <Steps>
-          <Step key="0" id="0">
-            <div>
-              <p>step 1</p>
-              {children}
-            </div>
-          </Step>
-          <Step key="1" id="1">
-            <div>
-              <p>step 2</p>
-              {children}
-            </div>
-          </Step>
-          <Step key="2" id="step3">
-            <div>
-              <p>step 3</p>
-              {children}
-            </div>
-          </Step>
-        </Steps>
-      </WizardProvider>
-    ),
-  });
+const ThreeSteps = ({ children }: PropsWithChildren) => (
+  <WizardProvider>
+    <Steps>
+      <Step id="0">
+        <div>
+          <p>step 1</p>
+          {children}
+        </div>
+      </Step>
+      <Step id="1">
+        <div>
+          <p>step 2</p>
+          {children}
+        </div>
+      </Step>
+      <Step id="step3">
+        <div>
+          <p>step 3</p>
+          {children}
+        </div>
+      </Step>
+    </Steps>
+  </WizardProvider>
+);
+
+const renderUseWizardHook = () =>
+  renderHook(() => useWizardContext(), { wrapper: ThreeSteps });
+
+// React reports render errors through console.error; silence it only for tests that expect a throw.
+const expectRenderToThrow = (render: () => unknown, message: string) => {
+  const spy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+  expect(render).toThrow(message);
+  spy.mockRestore();
+};
 
 describe('useWizard hook', () => {
-  afterEach(jest.resetAllMocks);
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
 
   it('should throw an error if hooks is NOT using wizard provider as wrapper', () => {
-    const { result } = renderHook(() => useWizardContext(), {
-      wrapper: props => <div {...props} />,
-    });
-
-    expect(result.error).toEqual(
-      Error(
-        `Please make sure you're wrapping all the steps in a 'WizardProvider' component`
-      )
+    expectRenderToThrow(
+      () =>
+        renderHook(() => useWizardContext(), {
+          wrapper: ({ children }: PropsWithChildren) => <div>{children}</div>,
+        }),
+      `Please make sure you're wrapping all the steps in a 'WizardProvider' component`
     );
   });
 
   it('should throw an error if Steps component does not receive `Step` as component', () => {
-    const { result } = renderHook(() => useWizardContext(), {
-      wrapper: props => (
-        <WizardProvider>
-          <Steps>
-            <div {...props} />
-          </Steps>
-        </WizardProvider>
-      ),
-    });
-
-    expect(result.error).toEqual(
-      Error(
-        `Error at position "0". You should compose Steps using "Step" component`
-      )
+    expectRenderToThrow(
+      () =>
+        renderHook(() => useWizardContext(), {
+          wrapper: ({ children }: PropsWithChildren) => (
+            <WizardProvider>
+              <Steps>
+                <div>{children}</div>
+              </Steps>
+            </WizardProvider>
+          ),
+        }),
+      `Error at position "0". You should compose Steps using "Step" component`
     );
   });
 
   it('should throw an error if Steps component does not receive any children', () => {
-    const { result } = renderHook(() => useWizardContext(), {
-      wrapper: () => (
-        <WizardProvider>
-          {/* eslint-disable-next-line react/no-children-prop */}
-          <Steps children={undefined as any} />
-        </WizardProvider>
-      ),
-    });
-
-    expect(result.error).toEqual(
-      Error(`Steps should have at least a single child component`)
+    expectRenderToThrow(
+      () =>
+        renderHook(() => useWizardContext(), {
+          wrapper: () => (
+            <WizardProvider>
+              {/* eslint-disable-next-line react/no-children-prop -- forcing the invalid case */}
+              <Steps children={undefined as unknown as ReactElement} />
+            </WizardProvider>
+          ),
+        }),
+      'Steps should have at least a single child component'
     );
   });
 
-  it('should be available when wrapped in wizard', () => {
+  it('should be available when wrapped in wizard', async () => {
     const { result } = renderUseWizardHook();
-    expect(result.current).toBeDefined();
+    await waitFor(() => expect(result.current.steps).toHaveLength(3));
+
     expect(result.current).toEqual({
-      activeStepIndex: result.current.activeStepIndex,
-      steps: result.current.steps,
-      isFirstStep: result.current.isFirstStep,
-      isLastStep: result.current.isLastStep,
+      activeStepIndex: 0,
+      steps: [{ id: '0' }, { id: '1' }, { id: 'step3' }],
+      isFirstStep: true,
+      isLastStep: false,
       goTo: expect.any(Function),
       onNext: expect.any(Function),
       onPrevious: expect.any(Function),
@@ -99,25 +102,22 @@ describe('useWizard hook', () => {
   });
 
   it('call should be called if passed on `onNext`', async () => {
-    const { result, waitFor } = renderUseWizardHook();
-    expect(result.current).toBeDefined();
+    const { result } = renderUseWizardHook();
+    const handleNext = vi.fn();
 
-    const handleNext = jest.fn();
-    act(() => {
-      result.current.onNext(handleNext);
+    await act(async () => {
+      await result.current.onNext(handleNext);
     });
 
-    await waitFor(() => {
-      expect(result.current.activeStepIndex).toBe(1);
-    });
+    expect(result.current.activeStepIndex).toBe(1);
+    expect(handleNext).toHaveBeenCalledTimes(1);
   });
 
-  it('should not break if user goes above or below available steps', () => {
+  it('should not break if user goes above or below available steps', async () => {
     const { result } = renderUseWizardHook();
-    expect(result.current).toBeDefined();
     expect(result.current.activeStepIndex).toBe(0);
 
-    act(() => {
+    await act(async () => {
       result.current.onNext();
       result.current.onNext();
       result.current.onNext();
@@ -130,12 +130,12 @@ describe('useWizard hook', () => {
       result.current.onPrevious();
       result.current.onPrevious();
     });
+
     expect(result.current.activeStepIndex).toBe(0);
   });
 
   it('should move between steps if `goTo` method is called with number', () => {
     const { result } = renderUseWizardHook();
-    expect(result.current).toBeDefined();
     expect(result.current.activeStepIndex).toBe(0);
 
     act(() => {
@@ -153,7 +153,6 @@ describe('useWizard hook', () => {
 
   it('should move between steps if `goTo` method is called with string', () => {
     const { result } = renderUseWizardHook();
-    expect(result.current).toBeDefined();
     expect(result.current.activeStepIndex).toBe(0);
 
     act(() => {
@@ -171,7 +170,7 @@ describe('useWizard hook', () => {
 
   it('should return the active step mapped object if calling `getActiveStep` method', () => {
     const { result } = renderUseWizardHook();
-    expect(result.current).toBeDefined();
+
     expect(result.current.activeStepIndex).toBe(0);
     expect(result.current.getActiveStep()).toEqual({ id: '0' });
   });
@@ -183,6 +182,7 @@ describe('useWizard hook', () => {
       { id: '1', test: false },
       { id: 'step3', test: true },
     ];
+
     act(() => {
       result.current.setSteps(mockedSteps);
     });

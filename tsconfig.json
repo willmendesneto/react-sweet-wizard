@@ -2,24 +2,31 @@
   "compilerOptions": {
     "declaration": true,
     "module": "esnext",
-    "lib": ["dom", "esnext"],
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,
-    "moduleResolution": "node",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "react",
+    "jsx": "react-jsx",
     "sourceMap": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true,
-    "baseUrl": "src"
+    "esModuleInterop": true
   },
-  "exclude": ["node_modules", "**/*.spec.ts", "**/_*/**"],
-  "include": ["src"]
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "**/_*/**"
+  ],
+  "include": [
+    "src",
+    "vitest.setup.ts",
+    "vitest.config.ts"
+  ]
 }

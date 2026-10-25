@@ -1,13 +1,13 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["src"],
-  "noUnusedLocals": false,
+  "include": [
+    "src"
+  ],
   "compilerOptions": {
-    "declaration": false
+    "removeComments": true,
+    "target": "ES2019"
   },
   "exclude": [
-    "examples/**/*",
-    "**/__tests__/**/*",
     "**/*.test.tsx",
     "**/*.test.ts"
   ]

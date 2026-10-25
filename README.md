@@ -1,11 +1,10 @@
 # React Sweet Wizard
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/willmendesneto/react-sweet-wizard.svg)](https://greenkeeper.io/)
 [![npm](https://img.shields.io/badge/stackblitz-online-orange.svg)](https://stackblitz.com/edit/react-sweet-wizard-sample)
 
 [![npm version](https://badge.fury.io/js/react-sweet-wizard.svg)](http://badge.fury.io/js/react-sweet-wizard) [![npm downloads](https://img.shields.io/npm/dm/react-sweet-wizard.svg)](https://npmjs.org/react-sweet-wizard)
 
-[![Coverage Status](https://coveralls.io/repos/github/willmendesneto/react-sweet-wizard/badge.svg?branch=main)](https://coveralls.io/github/willmendesneto/react-sweet-wizard?branch=main) [![Build Status](https://circleci.com/gh/willmendesneto/react-sweet-wizard.svg?style=shield)](https://circleci.com/gh/willmendesneto/react-sweet-wizard)
+[![Coverage Status](https://coveralls.io/repos/github/willmendesneto/react-sweet-wizard/badge.svg?branch=main)](https://coveralls.io/github/willmendesneto/react-sweet-wizard?branch=main) [![CI](https://github.com/willmendesneto/react-sweet-wizard/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/willmendesneto/react-sweet-wizard/actions/workflows/ci.yml)
 
 Your module to handle with Form Wizards in ReactJS applications easier.
 
@@ -17,7 +16,7 @@ Well, there are several selling points, actually!
 - 🏆 Better Developer Experience (DX): It enforces some conventions in order to make sure we got you covered! Issues with things such as specific components that needs to be used, which component is incorrect and context that needs to be used as wrapper will be raised straightaway on development environment.
 - 🎯 Covers different usage and scenarios: It covers simple usage, but also covers scenarios when you have steps being added dinamically, specific validation steps that needs to be added, data structures that should be passed on, etc. The sky is the limit here!
 - 🤩 No external dependencies: And that's exactly what you read. This is a zero-dependencies package, so you can integrate with Material-UI, Chakra-UI or any other Design System you might be using - including your own. Feel free to integrate with your workflow as you wish
-- 🗜 Small bundle: All of that in only 1.58KB
+- 🗜 Small bundle: about 1.48 KB gzipped (ESM and CJS), with a 1.6 KB budget checked on every CI run by `size-limit`
 
 ---
 
@@ -25,9 +24,11 @@ Well, there are several selling points, actually!
 - [Setup](#setup)
 - [Demo](#demo)
 - [useWizardContext](#usewizardcontext)
-- [Publish](#publish)
+- [Release](#release)
 
 ## Install
+
+Requires React 18 or later (`react` as a peer dependency) and Node 22 or later. React 17 users should stay on 2.x.
 
 You can get it on NPM installing `react-sweet-wizard` module as a project dependency.
 
@@ -35,14 +36,6 @@ You can get it on NPM installing `react-sweet-wizard` module as a project depend
 npm install react-sweet-wizard --save
 # or
 yarn add react-sweet-wizard
-```
-
-You can also use the standalone UMD build by including `dist/react-sweet-wizard.js` in your page. If you do this you'll also need to include the dependencies. For example:
-
-```html
-<script src="https://unpkg.com/react@<package-version></package-version>/dist/react.js"></script>
-<script src="https://unpkg.com/react-dom@<package-version>/dist/react-dom.js"></script>
-<script src="https://unpkg.com/react-sweet-wizard/dist/umd/react-sweet-wizard.js"></script>
 ```
 
 ## Setup
@@ -69,7 +62,8 @@ const Progress = () => {
 
 const WizardSteps = () => (
   <Steps>
-    <Step key="0" id="0">
+    {/* `id` can be a number or a string */}
+    <Step key={0} id={0}>
       <div>
         <p>step 1</p>
       </div>
@@ -79,7 +73,6 @@ const WizardSteps = () => (
         <p>step 2</p>
       </div>
     </Step>
-    {/* 🎉 For better DX, `<Step />` component can also have `id` as strings 🎉 */}
     <Step key="step3" id="step3">
       <div>
         <p>step 3</p>
@@ -116,10 +109,10 @@ $ npm test
 $ npm run build
 ```
 
-### Run the bundlesize check
+### Run the size budget check
 
 ```bash
-$ npm run bundlesize
+$ npm run size
 ```
 
 ### Run the code lint
@@ -162,7 +155,7 @@ const ctx = useWizardContext<MyWizardSteps>();
 
 ### `setSteps(steps: T[])`
 
-Sets a new value for steps to be used and accessed across components. It covers scenarios such as steps with complex data structures.
+Sets a new value for steps to be used and accessed across components. It covers scenarios such as steps with complex data structures. Steps registered automatically by `<Steps>` carry only `id`, so declare your extra fields optional or call `setSteps` before reading them; the data you set is kept as long as the step ids match the `<Step>` children.
 It will use the defined Generic interface for it. Otherwise, it follows `DefaultWizardStepProps` interface.
 
 ```tsx
@@ -216,9 +209,9 @@ getActiveStep();
 ...
 ```
 
-### `onNext(cb?: () => void)`
+### `onNext(cb?: () => void | Promise<void>): Promise<void>`
 
-Moves the wizard to the next step. It also accepts a callback, in case you need to manage any specific handler. E.G.
+Moves the wizard to the next step and returns a promise that resolves after the move. It also accepts a callback, sync or async, that runs before the move; if the callback throws or rejects, the wizard stays on the current step and the promise rejects with that error. E.G.
 
 ```tsx
 import { useWizardContext } from 'react-sweet-wizard';
@@ -244,6 +237,14 @@ onNext(() => {
   alert('And here we go! 🚀');
   // You can add a specific validation here!
 });
+// Async validation: the wizard only advances when the callback resolves
+try {
+  await onNext(async () => {
+    await validateCurrentStep();
+  });
+} catch (error) {
+  // validation failed; still on the same step
+}
 ```
 
 ### `onPrevious()`
@@ -268,9 +269,9 @@ onNext();
 onPrevious();
 ```
 
-### `goTo(id: number | string)`
+### `goTo(indexOrId: number | string)`
 
-Moves the wizard to a specific step. Interesting if you have some advanced scenario
+Moves the wizard to a specific step. A **number is the step index** (`goTo(1)` is always the second step); a **string is matched against the step id** (`goTo('step3')`, and `goTo('10')` finds `<Step id={10}>`). A numeric argument is never matched against ids, so pass a numeric id as a string. Out-of-range calls are ignored.
 
 ```tsx
 import { useWizardContext, DefaultWizardStepProps } from 'react-sweet-wizard';
@@ -304,11 +305,9 @@ goTo('step3');
 console.log(getActiveStep());
 ```
 
-## Publish
+## Release
 
-this project is using `np` package to publish, which makes things straightforward. EX: `np <patch|minor|major>`
-
-> For more details, [please check np package on npmjs.com](https://www.npmjs.com/package/np)
+Releases are cut with `npm version <patch|minor|major>` (it runs lint, types and tests, then moves the `## [Unreleased]` changelog entries under the new version), followed by pushing the commit and its tag (`git push --follow-tags`), which triggers the GitHub Release workflow, and a manual `npm publish`. The full flow lives in [docs/playbooks/RELEASE-WORKFLOW.md](docs/playbooks/RELEASE-WORKFLOW.md).
 
 ## Author
 
