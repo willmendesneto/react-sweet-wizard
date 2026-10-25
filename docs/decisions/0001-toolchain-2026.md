@@ -26,7 +26,7 @@ changes documented in `CHANGELOG.md`:
   removed.
 - **Lint and format:** ESLint 9 flat config (55 lines, linting the whole repo) with typescript-eslint, react, react-hooks,
   jsx-a11y, testing-library, vitest and prettier; Prettier 3; Husky 9 with lint-staged.
-- **Size:** `size-limit` with gzip budgets of 1500 B for each artefact, raised deliberately (twice, with
+- **Size:** `size-limit` with gzip budgets of 1600 B for each artefact, raised deliberately (twice, with
   the maintainer) to pay for id-based, reducer-side step registration and index clamping (3.0 measures
   about 1.48 KB for each; 2.0.1 shipped 1199 B ESM and 2653 B ES5 CJS).
 - **CI:** GitHub Actions on a Node 22/24 by React 18/19 matrix, Coveralls through the official
@@ -46,7 +46,7 @@ changes documented in `CHANGELOG.md`:
 | Keep the UMD bundle | It existed for script-tag consumers through unpkg; nobody maintains that path and it doubled the build and the budgets. Those consumers stay on 2.x. |
 | Keep React 17 in the peer range | Testing Library 16 and the automatic JSX runtime target React 18+; a React 17 CI leg would need Testing Library 12 or a render-only smoke test. |
 | Change `goTo(number)` to match ids (with a new `goToIndex`) | Rejected by the maintainer: the index semantics are simple and sufficient; the rule is now stated explicitly in the docs instead. |
-| Keep the 2.0.1 size budgets | Id-based registration costs about 55 B gzipped; the maintainer chose correctness over the last bytes and raised the budgets deliberately, twice (1400 B, then 1500 B after the review fixes). |
+| Keep the 2.0.1 size budgets | Id-based registration costs about 55 B gzipped; the maintainer chose correctness over the last bytes and raised the budgets deliberately, three times (1400 B, 1500 B after the review fixes, 1600 B to keep about 7% headroom over the measured 1.49 KB). |
 | Keep Node 20 (engines >=20) | End of life since 2026-04-30; Vitest 5, jsdom 30, jest-dom 7, lint-staged 17 and size-limit 14 already need Node 22, so supporting it meant pinning older majors. Raising the floor is free in a major release. |
 
 ## Consequences

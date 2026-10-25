@@ -16,7 +16,7 @@ Well, there are several selling points, actually!
 - 🏆 Better Developer Experience (DX): It enforces some conventions in order to make sure we got you covered! Issues with things such as specific components that needs to be used, which component is incorrect and context that needs to be used as wrapper will be raised straightaway on development environment.
 - 🎯 Covers different usage and scenarios: It covers simple usage, but also covers scenarios when you have steps being added dinamically, specific validation steps that needs to be added, data structures that should be passed on, etc. The sky is the limit here!
 - 🤩 No external dependencies: And that's exactly what you read. This is a zero-dependencies package, so you can integrate with Material-UI, Chakra-UI or any other Design System you might be using - including your own. Feel free to integrate with your workflow as you wish
-- 🗜 Small bundle: about 1.48 KB gzipped (ESM and CJS), with a 1.5 KB budget checked on every CI run by `size-limit`
+- 🗜 Small bundle: about 1.48 KB gzipped (ESM and CJS), with a 1.6 KB budget checked on every CI run by `size-limit`
 
 ---
 

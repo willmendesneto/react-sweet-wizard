@@ -61,7 +61,7 @@ The library does not read `window`, `document` or any browser API, so `renderToS
 - Formats: ESM `dist/esm/index.mjs` with `dist/esm/index.d.mts` (`exports["."].import`), CommonJS `dist/cjs/index.cjs` (ES2019) with `dist/cjs/index.d.cts` (`exports["."].require`, `main`, `types`). `"type": "commonjs"`, `sideEffects: false`. Only the package root and `./package.json` are exported; deep imports of `dist/*` are not supported. No UMD build since 3.0. `npm run lint:package` (publint and attw) checks node16 and bundler resolution.
 - Peer dependency: `react >=18.0.0` (CI tests React 18 and 19); no runtime dependencies.
 - Node: `engines.node >=22`.
-- Size budget: `size-limit` (`.size-limit.json`, gzip): 1500 B each for ESM and CJS (about 1.48 KB today). Run `npm run build && npm run size`.
+- Size budget: `size-limit` (`.size-limit.json`, gzip): 1600 B each for ESM and CJS (about 1.48 KB today). Run `npm run build && npm run size`.
 
 ## Testing
 
