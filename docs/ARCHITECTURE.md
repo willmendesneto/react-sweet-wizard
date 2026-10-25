@@ -49,7 +49,7 @@ The library is eight small modules under `src/` and everything a consumer can us
 
 ## Known constraints and debt
 
-- Size budgets are enforced in CI (`.size-limit.json`, gzip): 1500 B for the ESM and for the CJS artefact (raised deliberately in 3.0 for id-based, reducer-side step registration and index clamping; the builds measure about 1.45 KB; 2.0.1 shipped 1199 B ESM and 2653 B ES5 CJS). Almost any new import or branch needs a budget review.
+- Size budgets are enforced in CI (`.size-limit.json`, gzip): 1500 B for the ESM and for the CJS artefact (raised deliberately in 3.0 for id-based, reducer-side step registration and index clamping; the builds measure about 1.48 KB; 2.0.1 shipped 1199 B ESM and 2653 B ES5 CJS). Almost any new import or branch needs a budget review.
 - Vitest coverage thresholds (branches 91, functions 100, lines 96, statements 96) fail `npm run test:coverage` when coverage drops; CI runs that script.
 - `goTo(number)` means index, `goTo(string)` means id. Changing this would be breaking.
 - SSR safety is plausible (no DOM access) but untested; there is no `test:ssr` script.

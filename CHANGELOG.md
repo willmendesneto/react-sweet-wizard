@@ -35,7 +35,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `react-dom` is no longer a peer dependency: the library never imports it, so non-DOM renderers install without peer warnings.
 - Tests run on Vitest 5 with Testing Library 16 and jsdom 30; Jest and Babel are gone from the toolchain.
 - Build and type-check with TypeScript 6.0 (was 4.4); `moduleResolution` is `bundler`.
-- Size budgets (`.size-limit.json`, gzip) are 1500 B for the ESM and the CJS artefact; the 3.0 builds measure about 1.45 KB each, against 1199 B (ESM) and 2653 B (CJS, ES5) in 2.0.1.
+- Size budgets (`.size-limit.json`, gzip) are 1500 B for the ESM and the CJS artefact; the 3.0 builds measure about 1.48 KB each, against 1199 B (ESM) and 2653 B (CJS, ES5) in 2.0.1.
 - Build with Rollup 4: `dist/esm/index.mjs` with `index.d.mts`, and `dist/cjs/index.cjs` (ES2019) with `index.d.cts`, each with source maps; `"type": "commonjs"`; `main`, `module` and `types` point at the new files; the unused `browser`, `jsnext:main`, `es2015`, `es2020` and `cjs` fields are gone. `npm run lint:package` (publint, attw) checks the package.
 
 ## [2.0.1][] - 2025-04-02

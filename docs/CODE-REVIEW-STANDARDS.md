@@ -35,7 +35,7 @@ Use the table in [README.md](README.md). The reviewer checks that the docs it na
 
 Add entries as they happen; this section is institutional memory.
 
-- **Bundle budget exceeded.** A one-line helper or an extra React import can push `dist/esm/index.mjs` or `dist/cjs/index.cjs` past the 1500 B gzip budget in `.size-limit.json` (about 1.45 KB today). Run `npm run build && npm run size` locally before opening the PR; CI runs the same pair in the `size` job.
+- **Bundle budget exceeded.** A one-line helper or an extra React import can push `dist/esm/index.mjs` or `dist/cjs/index.cjs` past the 1500 B gzip budget in `.size-limit.json` (about 1.48 KB today). Run `npm run build && npm run size` locally before opening the PR; CI runs the same pair in the `size` job.
 - **Coverage threshold failure.** New branches without tests fail `npm run test:coverage` even when every test passes. Read the per-file table Vitest prints below the summary.
 - **Type and docs drift.** `Step`, `DefaultWizardStepProps.id` and `goTo` share the `number | string` id type; review any change to one of them against the other two, the README and `docs/api/REACT-SWEET-WIZARD.md`.
 - **Unhandled `onNext` rejection.** `onNext` returns the callback chain as a promise; a call site that neither awaits nor catches it turns a failed validator into an unhandled rejection. Review every new `onNext(cb)` call for handling.
