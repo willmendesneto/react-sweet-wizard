@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 - **Breaking:** Node 20 or later is required (`engines.node` is `>=20`; `.nvmrc` pins 22.22.3). Migration: upgrade Node before installing 3.0.
 - Build and type-check with TypeScript 5.9 (was 4.4).
+- **Breaking:** the UMD build (`dist/umd/react-sweet-wizard.js`, global `ReactSweetWizard`) is removed; the package ships ESM and CommonJS only. Migration: install from npm and import; script-tag consumers stay on 2.x.
+- **Breaking:** `package.json` has an `exports` map (`types`, `import`, `require`); deep imports of `dist/*` paths are no longer supported. Migration: import from `react-sweet-wizard` only.
+- Build with Rollup 4: `dist/esm/index.js`, `dist/cjs/index.cjs` (ES2019) and `dist/types/index.d.ts`, each with source maps. `main` and `types` point at the new files; the unused `browser`, `jsnext:main`, `es2015`, `es2020` and `cjs` fields are gone.
 
 ## [2.0.1][] - 2025-04-02
 

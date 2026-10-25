@@ -30,11 +30,14 @@
   "main": "dist/cjs/index.cjs",
   "module": "dist/esm/index.js",
   "types": "dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs"
+    }
+  },
   "sideEffects": false,
-  "jsnext:main": "dist/esm/index.js",
-  "es2015": "dist/es2015/index.js",
-  "es2020": "dist/es2020/index.js",
-  "cjs": "dist/cjs/index.js",
   "scripts": {
     "prepare": "husky",
     "build": "rimraf dist && rollup -c",

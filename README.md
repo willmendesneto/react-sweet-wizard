@@ -37,14 +37,6 @@ npm install react-sweet-wizard --save
 yarn add react-sweet-wizard
 ```
 
-You can also use the standalone UMD build by including `dist/react-sweet-wizard.js` in your page. If you do this you'll also need to include the dependencies. For example:
-
-```html
-<script src="https://unpkg.com/react@<package-version></package-version>/dist/react.js"></script>
-<script src="https://unpkg.com/react-dom@<package-version>/dist/react-dom.js"></script>
-<script src="https://unpkg.com/react-sweet-wizard/dist/umd/react-sweet-wizard.js"></script>
-```
-
 ## Setup
 
 You'll need to import `WizardProvider` and add it into the root component of your application. So that you can create your wizard steps by using `Steps`, `Step` and control them via `useWizardContext` hook.

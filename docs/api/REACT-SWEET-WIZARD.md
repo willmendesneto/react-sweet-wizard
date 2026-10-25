@@ -56,9 +56,9 @@ The library does not read `window`, `document` or any browser API, so `renderToS
 
 ## Bundle and compatibility
 
-- Formats: CommonJS (`main`: `dist/cjs/index.js`, ES5, with `types`: `dist/cjs/index.d.ts`), ESM (`module`: `dist/esm/index.js`), UMD (`browser`: `dist/umd/react-sweet-wizard.js`, global `ReactSweetWizard`, plus `.min.js` and `.min.js.gz`). `sideEffects: false`. The `es2015` and `es2020` fields in `package.json` point at outputs the build does not produce.
+- Formats: ESM (`dist/esm/index.js`, `exports.import`), CommonJS (`dist/cjs/index.cjs`, ES2019, `exports.require`), declarations (`dist/types/index.d.ts`, `exports.types`). `sideEffects: false`. Only the package root is exported; deep imports of `dist/*` are not supported. No UMD build since 3.0.
 - Peer dependencies: `react >=17.0.2`, `react-dom >=17.0.2`; no runtime dependencies
-- Size budget: `size-limit` (`.size-limit.json`, gzip): UMD plain, min and gz `1.1KB` each, CJS `2.6KB`, ESM `1.2KB`. Run `npm run build && npm run size`.
+- Size budget: `size-limit` (`.size-limit.json`, gzip): ESM 1228 B, CJS 1331 B. Run `npm run build && npm run size`.
 
 ## Testing
 
