@@ -2,7 +2,7 @@ import typescript from '@rollup/plugin-typescript';
 
 // One build, two module formats, one set of declarations. `npm run build` cleans `dist/` first.
 export default {
-  input: 'src/index.tsx',
+  input: 'src/index.ts',
   external: ['react', 'react/jsx-runtime'],
   output: [
     {

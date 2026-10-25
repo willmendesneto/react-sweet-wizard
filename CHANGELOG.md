@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+### Added
+
+- `WizardContextValue<T>` is exported: the type of the object `useWizardContext<T>()` returns (it was the unexported `WizardStepperContextProps`).
+
 ### Changed
 
 - **Breaking:** React 18 or later is required (`peerDependencies` are `react >=18.0.0` and `react-dom >=18.0.0`). Migration: upgrade React, or stay on 2.x for React 17.
