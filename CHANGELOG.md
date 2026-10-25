@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased][]
 
+## [3.0.0][] - 2026-10-25
+
 ### Breaking
 
 - `onNext` returns `Promise<void>` (the callback may be sync or async) and rejects when the callback throws or rejects; the wizard stays on the current step in that case. Migration: `await` or `.catch()` calls that pass a callback that can fail.
@@ -152,7 +154,8 @@ const WizardSteps = () => (
 [1.0.3]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.0.3
 
 
-[Unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v2.0.1...HEAD
+[Unreleased]: https://github.com/willmendesneto/react-sweet-wizard/compare/v3.0.0...HEAD
+[3.0.0]: https://github.com/willmendesneto/react-sweet-wizard/compare/v2.0.1...v3.0.0
 [2.0.1]: https://github.com/willmendesneto/react-sweet-wizard/compare/v2.0.0...v2.0.1
 [2.0.0]: https://github.com/willmendesneto/react-sweet-wizard/compare/v1.1.0...v2.0.0
 [1.1.0]: https://github.com/willmendesneto/react-sweet-wizard/tree/v1.1.0
