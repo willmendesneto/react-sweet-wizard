@@ -8,7 +8,7 @@
 
 ### Node version
 
-Required: Node 24, the current LTS (`.nvmrc` names the major only, so `nvm use` picks the newest installed 24.x; `engines` allows any Node 20 or later). With nvm: `nvm use`. A different major usually shows up as native module build errors or syntax errors in dependencies.
+Required: Node 24.22.0, the current LTS (pinned in `.nvmrc`; `engines` allows any Node 20 or later). With nvm: `nvm use`. A different major usually shows up as native module build errors or syntax errors in dependencies.
 
 ### Install
 

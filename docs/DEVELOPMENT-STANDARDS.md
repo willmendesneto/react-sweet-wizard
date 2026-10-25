@@ -14,7 +14,7 @@ code already follows; keep new code consistent with them.
 | Linting | ESLint 9 flat config (`eslint.config.js`: typescript-eslint, react, react-hooks, jsx-a11y, vitest, testing-library, prettier) | `npm run lint` |
 | Types | tsc (`tsconfig.json`) | `npm run lint:types` |
 | Package manager | npm | `npm install` |
-| Node | 24 (current LTS, major only) | from .nvmrc |
+| Node | 24.22.0 (current LTS) | from .nvmrc |
 
 ## File and naming conventions
 
