@@ -34,7 +34,7 @@ Releases are cut locally by the maintainer. `npm version <bump>` runs the qualit
 ## 4. After publishing
 
 - Check the package page on npm and the unpkg URL used in the README (`https://unpkg.com/react-sweet-wizard/dist/umd/react-sweet-wizard.js`) serve the new version.
-- Confirm the CircleCI pipeline for the pushed commit is green and Coveralls updated.
+- Confirm the GitHub Actions `CI` workflow for the pushed commit is green and Coveralls updated.
 - Create the GitHub release from the tag if you want release notes; the changelog section is the source text.
 
 ## Rollback or hotfix

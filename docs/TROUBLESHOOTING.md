@@ -36,7 +36,7 @@ History, fixed in 3.0. Up to 2.0.1 the size gate ran `bundlesize`, which require
 
 ## Gates in CI but not locally
 
-CircleCI runs the same commands as the gates above, with two differences. Tests run as `npm run test:ci`, which adds `--coverage --coverageReporters=text-lcov | coveralls` and needs the `COVERALLS_REPO_TOKEN` from `.coveralls.yml` or the project settings; locally run plain `npm run test`. The `bundle_size` job runs `npm run build` before `npm run size`, so always build before checking sizes locally. CI pins `cimg/node:22.22.3`, matching `.nvmrc`; `engines` allows `>=20` but only Node 22 is exercised.
+GitHub Actions (`.github/workflows/ci.yml`) runs the same five gates with three differences. The `test` job adds `--coverage --coverageReporters=lcov` and the Node 22 leg uploads `coverage/lcov.info` to Coveralls with the repository `GITHUB_TOKEN`; a failure there means the repository is not linked on coveralls.io, not a test failure. The `test` and `build` jobs run on Node 20, 22 and 24, so a dependency that drops an older major shows up only in CI; reproduce with `nvm use 20 && npm ci && npm test`. The `size` job runs `npm run build` before `npm run size`, so always build before checking sizes locally. Every job starts with `npm ci`, which fails on peer conflicts that `npm install --legacy-peer-deps` hides; run `npm ci` locally after changing dependencies.
 
 ## Add an entry
 

@@ -13,7 +13,7 @@ Agents and `docs` tooling parse this table, so keep its three columns and the gl
 | [DEVELOPMENT-STANDARDS.md](DEVELOPMENT-STANDARDS.md) | Language, formatting, imports, errors | `src/**` |
 | [TESTING-GUIDE.md](TESTING-GUIDE.md) | Runners, fixtures, what to test | `src/**/*.test.tsx`, `jest.config.js`, `jest.setup.js` |
 | [CODE-REVIEW-STANDARDS.md](CODE-REVIEW-STANDARDS.md) | Review lenses and severity | `**` |
-| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Environment and build problems | `package.json`, `.nvmrc`, `**/*.config.*` |
+| [TROUBLESHOOTING.md](TROUBLESHOOTING.md) | Environment, build and CI problems | `package.json`, `.nvmrc`, `**/*.config.*`, `.github/workflows/**` |
 | [api/REACT-SWEET-WIZARD.md](api/REACT-SWEET-WIZARD.md) | Public API: `WizardProvider`, `Steps`, `Step`, `useWizardContext`, `DefaultWizardStepProps` | `src/index.tsx`, `src/index.test.tsx` |
 | [playbooks/RELEASE-WORKFLOW.md](playbooks/RELEASE-WORKFLOW.md) | Versioning and publishing | `package.json`, `CHANGELOG.md` |
 | [decisions/](decisions/README.md) | Architecture decision records | `**` |

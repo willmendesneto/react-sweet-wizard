@@ -9,7 +9,7 @@ flows in and out of the system.
 
 `react-sweet-wizard` is a zero-dependency React library for building multi-step (wizard) flows. A `WizardProvider` holds the wizard state in a `useReducer`-backed context, `Steps` and `Step` render only the active step, and the `useWizardContext` hook exposes navigation (`onNext`, `onPrevious`, `goTo`), step data (`steps`, `setSteps`, `getActiveStep`) and position flags (`isFirstStep`, `isLastStep`). The hook is generic over a consumer-defined step shape that extends `DefaultWizardStepProps`. It is headless: it ships no styles and no UI beyond a wrapping `div` per step, so it composes with any design system.
 
-Kind: lib. Stack: TypeScript 5.9 (strict) and React, built with Rollup 4 (ESM and CommonJS with declarations); tested with Jest 27, Testing Library and jsdom; linted with ESLint and Prettier; size-checked with `size-limit`; CI on CircleCI.
+Kind: lib. Stack: TypeScript 5.9 (strict) and React, built with Rollup 4 (ESM and CommonJS with declarations); tested with Jest 27, Testing Library and jsdom; linted with ESLint and Prettier; size-checked with `size-limit`; CI on GitHub Actions.
 
 ## Modules
 
@@ -32,7 +32,7 @@ The whole library lives in one file, `src/index.tsx`, and everything a consumer 
 
 - Peer dependencies: `react` and `react-dom` at `>=17.0.2`. No runtime dependencies (`dependencies` is empty and `sideEffects` is `false`).
 - Build: one Rollup 4 run (`rollup.config.mjs`, `@rollup/plugin-typescript`) emits `dist/esm/index.js`, `dist/cjs/index.cjs` (ES2019) and `dist/types/index.d.ts`, all with source maps. `react` and `react/jsx-runtime` are externals. There is no UMD build since 3.0. `scripts/check-package.mjs` verifies the tarball against `package.json` after each build.
-- CI: CircleCI (`.circleci/config.yml`) runs install, then `test:ci` (Jest coverage piped to Coveralls), `build` + `size`, `lint` and `lint:types` in parallel on `cimg/node:22.22.3`. There are no GitHub Actions workflows.
+- CI: GitHub Actions (`.github/workflows/ci.yml`) runs five jobs on every push and pull request to `main`: `lint`, `types`, `test` (coverage, Node 20/22/24, Coveralls upload from the Node 22 leg), `build` with `scripts/check-package.mjs` (Node 20/22/24) and `size`. Dependabot (`.github/dependabot.yml`) opens weekly grouped PRs for dev dependencies and actions.
 - Local hooks: Husky `pre-commit` runs `lint-staged`, which runs Prettier on staged `js/ts/jsx/tsx` files.
 
 ## Build and runtime

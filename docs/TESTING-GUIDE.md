@@ -39,7 +39,7 @@ There are no fixture files. `src/index.test.tsx` builds small inline wizards wit
 
 ## Coverage and CI
 
-Coverage is always collected (`collectCoverage: true`, `collectCoverageFrom: ['**/src/*.{ts,tsx}']`) and the global thresholds are branches 91, functions 100, lines 96, statements 96. A drop below any threshold fails `npm run test`. Reports land in `coverage/` as lcov, html and text-summary. In CI, `npm run test:ci` pipes lcov to Coveralls; the badge in the README reads from it.
+Coverage is always collected (`collectCoverage: true`, `collectCoverageFrom: ['**/src/*.{ts,tsx}']`) and the global thresholds are branches 91, functions 100, lines 96, statements 96. A drop below any threshold fails `npm run test`. Reports land in `coverage/` as lcov, html and text-summary. In CI (`.github/workflows/ci.yml`), the `test` job runs on Node 20, 22 and 24 with `--coverageReporters=lcov`, and the Node 22 leg uploads `coverage/lcov.info` to Coveralls; the badge in the README reads from it.
 
 ## Flaky or slow tests
 
