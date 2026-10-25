@@ -79,6 +79,7 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: node scripts/check-package.mjs
+      - run: npm audit --omit=dev
 
   size:
     name: Size budget

@@ -1,0 +1,38 @@
+name: Release
+
+# Runs when a version tag is pushed (npm version creates it; git push --follow-tags sends it).
+# It re-runs every gate, dry-runs the tarball and creates the GitHub Release from the CHANGELOG
+# section of that version. It never publishes to npm: that stays a maintainer step.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Verify and create the GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run lint:types
+      - run: npm run test:coverage
+      - run: npm run build
+      - run: npm run size
+      - run: node scripts/check-package.mjs
+      - run: npm pack --dry-run
+      - name: Extract the changelog section for ${{ github.ref_name }}
+        run: node scripts/changelog-section.mjs "${GITHUB_REF_NAME#v}" > release-notes.md
+      - name: Create the GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ github.ref_name }}
+          body_path: release-notes.md
+          prerelease: ${{ contains(github.ref_name, '-') }}

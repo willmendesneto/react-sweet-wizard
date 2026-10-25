@@ -44,7 +44,6 @@
     "lint": "eslint src/",
     "lint:fix": "eslint src/ --fix",
     "lint:types": "tsc --noEmit",
-    "lint:types-watch": "tsc --noEmit --watch",
     "prepack": "npm run preversion -s && npm run build -s",
     "test": "vitest run",
     "test:watch": "vitest",
