@@ -27,7 +27,7 @@ Required: Node 24.22.0, the current LTS (pinned in `.nvmrc`; `engines` allows an
 - Coverage thresholds apply only to `npm run test:coverage`; `npm run test` and `npm run test:watch` skip coverage. A threshold failure prints the per-file table at the end of the run.
 - Testing Library warnings about `act(...)` usually mean a test called `onNext` with a callback and did not wrap it in `await act(async () => ...)`.
 - `ReferenceError: describe is not defined`: `globals` is off in `vitest.config.ts`; import the API from `vitest`.
-- `Vitest 5` or `jsdom 30` fail to install or run on Node 20: both require Node 22.12 or later. The repo pins Vitest 4 and jsdom 26 while Node 20 is in the CI matrix.
+- `Vitest 5` or `jsdom 30` fail to install or run on Node 20: both require Node 22.12 or later. The repo pins Vitest 4 and jsdom 29 while Node 20 is in the CI matrix.
 
 ## Size budget
 

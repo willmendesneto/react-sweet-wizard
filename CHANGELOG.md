@@ -26,7 +26,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - **Breaking:** the UMD build (`dist/umd/react-sweet-wizard.js`, global `ReactSweetWizard`) is removed; the package ships ESM and CommonJS only. Migration: install from npm and import; script-tag consumers stay on 2.x.
 - **Breaking:** `package.json` has an `exports` map (`types`, `import`, `require`); deep imports of `dist/*` paths are no longer supported. Migration: import from `react-sweet-wizard` only.
 - Tests run on Vitest 4 with Testing Library 16 and jsdom; Jest and Babel are gone from the toolchain.
-- Build and type-check with TypeScript 5.9 (was 4.4).
+- Build and type-check with TypeScript 6.0 (was 4.4); `moduleResolution` is `bundler`.
 - Size budgets (`.size-limit.json`, gzip) are 1400 B for the ESM and the CJS artefact; the 3.0 builds measure about 1260 B and 1275 B, against 1199 B (ESM) and 2653 B (CJS, ES5) in 2.0.1.
 - Build with Rollup 4: `dist/esm/index.js`, `dist/cjs/index.cjs` (ES2019) and `dist/types/index.d.ts`, each with source maps. `main` and `types` point at the new files; the unused `browser`, `jsnext:main`, `es2015`, `es2020` and `cjs` fields are gone.
 

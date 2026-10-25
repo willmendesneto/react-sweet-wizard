@@ -5,7 +5,6 @@
   ],
   "noUnusedLocals": false,
   "compilerOptions": {
-    "esModuleInterop": false,
     "removeComments": true,
     "target": "ES2019"
   },
