@@ -13,7 +13,7 @@ the source of truth for architecture and conventions; this file tells you when t
 | Type check | `npm run lint:types` |
 | Unit tests | `npm run test` |
 | Build | `npm run build` |
-| Size budget | `npm run bundlesize` |
+| Size budget | `npm run size` |
 | Install | `npm install` |
 
 Node 18.16.0 from .nvmrc (engines: >=14). Package manager: npm.

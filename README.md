@@ -116,10 +116,10 @@ $ npm test
 $ npm run build
 ```
 
-### Run the bundlesize check
+### Run the size budget check
 
 ```bash
-$ npm run bundlesize
+$ npm run size
 ```
 
 ### Run the code lint

@@ -35,7 +35,7 @@ Use the table in [README.md](README.md). The reviewer checks that the docs it na
 
 Add entries as they happen; this section is institutional memory.
 
-- **Bundle budget exceeded.** A one-line helper or an extra React import can push `dist/esm/index.js` past `1.2KB`. Run `npm run build && npm run bundlesize` locally before opening the PR; CI runs the same pair in the `bundle_size` job.
+- **Bundle budget exceeded.** A one-line helper or an extra React import can push `dist/esm/index.js` past `1.2KB`. Run `npm run build && npm run size` locally before opening the PR; CI runs the same pair in the `bundle_size` job.
 - **Coverage threshold failure.** New branches without tests fail `npm run test` even when every test passes. Read the text-summary at the end of the Jest output.
 - **Type and docs drift.** `Step` is typed `id: string` while the README and changelog promise numbers; review changes to `Step`, `goTo` or `DefaultWizardStepProps` against both the README and `docs/api/REACT-SWEET-WIZARD.md`.
 - **Behaviour change to `goTo`.** Numbers are indexes, strings are ids. Any change here is a breaking change and needs a changelog entry and an ADR.

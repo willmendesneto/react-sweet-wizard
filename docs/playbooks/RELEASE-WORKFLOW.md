@@ -15,7 +15,7 @@ Releases are cut locally by the maintainer. `npm version <bump>` runs the qualit
 - `npm run lint:types`
 - `npm run test`
 - `npm run build`
-- `npm run bundlesize`
+- `npm run size`
 - `CHANGELOG.md` has an entry under the next version; `npx changelog-verify CHANGELOG.md` passes.
 
 ## 2. Version
@@ -29,7 +29,7 @@ Releases are cut locally by the maintainer. `npm version <bump>` runs the qualit
 3. `npm version <patch|minor|major>` (gates, changelog rewrite, commit and tag).
 4. `git push --follow-tags origin main`.
 5. `npm publish` (runs `prepack`: gates again, then `npm run build`; only `dist/` is published per `files`).
-6. Optionally `npm run bundlesize` after the build to confirm the budgets on the published artefacts.
+6. Optionally `npm run size` after the build to confirm the budgets on the published artefacts.
 
 ## 4. After publishing
 

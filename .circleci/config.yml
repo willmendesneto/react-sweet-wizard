@@ -70,7 +70,7 @@ jobs:
           name: Checking bundle size
           command: |
             npm run build
-            npm run bundlesize
+            npm run size
   lint:
     <<: *docker_defaults
     steps:

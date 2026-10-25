@@ -1,0 +1,20 @@
+[
+  {
+    "name": "ESM",
+    "path": "dist/esm/index.js",
+    "limit": "1228 B",
+    "gzip": true
+  },
+  {
+    "name": "CJS",
+    "path": "dist/cjs/index.js",
+    "limit": "2662 B",
+    "gzip": true
+  },
+  {
+    "name": "UMD (min)",
+    "path": "dist/umd/react-sweet-wizard.min.js",
+    "limit": "1126 B",
+    "gzip": true
+  }
+]

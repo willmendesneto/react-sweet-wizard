@@ -34,7 +34,7 @@ Run these before handing off, in this order. All must pass.
 2. `npm run lint:types` (Type check)
 3. `npm run test` (Unit tests)
 4. `npm run build` (Build)
-5. `npm run bundlesize` (Size budget)
+5. `npm run size` (Size budget)
 
 ### Conventions
 

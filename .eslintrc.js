@@ -11,6 +11,7 @@ const SRC_FOLDERS = readdirSync(SRC_PATH)
   .sort();
 
 module.exports = {
+  root: true,
   settings: {
     react: {
       pragma: 'React',
@@ -172,7 +173,10 @@ module.exports = {
             // Adding order for dependencies and dev dependencies
             // across codebase
             []
-              .concat(Object.keys(dependencies), Object.keys(devDependencies))
+              .concat(
+                Object.keys(dependencies || {}),
+                Object.keys(devDependencies || {})
+              )
               .filter(pkg => !['@', 'react'].includes(pkg))
               .sort()
               .map(pkg => ({

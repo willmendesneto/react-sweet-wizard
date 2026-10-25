@@ -53,11 +53,10 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "preversion": "npm run lint -s && npm run lint:types -s && npm run test -s",
-    "bundlesize": "bundlesize",
     "version": "version-changelog CHANGELOG.md && changelog-verify CHANGELOG.md && git add CHANGELOG.md",
-    "test:ci": "jest --coverage --coverageReporters=text-lcov | coveralls"
+    "test:ci": "jest --coverage --coverageReporters=text-lcov | coveralls",
+    "size": "size-limit"
   },
-  "dependencies": {},
   "devDependencies": {
     "@babel/cli": "^7.15.7",
     "@babel/core": "^7.15.8",
@@ -71,6 +70,7 @@
     "@babel/preset-react": "^7.14.5",
     "@babel/preset-typescript": "^7.15.0",
     "@babel/runtime": "^7.15.4",
+    "@size-limit/file": "^14.3.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/react-hooks": "^7.0.2",
@@ -83,7 +83,6 @@
     "babel-jest": "^27.3.1",
     "babel-loader": "^8.2.3",
     "babel-types": "^6.26.0",
-    "bundlesize": "^0.18.1",
     "changelog-verify": "^1.1.2",
     "coveralls": "^3.1.1",
     "eslint": "^8.1.0",
@@ -110,6 +109,7 @@
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-terser": "^7.0.2",
+    "size-limit": "^14.3.0",
     "tslib": "^2.3.1",
     "typescript": "^4.4.4",
     "uglify-js": "^3.14.2",
@@ -119,28 +119,6 @@
     "react": ">=17.0.2",
     "react-dom": ">=17.0.2"
   },
-  "bundlesize": [
-    {
-      "path": "./dist/umd/react-sweet-wizard.js",
-      "maxSize": "1.1KB"
-    },
-    {
-      "path": "./dist/umd/react-sweet-wizard.min.js",
-      "maxSize": "1.1KB"
-    },
-    {
-      "path": "./dist/umd/react-sweet-wizard.min.js.gz",
-      "maxSize": "1.1KB"
-    },
-    {
-      "path": "./dist/cjs/index.js",
-      "maxSize": "2.6KB"
-    },
-    {
-      "path": "./dist/esm/index.js",
-      "maxSize": "1.2KB"
-    }
-  ],
   "engines": {
     "node": ">=14"
   },

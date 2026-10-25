@@ -32,11 +32,11 @@ Required: 18.16.0 (.nvmrc). With nvm: `nvm use`. A different major usually shows
 
 ### `Error: dlopen(...iltorb.node...) library load disallowed by system policy` (`ERR_DLOPEN_FAILED`)
 
-`npm run bundlesize` crashes before measuring anything. Cause: `bundlesize` 0.18 requires the native `iltorb` (brotli) binding at load time, and its prebuilt binary does not load on a Node major other than the one it was built for (seen on Node 24 on macOS). Fix: use the pinned Node (`nvm install && nvm use`, 18.16.0 from `.nvmrc`) and, if the error persists, `npm rebuild iltorb`. To check the budgets without `bundlesize`, compare `gzip -c <file> | wc -c` for each path in the `bundlesize` array of `package.json` against its `maxSize`.
+History, fixed in 3.0. Up to 2.0.1 the size gate ran `bundlesize`, which required the native `iltorb` binding at load time; its prebuilt binary did not load on Node 20 or later. The gate now runs `size-limit` (`npm run size`, config in `.size-limit.json`), which is pure JavaScript. If you check out a 2.x tag, use Node 18 or compare `gzip -c <file> | wc -c` against the budgets by hand.
 
 ## Gates in CI but not locally
 
-CircleCI runs the same commands as the gates above, with two differences. Tests run as `npm run test:ci`, which adds `--coverage --coverageReporters=text-lcov | coveralls` and needs the `COVERALLS_REPO_TOKEN` from `.coveralls.yml` or the project settings; locally run plain `npm run test`. The `bundle_size` job runs `npm run build` before `npm run bundlesize`, so always build before checking sizes locally. CI pins `cimg/node:18.16.0-browsers`, matching `.nvmrc`; `engines` allows `>=14` but only Node 18 is exercised.
+CircleCI runs the same commands as the gates above, with two differences. Tests run as `npm run test:ci`, which adds `--coverage --coverageReporters=text-lcov | coveralls` and needs the `COVERALLS_REPO_TOKEN` from `.coveralls.yml` or the project settings; locally run plain `npm run test`. The `bundle_size` job runs `npm run build` before `npm run size`, so always build before checking sizes locally. CI pins `cimg/node:18.16.0-browsers`, matching `.nvmrc`; `engines` allows `>=14` but only Node 18 is exercised.
 
 ## Add an entry
 
