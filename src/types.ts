@@ -19,7 +19,7 @@ export interface WizardContextValue<T = DefaultWizardStepProps> {
   isFirstStep: boolean;
   isLastStep: boolean;
   goTo: (id: number | string) => void;
-  onNext: (cb?: () => void) => void;
+  onNext: (cb?: () => void | Promise<void>) => Promise<void>;
   getActiveStep: () => T;
   onPrevious: () => void;
   setSteps: (steps: T[] | T) => void;

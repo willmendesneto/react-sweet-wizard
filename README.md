@@ -208,9 +208,9 @@ getActiveStep();
 ...
 ```
 
-### `onNext(cb?: () => void)`
+### `onNext(cb?: () => void | Promise<void>): Promise<void>`
 
-Moves the wizard to the next step. It also accepts a callback, in case you need to manage any specific handler. E.G.
+Moves the wizard to the next step and returns a promise that resolves after the move. It also accepts a callback, sync or async, that runs before the move; if the callback throws or rejects, the wizard stays on the current step and the promise rejects with that error. E.G.
 
 ```tsx
 import { useWizardContext } from 'react-sweet-wizard';
@@ -236,6 +236,14 @@ onNext(() => {
   alert('And here we go! 🚀');
   // You can add a specific validation here!
 });
+// Async validation: the wizard only advances when the callback resolves
+try {
+  await onNext(async () => {
+    await validateCurrentStep();
+  });
+} catch (error) {
+  // validation failed; still on the same step
+}
 ```
 
 ### `onPrevious()`

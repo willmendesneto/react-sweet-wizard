@@ -17,6 +17,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Changed
 
+- **Breaking:** `onNext` returns `Promise<void>` (the callback may be sync or async) and rejects when the callback throws or rejects; the wizard stays on the current step in that case. Migration: `await` or `.catch()` calls that pass a callback that can fail.
+- **Breaking:** `isLastStep` is `false` while no steps are registered (it was `true` on the first render before `Steps` registered its children).
 - **Breaking:** React 18 or later is required (`peerDependencies` are `react >=18.0.0` and `react-dom >=18.0.0`). Migration: upgrade React, or stay on 2.x for React 17.
 - Tests run on Vitest 4 with Testing Library 16 and jsdom; Jest and Babel are gone from the toolchain.
 - **Breaking:** Node 20 or later is required (`engines.node` is `>=20`; `.nvmrc` pins 22.22.3). Migration: upgrade Node before installing 3.0.

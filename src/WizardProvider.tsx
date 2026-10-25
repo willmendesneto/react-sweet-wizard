@@ -14,7 +14,7 @@ export const WizardProvider = <T extends DefaultWizardStepProps>({
   const { activeStepIndex, steps } = state;
 
   const onNext = useCallback(
-    async (cb?: () => void) => {
+    async (cb?: () => void | Promise<void>) => {
       if (typeof cb === 'function') {
         await cb();
       }
@@ -56,7 +56,7 @@ export const WizardProvider = <T extends DefaultWizardStepProps>({
       setSteps,
       getActiveStep,
       isFirstStep: activeStepIndex === 0,
-      isLastStep: activeStepIndex >= steps.length - 1,
+      isLastStep: steps.length > 0 && activeStepIndex >= steps.length - 1,
     }),
     [activeStepIndex, steps, goTo, onNext, onPrevious, setSteps, getActiveStep]
   );

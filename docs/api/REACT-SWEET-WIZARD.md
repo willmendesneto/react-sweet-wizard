@@ -33,8 +33,8 @@ The hook returns:
 | `activeStepIndex` | `number` | `0` |
 | `steps` | `T[]` | `[]` until `Steps` registers its children or you call `setSteps` |
 | `isFirstStep` | `boolean` | `activeStepIndex === 0` |
-| `isLastStep` | `boolean` | `activeStepIndex >= steps.length - 1`, so `true` while `steps` is empty |
-| `onNext(cb?)` | `(cb?: () => void) => void` | Awaits `cb` if given, then moves forward one step; no-op on the last step |
+| `isLastStep` | `boolean` | `steps.length > 0 && activeStepIndex >= steps.length - 1`, so `false` while `steps` is empty |
+| `onNext(cb?)` | `(cb?: () => void \| Promise<void>) => Promise<void>` | Awaits `cb` if given, then moves forward one step and resolves; a rejecting `cb` keeps the step and the promise rejects with the same error; no-op on the last step |
 | `onPrevious()` | `() => void` | Moves back one step; no-op on the first step |
 | `goTo(idOrIndex)` | `(id: number \| string) => void` | A number is an **index**, a string is matched against `step.id`; ignored when out of range or already active |
 | `getActiveStep()` | `() => T` | `steps[activeStepIndex]`; `undefined` while `steps` is empty |
@@ -44,10 +44,10 @@ The hook returns:
 
 - **Fail fast on misuse.** `useWizardContext` throws `Please make sure you're wrapping all the steps in a 'WizardProvider' component` without a provider. `Steps` throws `Steps should have at least a single child component` with no valid children and `Error at position "<i>". You should compose Steps using "Step" component` when a child is not a `Step`. Wrapping `Step` in your own component therefore breaks `Steps`; compose inside the `Step` instead.
 - **Navigation never throws.** Out-of-range `onNext`, `onPrevious` and `goTo` are ignored by the reducer. The ten tests in `src/index.test.tsx` cover these cases.
-- **`goTo` semantics.** `goTo(1)` goes to the second step regardless of ids; `goTo('step3')` finds the step whose `id === 'step3'`. Changing this is a breaking change.
-- **`onNext` is async.** The optional callback is awaited before `NEXT_PAGE` is dispatched, so an async validator that rejects keeps the wizard on the current step. The declared return type is `void`, so consumers cannot await it; in tests wrap the call in `await act(async () => ...)`.
+- **`goTo` semantics (unchanged in 3.0 by decision).** A number is an index: `goTo(1)` goes to the second step regardless of ids. A string is matched against `step.id`: `goTo('step3')`. A numeric id is therefore never matched by `goTo`; address that step by its index.
+- **`onNext` returns a Promise.** The optional callback (sync or async) is awaited before `NEXT_PAGE` is dispatched, so a validator that throws or rejects keeps the wizard on the current step and the returned promise rejects with the same error; `await onNext(validate)` resolves only after the step advanced. Handle or `catch` the promise at the call site. In tests wrap the call in `await act(async () => ...)`.
 - **Step registration is count-based.** `Steps` calls `setSteps` only when `steps.length !== children.length`. Changing a child's `id` without changing the count does not re-register; neither does `setSteps` with the same length followed by a child change. Data attached through `setSteps` is kept until the count changes.
-- **First render.** `steps` is `[]` until the registration effect runs, so `isLastStep` is `true` and `getActiveStep()` is `undefined` for that render.
+- **First render.** `steps` is `[]` until the registration effect runs, so `isFirstStep` is `true`, `isLastStep` is `false` and `getActiveStep()` is `undefined` for that render.
 - **`Step` ids.** `Step`, `DefaultWizardStepProps.id` and `goTo` all accept `number | string` (since 3.0; 2.x typed the `Step` prop as `string`). The DOM `id` attribute is the stringified value; the registered step keeps the original type, so `goTo(0)` is an index while `getActiveStep().id` may be the number `0`.
 - **Rendering.** `Steps` returns exactly one child (`children[activeStepIndex]`), and `Step` wraps content in a `div` whose DOM `id` is the step id. There are no styles, no transitions and no focus management.
 
