@@ -1,6 +1,5 @@
 # React Sweet Wizard
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/willmendesneto/react-sweet-wizard.svg)](https://greenkeeper.io/)
 [![npm](https://img.shields.io/badge/stackblitz-online-orange.svg)](https://stackblitz.com/edit/react-sweet-wizard-sample)
 
 [![npm version](https://badge.fury.io/js/react-sweet-wizard.svg)](http://badge.fury.io/js/react-sweet-wizard) [![npm downloads](https://img.shields.io/npm/dm/react-sweet-wizard.svg)](https://npmjs.org/react-sweet-wizard)
@@ -17,7 +16,7 @@ Well, there are several selling points, actually!
 - 🏆 Better Developer Experience (DX): It enforces some conventions in order to make sure we got you covered! Issues with things such as specific components that needs to be used, which component is incorrect and context that needs to be used as wrapper will be raised straightaway on development environment.
 - 🎯 Covers different usage and scenarios: It covers simple usage, but also covers scenarios when you have steps being added dinamically, specific validation steps that needs to be added, data structures that should be passed on, etc. The sky is the limit here!
 - 🤩 No external dependencies: And that's exactly what you read. This is a zero-dependencies package, so you can integrate with Material-UI, Chakra-UI or any other Design System you might be using - including your own. Feel free to integrate with your workflow as you wish
-- 🗜 Small bundle: All of that in only 1.58KB
+- 🗜 Small bundle: about 1.25 KB gzipped for the ESM build (checked on every CI run with `size-limit`)
 
 ---
 
@@ -25,9 +24,11 @@ Well, there are several selling points, actually!
 - [Setup](#setup)
 - [Demo](#demo)
 - [useWizardContext](#usewizardcontext)
-- [Publish](#publish)
+- [Release](#release)
 
 ## Install
+
+Requires React 18 or later (`react` and `react-dom` as peer dependencies) and Node 20 or later. React 17 users should stay on 2.x.
 
 You can get it on NPM installing `react-sweet-wizard` module as a project dependency.
 
@@ -304,11 +305,9 @@ goTo('step3');
 console.log(getActiveStep());
 ```
 
-## Publish
+## Release
 
-this project is using `np` package to publish, which makes things straightforward. EX: `np <patch|minor|major>`
-
-> For more details, [please check np package on npmjs.com](https://www.npmjs.com/package/np)
+Releases are cut with `npm version <patch|minor|major>` (it runs lint, types and tests, then moves the `## [Unreleased]` changelog entries under the new version), followed by pushing the commit and its tag (`git push --follow-tags`), which triggers the GitHub Release workflow, and a manual `npm publish`. The full flow lives in [docs/playbooks/RELEASE-WORKFLOW.md](docs/playbooks/RELEASE-WORKFLOW.md).
 
 ## Author
 

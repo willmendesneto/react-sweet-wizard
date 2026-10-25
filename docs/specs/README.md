@@ -8,6 +8,6 @@ with a link to the PR.
 
 | Spec | Status | Owner |
 |---|---|---|
-| [2026-10-25-revamp.md](2026-10-25-revamp.md) | approved | maintainer |
+| [2026-10-25-revamp.md](2026-10-25-revamp.md) | in progress | maintainer |
 
 Template: [SPEC.md](SPEC.md).
