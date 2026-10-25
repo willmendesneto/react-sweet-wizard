@@ -16,9 +16,9 @@ Required: 22.22.3 (.nvmrc; `engines` allows any Node 20 or later). With nvm: `nv
 
 ## Build
 
-- `npm run build` runs `build:clean` first and deletes `dist/`, `.jest/` and `coverage/`. `build:cjs` and `build:esm` run in parallel through `npm-run-all`; `build:umd` runs after them because Rollup takes `dist/esm/index.js` as input (it imports `module` and `browser` from `package.json`). If `build:umd` fails with a missing input, run `npm run build:esm` first.
-- `build:umd:min` shells out to `uglifyjs` and `gzip`; `gzip` must exist on your PATH (it does on macOS and Linux CI).
-- Declarations come only from `build:cjs` (`tsconfig.build.json` sets `declaration: false` and the CJS script passes `--declaration`), so `types` resolves to `dist/cjs/index.d.ts`. If types are missing, check that script.
+- `npm run build` is `rimraf dist && rollup -c`: one Rollup 4 run (`rollup.config.mjs`, `@rollup/plugin-typescript` reading `tsconfig.build.json`) emits `dist/esm/index.js`, `dist/cjs/index.cjs`, their source maps and the declarations under `dist/types/`. There is no UMD build since 3.0.
+- `Path of Typescript compiler option 'outDir' must be located inside Rollup 'dir' option`: both outputs use `dir: 'dist'` with `entryFileNames` for the subfolder and the plugin sets `outDir: 'dist'`; keep it that way when adding an output.
+- Missing `dist/types/index.d.ts`: the plugin needs `declaration: true`, `declarationDir: 'dist/types'` and `rootDir: 'src'` in `rollup.config.mjs`; `tsconfig.build.json` must not set `declaration: false`.
 - `lint:types` runs `tsc --noEmit` against `tsconfig.json`, which includes the test file; a type error in `src/index.test.tsx` fails the gate even though the test file is excluded from the build.
 
 ## Tests

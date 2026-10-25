@@ -16,6 +16,7 @@ module.exports = tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   react.configs.flat.recommended,
+  react.configs.flat['jsx-runtime'],
   jsxA11y.flatConfigs.recommended,
   reactHooks.configs.flat.recommended,
   {

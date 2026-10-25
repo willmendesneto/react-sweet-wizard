@@ -1,7 +1,7 @@
-import * as React from 'react';
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import {
   Children,
+  isValidElement,
   createContext,
   useContext,
   useReducer,
@@ -50,8 +50,6 @@ const initialState = <
 const WizardStepperContext =
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- generic per consumer, narrowed by useWizardContext<T>
   createContext<WizardStepperContextProps<any> | null>(null);
-
-WizardStepperContext.displayName = 'WizardStepperContext';
 
 export const useWizardContext = <T extends DefaultWizardStepProps>(): Readonly<
   WizardStepperContextProps<T>
@@ -181,7 +179,7 @@ export const Steps = ({
   children: JSX.Element | JSX.Element[];
 }) => {
   const reactChildren = Children.toArray(children).filter(
-    (child): child is React.ReactElement => React.isValidElement(child)
+    (child): child is ReactElement => isValidElement(child)
   );
 
   if (reactChildren.length === 0) {

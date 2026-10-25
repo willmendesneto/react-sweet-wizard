@@ -7,14 +7,8 @@
   },
   {
     "name": "CJS",
-    "path": "dist/cjs/index.js",
-    "limit": "2662 B",
-    "gzip": true
-  },
-  {
-    "name": "UMD (min)",
-    "path": "dist/umd/react-sweet-wizard.min.js",
-    "limit": "1126 B",
+    "path": "dist/cjs/index.cjs",
+    "limit": "1331 B",
     "gzip": true
   }
 ]
